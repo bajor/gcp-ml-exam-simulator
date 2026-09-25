@@ -26,7 +26,7 @@ export function ResultsScreen({ questionSet, attempt, score, onChooseExam, onRes
         <p className="disclaimer">Practice percentage only. Google does not publish a passing score.</p>
         <div className="result-actions">
           <button className="primary-button" onClick={onRestart}>Start a new attempt</button>
-          <button className="secondary-button secondary-button-dark" onClick={onChooseExam}>Choose another exam</button>
+          <button className="secondary-button" onClick={onChooseExam}>Choose another exam</button>
         </div>
       </header>
 

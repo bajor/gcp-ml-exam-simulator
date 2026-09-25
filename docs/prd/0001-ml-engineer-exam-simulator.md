@@ -72,6 +72,7 @@ The static application collects no analytics. The candidate assesses success: a 
 
 - [Exam attempt and scoring](/bdr/0001-exam-attempt-and-scoring.md)
 - [Question validation and publication](/bdr/0002-question-validation-and-publication.md)
+- [Exam presentation](/bdr/0003-exam-presentation.md)
 
 ## Open Questions
 

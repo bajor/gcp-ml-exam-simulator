@@ -29,3 +29,4 @@ Question-authoring preparation, PR [3/3], is tracked by a separate issue.
 ### Progress
 
 - 2026-09-25: PR [1/3] ports the application and documentation.
+- 2026-09-25: PR [2/3] applies the dense exam presentation specified by [BDR 0003](/bdr/0003-exam-presentation.md).

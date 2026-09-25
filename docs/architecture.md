@@ -27,6 +27,7 @@ On 2026-09-25 the catalog lists Practice Exams 1, 2, and 3 as coming soon. No qu
 | `src/data/questionSets/index.ts` | Runtime catalog of available and coming-soon entries. |
 | `docs/reviews/` | Independent acceptance and rejection records checked by CI. |
 | `src/components/` | Catalog, start, exam, navigation, submission, and result-review screens. |
+| `src/styles.css` | Dense exam presentation, including `--exam-text-size`, the single font size shared by question and answer text. |
 | `src/App.tsx` | Catalog selection, screen transitions, and restoration of the selected set's attempt. |
 | `scripts/` | Documentation lint, live source verification, and review-record generation. |
 | `.github/workflows/` | Continuous integration, visual-explanation cleanup, and GitHub Pages deployment. |
@@ -79,3 +80,4 @@ Vite builds the static site with `/gcp-ml-exam-simulator/` as its base path. Aft
 - [Port the Data Engineer simulator](/adr/0001-port-data-engineer-simulator.md)
 - [Exam attempt and scoring](/bdr/0001-exam-attempt-and-scoring.md)
 - [Question validation and publication](/bdr/0002-question-validation-and-publication.md)
+- [Exam presentation](/bdr/0003-exam-presentation.md)
