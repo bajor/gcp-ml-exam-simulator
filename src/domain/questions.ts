@@ -20,8 +20,8 @@ type ExamGuideVersion = "2026-06-01";
 // Real exam stems and options are long; these floors keep practice reading load realistic.
 export const minimumPromptWords = 60;
 export const minimumChoiceWords = 12;
-// Counts the prompt plus every choice. The shortest official sample question has 166 words.
-export const minimumQuestionWords = 160;
+// Counts the prompt plus every choice; equals the shortest official sample question.
+export const minimumQuestionWords = 166;
 
 export interface Evidence {
   readonly id: string;

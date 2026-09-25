@@ -18,6 +18,8 @@ Implement [PRD 0001](/prd/0001-ml-engineer-exam-simulator.md), [ADR 0001](/adr/0
 1. PR [1/3]: Copy the application, tooling, tests, and workflows without Data Engineer content. Adopt six sections, 60 questions, reading-length floors, PMLE storage keys, the `/gcp-ml-exam-simulator/` base path, and a coming-soon catalog.
 2. PR [2/3]: Restyle the application in a dense Pearson-style presentation in which question and answer text share one font size.
 
+Question-authoring preparation, PR [3/3], is tracked by a separate issue.
+
 ### Acceptance
 
 - The acceptance criteria of PRD 0001 pass.

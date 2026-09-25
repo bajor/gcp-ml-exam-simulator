@@ -102,7 +102,7 @@ The number of words in a question's prompt plus all of its choices. A word is a 
 
 ## Reading-length floor
 
-A minimum word count enforced by structural validation: 60 words for a prompt, 12 words for each choice, and 160 words of reading load per question.
+A minimum word count enforced by structural validation: 60 words for a prompt, 12 words for each choice, and 166 words of reading load per question.
 
 ## Rejection record
 

@@ -85,6 +85,20 @@ it("rejects an impossible calendar verification date", () => {
   expect(validateQuestionSet(invalid)).toContain(`${question.id}: invalid verification date.`);
 });
 
+it("accepts a question exactly at every reading-length floor", () => {
+  const set = validSet();
+  const question = set.questions[0] as SingleChoiceQuestion;
+  const remainingWords = minimumQuestionWords - minimumPromptWords - minimumChoiceWords;
+  const otherChoiceWords = Math.floor(remainingWords / 3);
+  const choiceWords = [minimumChoiceWords, otherChoiceWords, otherChoiceWords, remainingWords - 2 * otherChoiceWords];
+  const choices = question.choices.map((choice, index) => ({ ...choice, text: words(choice.id, choiceWords[index]) }));
+  const atFloors = {
+    ...set,
+    questions: [{ ...question, prompt: words("prompt", minimumPromptWords), choices }, ...set.questions.slice(1)],
+  } as unknown as QuestionSet;
+  expect(validateQuestionSet(atFloors)).toEqual([]);
+});
+
 it("rejects a prompt shorter than the minimum scenario length", () => {
   const set = validSet();
   const question = set.questions[0] as SingleChoiceQuestion;

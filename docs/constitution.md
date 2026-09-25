@@ -34,7 +34,7 @@ Explicitly out of scope:
 
 ## Data Model Foundation
 
-A question set contains exactly 60 questions: 8 `architect`, 9 `collaborate`, 12 `scale`, 12 `serve`, 11 `automate`, and 8 `monitor` questions, one group for each section of the exam guide dated June 1, 2026. Each question has single-choice or multiple-select answer semantics, cites one or more Google-owned sources, and meets the reading-length floors in `src/domain/questions.ts`: at least 60 prompt words, at least 12 words in every choice, and at least 160 words across the prompt and all choices. An attempt records answers, review flags, position, start time, and deadline for one question set. A completed attempt produces a result without changing the question set.
+A question set contains exactly 60 questions: 8 `architect`, 9 `collaborate`, 12 `scale`, 12 `serve`, 11 `automate`, and 8 `monitor` questions, one group for each section of the exam guide dated June 1, 2026. Each question has single-choice or multiple-select answer semantics, cites one or more Google-owned sources, and meets the reading-length floors in `src/domain/questions.ts`: at least 60 prompt words, at least 12 words in every choice, and at least 166 words across the prompt and all choices, the length of the shortest official sample question. An attempt records answers, review flags, position, start time, and deadline for one question set. A completed attempt produces a result without changing the question set.
 
 Invalid question states must be rejected by TypeScript types and question-bank validation. Answer identifiers must exist among the choices, multiple-select questions must declare the required selection count, and every choice must have feedback supported by cited evidence.
 

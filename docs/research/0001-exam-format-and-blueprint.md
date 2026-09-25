@@ -32,11 +32,11 @@ Measurement: Reading length of the official PMLE samples compared with the accep
 | Source | Items | Prompt words (min / median / max) | Choice words (min / median / max) | Reading load per item (min / median / max) |
 |---|---|---|---|---|
 | PMLE official sample form | 8 | 52 / 84.5 / 101 | 14 / 32 / 52 | 166 / 207 / 282 |
-| PDE simulator Practice Exam 1 version 6 | 50 | 26 / 50 / 85 | 2 / 15 / 40 | 60 / 111.5 / 162 |
-| PDE simulator Practice Exam 2 version 4 | 50 | 33 / 44 / 64 | 1 / 14 / 34 | 50 / 103 / 146 |
-| PDE simulator Practice Exam 3 version 4 | 50 | 25 / 44 / 63 | 1 / 11 / 29 | 37 / 95.5 / 117 |
+| PDE simulator Practice Exam 1 version 6 | 50 | 26 / 50.5 / 85 | 2 / 15 / 40 | 60 / 111.5 / 162 |
+| PDE simulator Practice Exam 2 version 4 | 50 | 33 / 44.5 / 64 | 1 / 14 / 34 | 50 / 103 / 146 |
+| PDE simulator Practice Exam 3 version 4 | 50 | 25 / 44.5 / 63 | 1 / 11 / 29 | 37 / 95.5 / 117 |
 
-Only 1 of the 150 PDE simulator questions has a reading load of at least 160 words. In two of the three PDE sets, the longest question is shorter than the shortest official PMLE sample. The PDE sets contained 2, 0, and 4 multiple-select questions respectively.
+None of the 150 PDE simulator questions reaches 166 words, the reading load of the shortest official PMLE sample; the longest PDE question has 162 words. The PDE sets contained 2, 0, and 4 multiple-select questions respectively.
 
 ## Contradictions
 
@@ -59,9 +59,9 @@ The section allocation applies the largest-remainder method to the guide weights
 
 The reading-length floors are derived from the measurements:
 
-- The prompt floor of 60 words is above every PDE median prompt (44 to 50 words). Two official stems are shorter (52 and 55 words); that is accepted because the candidate found the real exam harder than the samples, and Google states that the samples do not represent the exam's difficulty.
+- The prompt floor of 60 words is above every PDE median prompt (44.5 to 50.5 words). Two official stems are shorter (52 and 55 words); that is accepted because the candidate found the real exam harder than the samples, and Google states that the samples do not represent the exam's difficulty.
 - The choice floor of 12 words is below the shortest official option (14 words) and eliminates the one- and two-word options found in the PDE sets.
-- The combined floor of 160 words is below the shortest official sample item (166 words) and above the longest question in two of the three PDE sets.
+- The combined floor of 166 words equals the shortest official sample item, so no practice question can be shorter than any official sample. It is above the longest PDE simulator question (162 words).
 
 The floors are minimums, not targets. Typical question length is an authoring concern and belongs to the question-authoring guidance.
 
@@ -71,7 +71,7 @@ These recommendations rely on owner-controlled facts that were authoritative on 
 
 - Use 60 questions and a 120-minute timer, while stating that Google publishes a range of 50 to 60 questions.
 - Allocate 8, 9, 12, 12, 11, and 8 questions to the six guide sections.
-- Enforce the 60, 12, and 160-word floors in structural validation.
+- Enforce the 60, 12, and 166-word floors in structural validation.
 - Keep multiple-select questions rare, because the official samples contain none.
 - Present question and answer text at the same small size in a plain, dense layout.
 - Use the official samples only to understand style; never copy or paraphrase them.
