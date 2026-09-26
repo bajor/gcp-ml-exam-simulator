@@ -13,25 +13,26 @@ timestamp: 2026-09-26T00:00:00Z
 
 The exam guide dated June 1, 2026 has 6 sections, 14 objectives, and 52 considerations (the bullet points under each objective). This matrix assigns every consideration an identifier, such as `3.2.e`, and fixes how many questions each objective receives in every 60-question set.
 
-Write each question's `objective` field as `<objective number> <objective title>: <consideration identifier> <short consideration text>`. For example: `3.2 Training models: 3.2.e hyperparameter tuning`. The identifier lets reviewers count coverage with a text search.
+Objective titles below match the guide, without its parenthetical examples. Write each question's `objective` field as `<objective number> <objective title>: <consideration identifier> <short consideration text>`. For example: `3.2 Training models: 3.2.e hyperparameter tuning`. The identifier lets reviewers count coverage with a text search.
 
 Coverage rules:
 
 1. Every set allocates questions to objectives exactly as the table below shows. The section totals are enforced in code; the objective split is checked in review.
-2. Within one set, no consideration is the primary topic of more than two questions.
+2. Within one set, no consideration is the primary topic of more than three questions. A cap of two would make the `automate` section impossible to fill, because objectives 5.1 and 5.2 have only five considerations for 11 questions.
 3. Across Practice Exams 1, 2, and 3, every consideration is the primary topic of at least two questions, each time with a different scenario and a different decisive feature.
 4. Every documentation link below returned HTTP 200 at its final URL on 2026-09-26. Re-fetch each link and read the current page before citing it, because the matrix lists starting points, not evidence.
+5. Test only generally available (GA) features. A Preview or deprecation notice disqualifies the feature it names, not other features on the same page. The notes below list the notices that affect this matrix.
 
 ## Allocation
 
 | Section | Objective | Questions per set |
 |---|---|---|
-| `architect` (8) | 1.1 Developing ML models using BigQuery ML or AutoML | 4 |
-| | 1.2 Building AI solutions using AI APIs or foundational models | 4 |
+| `architect` (8) | 1.1 Developing ML models using BigQuery ML or AutoML on Gemini Enterprise Agent Platform | 4 |
+| | 1.2 Building AI solutions using Google Cloud AI APIs or foundational models | 4 |
 | `collaborate` (9) | 2.1 Exploring and preprocessing data for ML | 4 |
 | | 2.2 Model prototyping using notebooks | 2 |
 | | 2.3 Tracking and running ML experiments | 3 |
-| `scale` (12) | 3.1 Building models given the task | 4 |
+| `scale` (12) | 3.1 Building models given the task considering cost, complexity, latency, and scalability | 4 |
 | | 3.2 Training models | 6 |
 | | 3.3 Choosing appropriate hardware for training | 2 |
 | `serve` (12) | 4.1 Serving models | 6 |
@@ -41,11 +42,11 @@ Coverage rules:
 | `monitor` (8) | 6.1 Identifying risks to AI solutions | 4 |
 | | 6.2 Monitoring, testing, and troubleshooting AI solutions | 4 |
 
-## 1.1 Developing ML Models Using BigQuery ML or AutoML
+## 1.1 Developing ML Models Using BigQuery ML or AutoML on Gemini Enterprise Agent Platform
 
 | ID | Consideration | Decisions to test |
 |---|---|---|
-| 1.1.a | Building models by business problem | Map the problem to a model type: classification, regression, forecasting with ARIMA_PLUS, clustering with k-means, or recommendation. Choose BigQuery ML when the data is in BigQuery and the team works in SQL; choose AutoML for images, text, or tabular data without ML expertise. |
+| 1.1.a | Building models by business problem | Map the problem to a model type: classification, regression, forecasting with ARIMA_PLUS, clustering with k-means, or recommendation. Choose BigQuery ML when the data is in BigQuery and the team works in SQL; choose AutoML for image or tabular data without ML expertise, and Gemini prompting or tuning for text tasks, because AutoML text training ended on September 15, 2024. |
 | 1.1.b | Feature engineering or selection in BigQuery ML | Use the `TRANSFORM` clause so the same preprocessing is applied automatically at prediction time; inspect feature importance. |
 | 1.1.c | Generating predictions with BigQuery ML | Use `ML.PREDICT`, `ML.FORECAST`, and explanation functions in SQL for batch predictions; register the model when online serving is needed. |
 | 1.1.d | Training models with Agent Platform AutoML | Data requirements, training budget, and the optimization objective for the business metric. |
@@ -55,12 +56,12 @@ Common traps: exporting BigQuery data to train elsewhere when BigQuery ML meets 
 
 Documentation: [BigQuery ML introduction](https://docs.cloud.google.com/bigquery/docs/bqml-introduction), [end-to-end user journeys](https://docs.cloud.google.com/bigquery/docs/e2e-journey), [TRANSFORM clause](https://docs.cloud.google.com/bigquery/docs/bigqueryml-transform), [ML.PREDICT](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-predict), [ARIMA_PLUS forecasting](https://docs.cloud.google.com/bigquery/docs/arima-single-time-series-forecasting-tutorial), [AutoML beginner's guide](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/beginner/beginners-guide), [tuning and evaluation in BigQuery](https://docs.cloud.google.com/bigquery/docs/tune-evaluate).
 
-## 1.2 Building AI Solutions Using AI APIs or Foundational Models
+## 1.2 Building AI Solutions Using Google Cloud AI APIs or Foundational Models
 
 | ID | Consideration | Decisions to test |
 |---|---|---|
 | 1.2.a | Selecting a model from Model Garden | Compare capability, modality, latency, cost, license, and deployment option (model as a service or self-deployed). |
-| 1.2.b | Industry-specific APIs | Prefer Document AI, the Vision API, or Cloud Translation when a pre-trained API covers the task without custom classes. |
+| 1.2.b | Industry-specific APIs | Prefer the Vision API, Cloud Translation, or a pre-trained Document AI processor when it covers the task; use Document AI custom processors for document-specific fields and classes. |
 | 1.2.c | Building solutions and tuning for use cases | Try prompting first, ground the model when it needs current or private facts, and tune when style, format, or task behavior must change. |
 | 1.2.d | Optimizing Gemini applications | Choose a smaller model for latency and cost, context caching for repeated long context, batch inference for non-urgent bulk work, and Provisioned Throughput for guaranteed capacity. |
 
@@ -89,7 +90,7 @@ Documentation: [feature preprocessing in BigQuery](https://docs.cloud.google.com
 | 2.2.b | Developing with PyTorch, scikit-learn, or JAX | Use the right runtime and accelerator, then move repeatable work out of notebooks. |
 | 2.2.c | Prototyping with Model Garden models | Start from Model Garden models in a notebook to compare foundation and open models. |
 
-Common traps: sharing one user's credentials (D5); idle GPU runtimes left running (D2).
+Common traps: sharing one user's credentials (D5); GPU runtimes left running while idle (D2, over-provisioning).
 
 Documentation: [Agent Platform Workbench](https://docs.cloud.google.com/gemini-enterprise-agent-platform/notebooks/workbench/introduction), [Workbench access](https://docs.cloud.google.com/gemini-enterprise-agent-platform/notebooks/workbench/instances/manage-access-jupyterlab), [Colab Enterprise](https://docs.cloud.google.com/colab/docs/introduction), [Model Garden overview](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-garden/explore-models).
 
@@ -105,18 +106,20 @@ Common traps: accuracy on heavily imbalanced data (D6); comparing runs in spread
 
 Documentation: [Experiments](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/experiments/intro-vertex-ai-experiments), [ML Metadata](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/ml-metadata/introduction), [model evaluation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/evaluation/introduction), [generative AI evaluation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview), [Pipelines introduction](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/introduction).
 
-## 3.1 Building Models Given the Task
+## 3.1 Building Models Given the Task Considering Cost, Complexity, Latency, and Scalability
 
 | ID | Consideration | Decisions to test |
 |---|---|---|
 | 3.1.a | Choosing the model type | Time series models such as ARIMA_PLUS, boosted trees or DNNs for tabular data, DNNs with transfer learning for unstructured data, and LLMs for language tasks. |
 | 3.1.b | Choosing the product | AutoML, BigQuery ML, custom training, or pipelines, based on skills, data location, customization, and delivery time. |
 | 3.1.c | Choosing the deployment strategy | Batch, online, or edge inference, based on where and when predictions are consumed. |
-| 3.1.d | Interpretability requirements | Interpretable model families, and feature attributions such as sampled Shapley, integrated gradients, or XRAI. |
+| 3.1.d | Interpretability requirements | Interpretable model families such as linear models and boosted trees, BigQuery ML explanation functions such as `ML.EXPLAIN_PREDICT` and `ML.GLOBAL_EXPLAIN`, and open-source attribution libraries in a custom container. |
 
 Common traps: an LLM for a classification task that BigQuery ML solves more cheaply (D2); a model without attributions when explanations are required (D3).
 
-Documentation: [end-to-end user journeys](https://docs.cloud.google.com/bigquery/docs/e2e-journey), [classification and regression](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/tabular-data/classification-regression/overview), [Explainable AI](https://docs.cloud.google.com/vertex-ai/docs/explainable-ai/overview), [deploying models](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/deployment).
+Note: Vertex Explainable AI is deprecated as of March 16, 2026, and is scheduled to shut down on March 16, 2027. Never make it the decisive feature; use the alternatives above.
+
+Documentation: [end-to-end user journeys](https://docs.cloud.google.com/bigquery/docs/e2e-journey), [classification and regression](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/tabular-data/classification-regression/overview), [BigQuery ML explainability](https://docs.cloud.google.com/bigquery/docs/xai-overview), [deploying models](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/deployment).
 
 ## 3.2 Training Models
 
@@ -124,7 +127,7 @@ Documentation: [end-to-end user journeys](https://docs.cloud.google.com/bigquery
 |---|---|---|
 | 3.2.a | Organizing training data | Store tabular, text, speech, image, and video data in Cloud Storage and BigQuery in formats that scale. |
 | 3.2.b | Ingesting data into training pipelines | Read structured and unstructured sources efficiently from training code and pipelines. |
-| 3.2.c | Training with SDKs | Agent Platform custom training with prebuilt or custom containers, Kubeflow on GKE, AutoML, and Tabular Workflows. |
+| 3.2.c | Training with SDKs | Agent Platform custom training with prebuilt or custom containers, Kubeflow on GKE, AutoML, and Tabular Workflows. Among Tabular Workflows, only End-to-End AutoML for classification and regression is GA. |
 | 3.2.d | Troubleshooting training failures | Out-of-memory errors, diverging loss, slow input pipelines, idle accelerators, and permission errors. |
 | 3.2.e | Hyperparameter tuning | Search space, metric, search algorithm (Bayesian optimization is the default), and trial budget. |
 | 3.2.f | Fine-tuning foundation models | When tuning beats prompting or grounding, and how supervised tuning uses labeled examples. |
@@ -154,7 +157,7 @@ Documentation: [Cloud TPU](https://docs.cloud.google.com/tpu/docs/intro-to-tpu),
 | 4.1.d | Rollout strategies | Traffic splitting between models on one endpoint for canary and A/B tests, and rollback by shifting traffic. |
 | 4.1.e | Inference preprocessing and postprocessing | Custom inference routines, preprocessing inside the model, and Dataflow RunInference for streams. |
 
-Common traps: a second endpoint plus client changes for a canary (D2); preprocessing reimplemented in each client (D7).
+Common traps: a second endpoint plus client changes for a canary (D2); preprocessing reimplemented in each client, which cannot guarantee consistency (D3).
 
 Documentation: [inference overview](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions), [prebuilt containers](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/pre-built-containers), [custom containers](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/use-custom-container), [batch inference](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/get-batch-predictions), [custom inference routines](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/custom-prediction-routines), [Model Registry](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-registry/introduction), [deploying models](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/deployment), [Cloud Run GPUs](https://docs.cloud.google.com/run/docs/configuring/services/gpu), [inference on GKE](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/machine-learning/inference).
 
@@ -162,7 +165,7 @@ Documentation: [inference overview](https://docs.cloud.google.com/gemini-enterpr
 
 | ID | Consideration | Decisions to test |
 |---|---|---|
-| 4.2.a | Serving features with Feature Store | Serve the latest feature values online directly from BigQuery data through feature views. |
+| 4.2.a | Serving features with Feature Store | Serve the latest feature values online directly from BigQuery data through feature views with Bigtable online serving. Optimized online serving is deprecated and must not be the decisive feature. |
 | 4.2.b | Public and private endpoints | Private Service Connect endpoints when traffic must stay private. |
 | 4.2.c | Serving hardware | CPUs, GPUs, TPUs, or edge devices, based on model size, latency, and connectivity. |
 | 4.2.d | Scaling by throughput | Machine types and minimum and maximum replica counts for autoscaling. |
@@ -201,20 +204,20 @@ Documentation: [MLOps continuous delivery](https://docs.cloud.google.com/archite
 |---|---|---|
 | 6.1.a | Securing AI systems | Model Armor for prompt injection, jailbreaks, sensitive data in prompts and responses, and malicious URLs; safety filters for harmful content; regular expressions only for simple fixed patterns; VPC Service Controls against data exfiltration. |
 | 6.1.b | Responsible AI practices | Evaluate quality across groups and monitor for bias. |
-| 6.1.c | Model explainability | Feature attributions and explanations served with Agent Platform Inference. |
+| 6.1.c | Model explainability | Explanations from generally available tools: BigQuery ML explanation functions, or open-source attribution libraries served with the model from a custom container on Agent Platform Inference. Vertex Explainable AI is deprecated. |
 
 Common traps: safety filters alone against prompt injection (D7); regular expressions for semantic attacks (D3); de-identifying data after it was sent to the model (D8).
 
-Documentation: [Model Armor](https://docs.cloud.google.com/model-armor/overview), [safety and content filters](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/configure-safety-filters), [responsible AI](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/responsible-ai), [VPC Service Controls](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/vpc-service-controls), [Explainable AI](https://docs.cloud.google.com/vertex-ai/docs/explainable-ai/overview).
+Documentation: [Model Armor](https://docs.cloud.google.com/model-armor/overview), [safety and content filters](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/configure-safety-filters), [responsible AI](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/responsible-ai), [VPC Service Controls](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/vpc-service-controls), [BigQuery ML explainability](https://docs.cloud.google.com/bigquery/docs/xai-overview), [custom containers for inference](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/use-custom-container).
 
 ## 6.2 Monitoring, Testing, and Troubleshooting AI Solutions
 
 | ID | Consideration | Decisions to test |
 |---|---|---|
-| 6.2.a | Configuring Model Monitoring | Monitoring objectives, baselines, schedules, alert thresholds, and notification channels. |
-| 6.2.b | Common production issues | Training-serving skew needs the training data as a baseline; drift compares recent inputs with a baseline; concept drift shows up as quality loss against ground truth; feature attribution drift needs explanations. |
+| 6.2.a | Configuring Model Monitoring | Model Monitoring v1, which is GA and configured on Agent Platform endpoints: skew and drift detection, the training-data baseline for skew, thresholds, sampling, and alerts. Model Monitoring v2 is in Preview and must not be the decisive feature. |
+| 6.2.b | Common production issues | Training-serving skew needs the training data as a baseline; drift compares recent inputs with a baseline; concept drift shows up as quality loss against ground truth. Feature attribution monitoring depends on the deprecated Vertex Explainable AI, so do not make it the decisive feature. |
 | 6.2.c | Evaluating generative AI in production | Evaluation datasets, LLM-as-a-judge metrics, and regression tests when prompts or models change. |
 
 Common traps: drift monitoring when the stem asks for skew against training data (D7); automatic retraining before diagnosis (D8); input drift alone as proof of concept drift (D6).
 
-Documentation: [Model Monitoring](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-monitoring/overview), [feature attribution skew and drift](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-monitoring/monitor-explainable-ai), [generative AI evaluation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview).
+Documentation: [Model Monitoring](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-monitoring/overview), [generative AI evaluation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview).

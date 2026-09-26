@@ -59,14 +59,14 @@ Use these phrases, or close variants, so the decisive property is unambiguous.
 | reproducible, auditable, track lineage | Agent Platform Pipelines, ML Metadata, Experiments, Model Registry | Notebooks and manual steps |
 | no access to production data | Metadata, metrics, logs, and lineage | Any option that reads raw production data |
 | the team knows only SQL | BigQuery ML | Python-based custom training |
-| explain individual predictions, interpretability | Interpretable model families, feature attributions | Unexplained black-box models |
+| explain individual predictions, interpretability | Interpretable model families, BigQuery ML explanation functions, open-source attribution libraries in custom containers | Unexplained black-box models |
 | millions of predictions, spiky traffic | Autoscaling endpoints, batch inference, Dataflow | Fixed-size self-managed serving |
 
 ## Option Rules
 
 1. Write each option as a complete imperative action, not a product name. Multi-step options are allowed and may be numbered.
 2. Every option must be technically possible on Google Cloud. A distractor is wrong because it fails a stated constraint, never because the feature does not exist.
-3. Keep options parallel in grammar, detail, and length. The correct option may be the longest option in at most 18 of 60 questions.
+3. Keep options parallel in grammar, detail, and length. Among single-choice questions, the correct option may be the longest option in at most 18 questions of a set.
 4. In at least 30 of 60 questions, give two options the same skeleton that differ in one decisive component. This is a near-miss pair.
 5. Do not use "all of the above", "none of the above", negative stems such as "Which is NOT", joke options, or absolute words such as "always" and "never" as clues.
 6. Balance the answer key. Among single-choice questions, each letter from `a` to `d` is correct in 13 to 17 questions of a set.
@@ -74,13 +74,13 @@ Use these phrases, or close variants, so the decisive property is unambiguous.
 
 ## Distractor Mechanisms
 
-Build each distractor from one mechanism and make it fail exactly one named requirement. The choice feedback must name that requirement.
+Build each distractor from one main mechanism and make it fail at least one named requirement. The choice feedback must name every requirement it fails.
 
 | Code | Mechanism | Fails |
 |---|---|---|
 | D1 | Self-managed: runs on GKE, Compute Engine, or custom code what a managed capability provides | Operational overhead |
-| D2 | Over-engineering: adds unrequested components, data copies, or automation | Cost, effort, or scope |
-| D3 | Under-powered tool: a simpler tool that cannot meet a stated requirement | Capability, scale, or reproducibility |
+| D2 | Over-engineering or over-provisioning: adds unrequested components, capacity, data copies, or automation | Cost, effort, or scope |
+| D3 | Unsuitable tool: a tool that cannot meet a stated requirement because it is too limited or does not support the workload | Capability, scale, consistency, or reproducibility |
 | D4 | Wrong mode: batch where online is needed, or the reverse | Latency or cost |
 | D5 | Restriction violation: moves sensitive data, requests forbidden access, or exposes an endpoint publicly | Security or compliance |
 | D6 | Symptom or wrong signal: acts on a symptom or measures something that does not answer the question | Diagnosis |
@@ -106,7 +106,7 @@ Avoid artificial difficulty. Do not use trick wording, undocumented defaults, pr
 ## Content Rules
 
 - Use the names in [current product names](/context/product-names.md). Never use former names such as Vertex AI or Cloud Composer in a stem, option, or feedback.
-- Use only generally available (GA) features. Reject content whose documentation page shows a Preview or deprecation notice.
+- Use only generally available (GA) features. A Preview or deprecation notice disqualifies the feature it names, not other features on the same page. For example, Vertex Explainable AI and Model Monitoring v2 must not be decisive, while GA Feature Store capabilities remain testable although the same overview page marks optimized online serving as deprecated. The [coverage matrix](/authoring/coverage-matrix.md) lists the notices that affect each objective.
 - Make generative AI the decisive topic in 12 to 18 questions of each set.
 - In each set, include at least 6 troubleshooting questions, at least 5 evaluation and metrics questions, at least 4 risk, security, and responsible AI questions, and at least 4 migration questions, as defined in research 0003.
 - Do not include multi-line code. Inline names such as `ML.PREDICT` or `TRANSFORM` in running text are allowed.
@@ -124,18 +124,20 @@ This original question shows the targets in practice. It is not part of any prac
 
 | Choice | Text | Words | Role |
 |---|---|---|---|
-| a | Build an Agent Platform Pipelines pipeline that checks the row count and schema statistics of the training data, stops the run when a check fails, and records artifacts in ML Metadata. | 31 | Correct |
-| b | Schedule the existing notebook in Colab Enterprise, add a cell that prints the row count of the latest partition, and ask the analyst to confirm the count before approving each deployment. | 31 | D3: not reproducible and records no lineage; a manual check adds overhead |
-| c | Create a Cloud Run function that retrains the model every week, compares the file size of the new model with the previous model, and deploys the new model only when the sizes are similar. | 34 | D6: file size does not show whether the training data was complete |
-| d | Run the training workflow on a self-managed Kubeflow Pipelines installation on Google Kubernetes Engine, add a custom container that validates the data, and store run metadata in the cluster. | 29 | D1: validates data, but the team must operate the cluster |
+| a | Define a Kubeflow pipeline that checks the row count and schema statistics of the training data and stops before training when a check fails, and run the pipeline on Agent Platform Pipelines. | 32 | Correct |
+| b | Schedule the existing notebook in Colab Enterprise, add a cell that prints the row count of the latest partition, and ask the analyst to confirm the count before approving each deployment. | 31 | D3: not reproducible and records no lineage; the manual check also adds overhead |
+| c | Use Cloud Scheduler to invoke a Cloud Run function every week that starts an Agent Platform custom training job whose code deploys the new model only when its file size resembles the previous model's. | 34 | D6: file size does not show whether the training data was complete, and nothing records lineage |
+| d | Define a Kubeflow pipeline that checks the row count and schema statistics of the training data and stops before training when a check fails, and run the pipeline on a self-managed Kubeflow Pipelines cluster. | 34 | D1: validates data, but the team must operate the cluster |
 
-The reading load is 221 words. The stem states three constraints: prevent incomplete data from reaching production, keep training reproducible with recorded lineage, and keep operational overhead low. Choices a and d form a near-miss pair (L2), because both run Kubeflow-style pipelines with a validation step. The training time is a non-decisive detail (L3), and the correct answer depends on the documented behavior of managed pipelines (L4). The correct option is not the longest.
+The reading load is 227 words. The stem states three constraints: prevent incomplete data from reaching production, keep training reproducible with recorded lineage, and keep operational overhead low. Choices a and d form a near-miss pair (L2): they are identical except for where the pipeline runs. The training time is a non-decisive detail (L3); choice c stays technically possible because its function only starts the four-hour job instead of running it. The correct answer depends on the documented behavior of managed pipelines (L4), and the correct option is not the longest.
 
 Evidence for the feedback:
 
-- [Introduction to Agent Platform Pipelines](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/introduction): Agent Platform Pipelines runs Kubeflow Pipelines or TFX pipelines "in a serverless manner". A pipeline is a directed acyclic graph of tasks connected by input-output dependencies, and all parameters and artifact metadata are stored in Agent Platform ML Metadata.
-- [Introduction to Agent Platform ML Metadata](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/ml-metadata/introduction): ML Metadata tracks the lineage of artifacts such as datasets and models.
-- [Schedule a notebook run in Colab Enterprise](https://docs.cloud.google.com/colab/docs/schedule-notebook-run): scheduled notebook runs exist, so choice b is technically possible.
+- [Introduction to Agent Platform Pipelines](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/introduction), cited by a, b, and d: Agent Platform Pipelines runs Kubeflow Pipelines or TFX pipelines "in a serverless manner". A pipeline is a directed acyclic graph of tasks connected by input-output dependencies, and all parameters and artifact metadata are stored in Agent Platform ML Metadata.
+- [Introduction to Agent Platform ML Metadata](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/ml-metadata/introduction), cited by a, b, and c: ML Metadata tracks the lineage of artifacts such as datasets and models.
+- [Schedule a notebook run in Colab Enterprise](https://docs.cloud.google.com/colab/docs/schedule-notebook-run), cited by b: scheduled notebook runs exist, so choice b is technically possible.
+- [Create a serverless training job](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/training/create-custom-job), cited by c: custom training jobs run your own training code, so choice c is technically possible.
+- [Migrate from Kubeflow Pipelines to Agent Platform Pipelines](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/migrate-kfp), cited by d: pipelines written with the Kubeflow Pipelines SDK run on Agent Platform Pipelines, and Kubeflow Pipelines itself uses Kubernetes resources such as persistent volume claims.
 
 ## Author Checklist
 
@@ -143,7 +145,7 @@ Before handing a section to review, confirm for every question:
 
 - [ ] The stem follows the anatomy and states two or three constraints.
 - [ ] The reading load is between 180 and 300 words, and each option has 15 to 45 words.
-- [ ] Every distractor uses one mechanism and fails one named constraint.
+- [ ] Every distractor uses a named mechanism and fails at least one named constraint, and its feedback names each failure.
 - [ ] At least two difficulty levers are present.
 - [ ] Product names match the product-name reference.
 - [ ] Every feedback sentence is supported by cited Google-owned evidence fetched on `verifiedOn`.

@@ -30,11 +30,11 @@ The simulator specified by [PRD 0001](/prd/0001-ml-engineer-exam-simulator.md) h
 
 1. **Structure.** Each set passes structural validation (60 questions in the 8, 9, 12, 12, 11, and 8 section distribution, the reading-length floors, answer keys, and evidence) and `make verify-sources`.
 2. **Objective allocation.** Each set allocates questions to the 14 objectives as the [coverage matrix](/authoring/coverage-matrix.md) specifies.
-3. **Consideration coverage.** Within a set, no consideration is the primary topic of more than two questions. Across the three sets, every one of the 52 considerations is the primary topic of at least two questions.
+3. **Consideration coverage.** Within a set, no consideration is the primary topic of more than three questions. Across the three sets, every one of the 52 considerations is the primary topic of at least two questions.
 4. **Length targets.** Stems have 70 to 130 words, options 15 to 45 words, and questions 180 to 300 words of reading load. Each set has a median reading load of at least 200 words. Within a question, the longest option is at most twice as long as the shortest.
-5. **Answer design.** At least 30 questions per set contain a near-miss pair. The correct option is the longest option in at most 18 questions. Among single-choice questions, each letter is correct 13 to 17 times. A set has at most 3 choose-two questions.
+5. **Answer design.** At least 30 questions per set contain a near-miss pair. Among single-choice questions, the correct option is the longest option in at most 18. Among single-choice questions, each letter is correct 13 to 17 times. A set has at most 3 choose-two questions.
 6. **Question-type mix.** Each set has at least 6 troubleshooting, 5 evaluation and metrics, 4 risk, security, and responsible AI, and 4 migration questions, using the types defined in research 0003. Generative AI is the decisive topic in 12 to 18 questions.
-7. **Currency.** Questions use the [current product names](/context/product-names.md) and only generally available features, and every source is fetched on the question's `verifiedOn` date.
+7. **Currency.** Questions use the [current product names](/context/product-names.md) and only generally available features; deprecated or Preview features, such as Vertex Explainable AI and Model Monitoring v2, are never decisive. Every source is fetched on the question's `verifiedOn` date.
 8. **Originality.** No question resembles an official sample. No scenario repeats across sets, where a scenario repeats when its organization type, problem, and decisive feature all match.
 9. **Independence.** The reviewer is not an author of the set. The acceptance record is bound to the set's version and SHA-256 content digest.
 10. **Publication.** A catalog entry changes from coming soon to available only after its exact candidate is accepted. Set identifiers follow `professional-ml-engineer-2026-06-practice-<n>`, and corrections add `-v<version>`.
