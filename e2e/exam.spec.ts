@@ -60,6 +60,32 @@ test("keeps attempt controls within the configured viewport", async ({ page }) =
   expect(fitsViewport).toBe(true);
 });
 
+test("renders question and answer text at the same font size", async ({ page }) => {
+  await page.goto("http://127.0.0.1:4174/gcp-ml-exam-simulator/e2e/harness.html");
+  await openFixtureExam(page);
+  await page.getByRole("button", { name: "Start practice exam" }).click();
+  const question = page.getByRole("heading", { name: "Which fixture answer is correct?" });
+  const answer = page.getByText("Wrong B", { exact: true });
+  const [questionSize, answerSize] = await Promise.all(
+    [question, answer].map((text) => text.evaluate((element) => getComputedStyle(element).fontSize)),
+  );
+  expect(answerSize).toBe(questionSize);
+});
+
+test("renders reviewed question and answer text at the same font size", async ({ page }) => {
+  await page.goto("http://127.0.0.1:4174/gcp-ml-exam-simulator/e2e/harness.html");
+  await openFixtureExam(page);
+  await page.getByRole("button", { name: "Start practice exam" }).click();
+  await page.getByRole("button", { name: "Finish exam" }).click();
+  await page.getByRole("button", { name: "Submit answers" }).click();
+  const question = page.getByRole("heading", { level: 3, name: "Which fixture answer is correct?" });
+  const answer = page.getByRole("article").filter({ has: question }).getByText("B. Wrong B", { exact: true });
+  const [questionSize, answerSize] = await Promise.all(
+    [question, answer].map((text) => text.evaluate((element) => getComputedStyle(element).fontSize)),
+  );
+  expect(answerSize).toBe(questionSize);
+});
+
 test("supports keyboard cancellation of submission", async ({ page }) => {
   await page.goto("http://127.0.0.1:4174/gcp-ml-exam-simulator/e2e/harness.html");
   await openFixtureExam(page);

@@ -76,7 +76,7 @@ These recommendations rely on owner-controlled facts that were authoritative on 
 - Present question and answer text at the same small size in a plain, dense layout.
 - Use the official samples only to understand style; never copy or paraphrase them.
 
-Accepted recommendations are specified by [PRD 0001](/prd/0001-ml-engineer-exam-simulator.md), [ADR 0001](/adr/0001-port-data-engineer-simulator.md), and [BDR 0002](/bdr/0002-question-validation-and-publication.md), and tracked by [issue 0001](/issues/0001-port-simulator-for-pmle.md).
+Accepted recommendations are specified by [PRD 0001](/prd/0001-ml-engineer-exam-simulator.md), [ADR 0001](/adr/0001-port-data-engineer-simulator.md), [BDR 0002](/bdr/0002-question-validation-and-publication.md), and [BDR 0003](/bdr/0003-exam-presentation.md), and tracked by [issue 0001](/issues/0001-port-simulator-for-pmle.md).
 
 # References
 

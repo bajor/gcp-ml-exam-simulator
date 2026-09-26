@@ -34,7 +34,7 @@ The candidate prepared for the Professional Data Engineer exam with a documentat
 1. An attempt contains 60 questions and lasts two hours, which leaves an average of two minutes per question.
 2. A question set has 8, 9, 12, 12, 11, and 8 questions in exam-guide sections 1 through 6.
 3. Every question prompt has at least 60 words, every choice has at least 12 words, and the prompt plus all choices have at least 166 words, the length of the shortest official sample question.
-4. Question text and answer text use the same font size. The exam screen uses a small plain sans-serif font, a compact layout, and flat controls instead of large headings and card-style answers.
+4. Question text and answer text use the same font size. The exam screen uses a small plain sans-serif font, a compact layout, and plain gray buttons instead of large headings and card-style answers.
 5. Questions appear one at a time with previous, next, direct-number, and mark-for-review navigation.
 6. The interface distinguishes answered, unanswered, current, and marked questions without relying only on color.
 7. The deadline auto-submits the attempt at zero.
@@ -72,6 +72,7 @@ The static application collects no analytics. The candidate assesses success: a 
 
 - [Exam attempt and scoring](/bdr/0001-exam-attempt-and-scoring.md)
 - [Question validation and publication](/bdr/0002-question-validation-and-publication.md)
+- [Exam presentation](/bdr/0003-exam-presentation.md)
 
 ## Open Questions
 
