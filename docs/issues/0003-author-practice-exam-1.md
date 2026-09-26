@@ -82,18 +82,18 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 
 | Question ID | Consideration | Type | Generative AI | Decisive feature | Correct letter | Distractor mechanisms | Levers |
 |---|---|---|---|---|---|---|---|
-| pmle-p1-serve-01 | 4.1.a | T8 | no | Batch inference reading from and writing to BigQuery | d | D4, D2, D1 | L2, L6 |
-| pmle-p1-serve-02 | 4.1.b | T3 | no | Prebuilt XGBoost serving container instead of a self-managed VM | b | D1, D2, D7 | L2, L4 |
-| pmle-p1-serve-03 | 4.1.c | T8 | no | Model Registry versions and aliases | a | D2, D3, D7 | L2, L4 |
-| pmle-p1-serve-04 | 4.1.d | T4 | no | Canary rollback through the endpoint traffic split | c | D8, D2, D7 | L2, L6 |
+| pmle-p1-serve-01 | 4.1.a | T8 | no | Batch inference from BigQuery to BigQuery with a starting replica count sized for the deadline | d | D4, D7, D1 | L2, L4 |
+| pmle-p1-serve-02 | 4.1.b | T3 | no | Custom container that keeps the existing server's port, health route, and predict route | b | D1, D7, D2 | L2, L4 |
+| pmle-p1-serve-03 | 4.1.c | T8 | no | Model Registry versions with the default alias moved after validation | a | D2, D7, D7 | L2, L4 |
+| pmle-p1-serve-04 | 4.1.d | T4 | no | Canary rollback through the endpoint traffic split | c | D8, D2, D7 | L4, L6 |
 | pmle-p1-serve-05 | 4.1.e | T8 | no | Custom inference routine for preprocessing and postprocessing | d | D1, D3, D2 | L2, L4 |
-| pmle-p1-serve-06 | 4.1.a | T8 | yes | Deploy an open model from Model Garden to an endpoint | b | D1, D2, D7 | L2, L4 |
-| pmle-p1-serve-07 | 4.2.a | T8 | no | Feature Store Bigtable online serving for large, frequently updated features | c | D1, D4, D3 | L2, L4 |
-| pmle-p1-serve-08 | 4.2.b | T10 | no | Private Service Connect endpoint | a | D5, D7, D2 | L2, L4 |
-| pmle-p1-serve-09 | 4.2.c | T8 | yes | Accelerator with enough memory for large-model serving | d | D3, D2, D3 | L1, L2 |
+| pmle-p1-serve-06 | 4.1.a | T8 | yes | Cloud Run service with a GPU that scales to zero for a fine-tuned open model | b | D2, D1, D2 | L1, L2, L4 |
+| pmle-p1-serve-07 | 4.2.a | T8 | no | Feature Store Bigtable online serving with continuous data sync | c | D1, D4, D3 | L2, L4 |
+| pmle-p1-serve-08 | 4.2.b | T10 | no | Private Service Connect endpoint shared with several VPC networks | a | D7, D5, D2 | L2, L4 |
+| pmle-p1-serve-09 | 4.2.c | T8 | yes | Multi-GPU machine with tensor parallelism for a model larger than one GPU | d | D7, D3, D2 | L1, L2, L4 |
 | pmle-p1-serve-10 | 4.2.d | T8 | no | Minimum and maximum replica counts for autoscaling (choose two) | two | D2, D4, D7 | L1, L4 |
-| pmle-p1-serve-11 | 4.2.e | T8 | no | Optimized TensorFlow runtime | b | D1, D2, D7 | L2, L4 |
-| pmle-p1-serve-12 | 4.2.c | T8 | yes | Cost-effective accelerator for serving a small open model | a | D2, D2, D7 | L1, L2 |
+| pmle-p1-serve-11 | 4.2.e | T8 | yes | Prompt order that lets Gemini implicit context caching reuse a shared prefix | b | D4, D7, D3 | L3, L4 |
+| pmle-p1-serve-12 | 4.2.c | T8 | no | AutoML Edge model exported for an offline Edge TPU device | a | D4, D7, D7 | L2, L4 |
 
 ### Plan: automate
 
@@ -133,3 +133,4 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 - 2026-09-26: Addressed the second independent review: architect-03 now requires performance across thresholds and adds a precision-at-recall near-miss, architect-04 no longer overlaps scale-10, architect-06, architect-07, and architect-08 gained near-miss pairs, collaborate-05 replaced its unsupported metadata-edit distractor, and collaborate-07, collaborate-08, and collaborate-09 were reworded.
 - 2026-09-26: Authored the `scale` section. Because the newest prebuilt training containers passed their end-of-availability dates in July 2026, scale-02 uses a custom container and scale-07 tests custom containers instead of autopackaging.
 - 2026-09-26: Addressed the independent review of the scale section: scale-05 and scale-06 gained stated cost and memory constraints, scale-12 now states the NCCL and custom-container prerequisites of Reduction Server and adds a GPU worker-pool near-miss, scale-08 gained a near-miss, scale-01 replaced its ARIMA_PLUS distractor with the Natural Language API, scale-11 no longer asks for documentation recall, and the scale plan rows now record only real near-miss pairs and scope words.
+- 2026-09-26: Authored the `serve` section. Replaced two planned topics that are no longer supported: the optimized TensorFlow runtime (serve-11, now Gemini context caching) has no stable images left, and prebuilt inference containers (serve-02, now custom container routes) are past their end of patch and support. The generative AI question moved from serve-12 to serve-11, and serve-06 now uses Cloud Run GPUs so that it no longer overlaps the Model Garden deployment in collaborate-06.

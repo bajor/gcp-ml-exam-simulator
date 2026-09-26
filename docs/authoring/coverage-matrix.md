@@ -152,7 +152,7 @@ Documentation: [Cloud TPU](https://docs.cloud.google.com/tpu/docs/intro-to-tpu),
 | ID | Consideration | Decisions to test |
 |---|---|---|
 | 4.1.a | Batch and online inference services | Agent Platform, Model Garden, Cloud Run, or GKE, based on latency, scale, and operations. |
-| 4.1.b | Packaging frameworks with containers | Prebuilt containers for supported frameworks such as XGBoost and PyTorch; custom containers only when needed. |
+| 4.1.b | Packaging frameworks with containers | Custom containers that serve the configured port, health route, and predict route; prebuilt containers for supported frameworks. The newest prebuilt inference containers for TensorFlow, PyTorch, and XGBoost reached their end of patch and support on 2026-07-14, and scikit-learn 1.6 reaches it on 2026-10-14, so a prebuilt container must not be the decisive feature. |
 | 4.1.c | Versioning in Model Registry | Versions and aliases, and registering BigQuery ML models. |
 | 4.1.d | Rollout strategies | Traffic splitting between models on one endpoint for canary and A/B tests, and rollback by shifting traffic. |
 | 4.1.e | Inference preprocessing and postprocessing | Custom inference routines, preprocessing inside the model, and Dataflow RunInference for streams. |
@@ -169,11 +169,11 @@ Documentation: [inference overview](https://docs.cloud.google.com/gemini-enterpr
 | 4.2.b | Public and private endpoints | Private Service Connect endpoints when traffic must stay private. |
 | 4.2.c | Serving hardware | CPUs, GPUs, TPUs, or edge devices, based on model size, latency, and connectivity. |
 | 4.2.d | Scaling by throughput | Machine types and minimum and maximum replica counts for autoscaling. |
-| 4.2.e | Tuning models for production | Runtime optimizations such as the optimized TensorFlow runtime. |
+| 4.2.e | Tuning models for production | Serving optimizations such as quantization, tensor parallelism, and Gemini context caching. Every stable optimized TensorFlow runtime image reached its end of availability by 2025-08-15, and only nightly images outside the SLA remain, so the optimized TensorFlow runtime must not be the decisive feature. |
 
 Common traps: a hand-built feature cache in Memorystore (D1); a public endpoint for private traffic (D5).
 
-Documentation: [serving features online](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/featurestore/latest/serve-feature-values), [private endpoints](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/private-service-connect), [inference compute](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/configure-compute), [optimized TensorFlow runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/optimized-tensorflow-runtime).
+Documentation: [serving features online](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/featurestore/latest/serve-feature-values), [private endpoints](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/private-service-connect), [inference compute](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/configure-compute), [context caching](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/context-cache/context-cache-overview), [LLM inference optimization](https://docs.cloud.google.com/kubernetes-engine/docs/best-practices/machine-learning/inference/llm-optimization).
 
 ## 5.1 Developing End-to-End ML Pipelines
 
