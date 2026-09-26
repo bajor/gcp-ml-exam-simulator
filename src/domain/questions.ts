@@ -377,7 +377,7 @@ function validateQuestions(questions: readonly Question[]): string[] {
   return errors;
 }
 
-function countWords(text: string): number {
+export function countWords(text: string): number {
   return text.split(/\s+/).filter(Boolean).length;
 }
 

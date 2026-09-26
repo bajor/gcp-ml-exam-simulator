@@ -26,19 +26,22 @@ On 2026-09-25 the catalog lists Practice Exams 1, 2, and 3 as coming soon. No qu
 | `src/data/questionSets/registry.ts` | Aggregates every exam's drafts and candidates for structural, source, and audit verification. |
 | `src/data/questionSets/index.ts` | Runtime catalog of available and coming-soon entries. |
 | `docs/reviews/` | Independent acceptance and rejection records checked by CI. |
+| `docs/authoring/` | The question style guide and objective coverage matrix, which define a good question and a complete set. |
+| `.claude/skills/pmle-question-authoring/` | The procedure for planning, sourcing, writing, registering, and verifying question sections. |
+| `.claude/skills/pmle-question-review/` | The independent review procedure and its content-bound acceptance and rejection records. |
 | `src/components/` | Catalog, start, exam, navigation, submission, and result-review screens. |
 | `src/styles.css` | Dense exam presentation, including `--exam-text-size`, the single font size shared by question and answer text. |
 | `src/App.tsx` | Catalog selection, screen transitions, and restoration of the selected set's attempt. |
-| `scripts/` | Documentation lint, live source verification, and review-record generation. |
+| `scripts/` | Documentation lint, live source verification, review-record generation, and question-set reports. |
 | `.github/workflows/` | Continuous integration, visual-explanation cleanup, and GitHub Pages deployment. |
 
 ## Question Lifecycle
 
-1. An author writes one complete exam-guide section as a typed module under `src/data/questionSets/practice<number>/sections/`.
+1. An author following the `pmle-question-authoring` skill plans the section in the exam's issue record and writes it as a typed module under `src/data/questionSets/practice<number>/sections/`.
 2. The author registers the section in that exam's draft manifest and registers the manifest in `src/data/questionSets/registry.ts`. Structural validation then requires the final section count, the reading-length floors, valid answer keys, and Google-owned evidence for every choice.
 3. `make verify-sources` validates every registered draft and fetches every unique evidence URL.
 4. After all six sections exist, the exam's candidate list assembles a 60-question candidate from the draft identifier.
-5. An independent reviewer re-fetches the evidence and writes either an indexed rejection report or an acceptance record bound to the candidate's SHA-256 content digest.
+5. An independent reviewer following the `pmle-question-review` skill re-fetches the evidence, checks the set against the question-set requirements, and writes either an indexed rejection report or an acceptance record bound to the candidate's SHA-256 content digest.
 6. Only a candidate with an exact acceptance record and no matching rejection record can become an `available` catalog entry. Corrections use a new candidate identifier. Rejected candidates stay registered and unchanged so that their rejection records remain verifiable.
 
 [Behavior decision 0002](/bdr/0002-question-validation-and-publication.md) specifies these gates and their tests.
