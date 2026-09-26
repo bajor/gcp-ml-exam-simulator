@@ -140,7 +140,7 @@ export const practiceExamOneArchitectSection = {
           id: "c",
           text: "Keep the current model with its default objective, and raise the classification threshold in the claims application step by step until the investigators receive fewer false alerts.",
           feedback: "Incorrect. A new threshold only moves the operating point of a model that is still optimized for ROC AUC, the default objective, so its performance on the fraud class across thresholds does not improve.",
-          evidenceIds: ["automl-objectives"],
+          evidenceIds: ["automl-objectives", "pr-curve"],
         },
         {
           id: "d",
@@ -181,8 +181,8 @@ export const practiceExamOneArchitectSection = {
         },
         {
           id: "b",
-          text: "Change the remote model to reference a larger Gemini model, keep the current prompts, and compare the larger model with the current one by using ML.EVALUATE before the production queries switch.",
-          feedback: "Incorrect. ML.EVALUATE gives an evaluation that the team can rerun in SQL, but a larger model still depends on the prompts that fell short, while supervised tuning is documented for behavior that is difficult to define in a prompt.",
+          text: "Keep the current remote model, rewrite the prompts with more detailed style rules, and compare the new outputs with the current ones by using ML.EVALUATE before the production queries switch.",
+          feedback: "Incorrect. ML.EVALUATE gives an evaluation that the team can rerun in SQL, but detailed prompts already failed to reproduce the style, and supervised tuning is documented for behavior that is difficult to define in a prompt.",
           evidenceIds: ["bq-tuning"],
         },
         {
@@ -336,7 +336,7 @@ export const practiceExamOneArchitectSection = {
           id: "b",
           text: "Ingest the policy documents from Cloud Storage into a corpus in RAG Engine on Agent Platform once at launch, and ground Gemini's answers on that corpus with source references.",
           feedback: "Incorrect. Grounding on a RAG Engine corpus cites the supporting documents, but a corpus that is ingested only once at launch misses the weekly policy changes, so answers can reflect outdated versions.",
-          evidenceIds: ["rag-engine"],
+          evidenceIds: ["rag-engine", "grounding"],
         },
         {
           id: "c",

@@ -41,7 +41,7 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 | pmle-p1-architect-01 | 1.1.a | T2 | no | One ARIMA_PLUS model with `TIME_SERIES_ID_COL` and `HOLIDAY_REGION` | a | D3, D2, D3 | L2, L3, L4 |
 | pmle-p1-architect-02 | 1.1.b | T5 | no | `TRANSFORM` preprocessing applied automatically by `ML.PREDICT` | c | D3, D2, D7 | L2, L4 |
 | pmle-p1-architect-03 | 1.1.d | T6 | no | AutoML `maximize-au-prc` objective for rare-class performance across thresholds | b | D7, D6, D7 | L2, L4 |
-| pmle-p1-architect-04 | 1.1.e | T11 | yes | Supervised tuning of a Gemini remote model evaluated with `ML.EVALUATE` | d | D1, D6, D3 | L2, L4 |
+| pmle-p1-architect-04 | 1.1.e | T11 | yes | Supervised tuning of a Gemini remote model evaluated with `ML.EVALUATE` | d | D1, D3, D3 | L2, L4 |
 | pmle-p1-architect-05 | 1.2.a | T2 | yes | Pay-as-you-go partner model as a service through Agent Platform endpoints | c | D1, D2, D5 | L1, L2, L4 |
 | pmle-p1-architect-06 | 1.2.b | T2 | no | Document AI Invoice Parser | a | D2, D3, D7 | L2, L3 |
 | pmle-p1-architect-07 | 1.2.c | T11 | yes | Grounding on a RAG Engine corpus refreshed from Cloud Storage | d | D7, D7, D7 | L2, L4 |
