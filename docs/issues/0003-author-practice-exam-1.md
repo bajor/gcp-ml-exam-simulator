@@ -99,17 +99,17 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 
 | Question ID | Consideration | Type | Generative AI | Decisive feature | Correct letter | Distractor mechanisms | Levers |
 |---|---|---|---|---|---|---|---|
-| pmle-p1-automate-01 | 5.1.a | T6 | no | Model evaluation component gating deployment | c | D8, D3, D2 | L2, L4 |
-| pmle-p1-automate-02 | 5.1.b | T9 | no | Start Agent Platform Pipelines from an existing Airflow DAG | a | D2, D3, D1 | L1, L2 |
-| pmle-p1-automate-03 | 5.1.b | T3 | no | Existing Ray code on Ray on Agent Platform | d | D2, D1, D3 | L2, L4 |
-| pmle-p1-automate-04 | 5.1.c | T5 | no | One preprocessing definition shared by training and serving | b | D3, D7, D2 | L2, L4 |
-| pmle-p1-automate-05 | 5.1.a | T6 | yes | Model-based evaluation of a tuned Gemini model before promotion | a | D6, D8, D2 | L2, L6 |
-| pmle-p1-automate-06 | 5.1.c | T5 | no | Feature Store as the single feature source for training and serving | c | D3, D1, D7 | L2, L4 |
+| pmle-p1-automate-01 | 5.1.a | T6 | no | Model evaluation component whose AUC gates deployment | c | D8, D3, D7 | L2, L4 |
+| pmle-p1-automate-02 | 5.1.b | T9 | no | Versioned pipeline templates in Artifact Registry | a | D2, D3, D1 | L2, L4 |
+| pmle-p1-automate-03 | 5.1.b | T3 | no | Existing Ray code on Ray on Agent Platform | d | D2, D1, D3 | L3, L4 |
+| pmle-p1-automate-04 | 5.1.c | T5 | no | Transformations inside the model with dataset-wide normalization constants | b | D3, D4, D7 | L2, L4 |
+| pmle-p1-automate-05 | 5.1.a | T6 | yes | Deterministic reference-based metrics for a tuned Gemini model before promotion | a | D6, D7, D8 | L2, L4 |
+| pmle-p1-automate-06 | 5.1.c | T5 | no | Point-in-time training features with `ML.ENTITY_FEATURES_AT_TIME` | c | D3, D1, D7 | L2, L4 |
 | pmle-p1-automate-07 | 5.2.a | T9 | no | Retraining triggered by a monitoring alert behind an evaluation gate | d | D2, D8, D3 | L1, L2 |
-| pmle-p1-automate-08 | 5.2.a | T9 | no | Retraining schedule aligned with delayed labels | b | D6, D2, D8 | L3, L6 |
-| pmle-p1-automate-09 | 5.2.b | T3 | no | Cloud Build pipeline replacing manual deployment scripts | c | D3, D1, D2 | L2, L4 |
-| pmle-p1-automate-10 | 5.2.b | T9 | no | Pub/Sub trigger that starts a pipeline run (choose two) | two | D2, D3, D1 | L2, L4 |
-| pmle-p1-automate-11 | 5.2.b | T9 | no | Approval gate before promotion | a | D3, D8, D2 | L2, L6 |
+| pmle-p1-automate-08 | 5.2.a | T9 | no | Retraining schedule aligned with delayed labels | b | D6, D2, D8 | L2, L6 |
+| pmle-p1-automate-09 | 5.2.b | T3 | no | Cloud Build trigger that builds, tests, and publishes versioned pipeline templates | c | D3, D1, D2 | L2, L4 |
+| pmle-p1-automate-10 | 5.2.b | T9 | no | Cloud Storage notifications and a Pub/Sub-triggered function that start a pipeline run (choose two) | two | D2, D1, D3 | L2, L4 |
+| pmle-p1-automate-11 | 5.2.b | T9 | no | Cloud Build trigger that requires approval before deployment | a | D3, D8, D2 | L4, L5 |
 
 ### Plan: monitor
 
@@ -134,3 +134,4 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 - 2026-09-26: Authored the `scale` section. Because the newest prebuilt training containers passed their end-of-availability dates in July 2026, scale-02 uses a custom container and scale-07 tests custom containers instead of autopackaging.
 - 2026-09-26: Addressed the independent review of the scale section: scale-05 and scale-06 gained stated cost and memory constraints, scale-12 now states the NCCL and custom-container prerequisites of Reduction Server and adds a GPU worker-pool near-miss, scale-08 gained a near-miss, scale-01 replaced its ARIMA_PLUS distractor with the Natural Language API, scale-11 no longer asks for documentation recall, and the scale plan rows now record only real near-miss pairs and scope words.
 - 2026-09-26: Authored the `serve` section. Replaced two planned topics that are no longer supported: the optimized TensorFlow runtime (serve-11, now Gemini context caching) has no stable images left, and prebuilt inference containers (serve-02, now custom container routes) are past their end of patch and support. The generative AI question moved from serve-12 to serve-11, and serve-06 now uses Cloud Run GPUs so that it no longer overlaps the Model Garden deployment in collaborate-06.
+- 2026-09-26: Authored the `automate` section. Replaced the Airflow question in automate-02 with versioned pipeline templates, because no Google-hosted page documents starting an Agent Platform pipeline from Airflow. automate-04 moves the transformations into the model instead of repeating the custom inference routine in serve-05, automate-06 uses point-in-time feature lookups instead of a third Feature Store question, and automate-05 uses deterministic reference-based metrics so that it does not overlap the LLM-as-a-judge question planned for monitor-08.
