@@ -84,15 +84,15 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 |---|---|---|---|---|---|---|---|
 | pmle-p1-serve-01 | 4.1.a | T8 | no | Batch inference from BigQuery to BigQuery with a starting replica count sized for the deadline | d | D4, D7, D1 | L2, L4 |
 | pmle-p1-serve-02 | 4.1.b | T3 | no | Custom container that keeps the existing server's port, health route, and predict route | b | D1, D7, D2 | L2, L4 |
-| pmle-p1-serve-03 | 4.1.c | T8 | no | Model Registry versions with the default alias moved after validation | a | D2, D7, D7 | L2, L4 |
-| pmle-p1-serve-04 | 4.1.d | T4 | no | Canary rollback through the endpoint traffic split | c | D8, D2, D7 | L4, L6 |
+| pmle-p1-serve-03 | 4.1.c | T8 | no | Model Registry versions with the default alias moved after validation | a | D3, D7, D7 | L2, L4 |
+| pmle-p1-serve-04 | 4.1.d | T4 | no | Canary rollback through the endpoint traffic split | c | D2, D2, D7 | L2, L7 |
 | pmle-p1-serve-05 | 4.1.e | T8 | no | Custom inference routine for preprocessing and postprocessing | d | D1, D3, D2 | L2, L4 |
 | pmle-p1-serve-06 | 4.1.a | T8 | yes | Cloud Run service with a GPU that scales to zero for a fine-tuned open model | b | D2, D1, D2 | L1, L2, L4 |
 | pmle-p1-serve-07 | 4.2.a | T8 | no | Feature Store Bigtable online serving with continuous data sync | c | D1, D4, D3 | L2, L4 |
 | pmle-p1-serve-08 | 4.2.b | T10 | no | Private Service Connect endpoint shared with several VPC networks | a | D7, D5, D2 | L2, L4 |
 | pmle-p1-serve-09 | 4.2.c | T8 | yes | Multi-GPU machine with tensor parallelism for a model larger than one GPU | d | D7, D3, D2 | L1, L2, L4 |
 | pmle-p1-serve-10 | 4.2.d | T8 | no | Minimum and maximum replica counts for autoscaling (choose two) | two | D2, D4, D7 | L1, L4 |
-| pmle-p1-serve-11 | 4.2.e | T8 | yes | Prompt order that lets Gemini implicit context caching reuse a shared prefix | b | D4, D7, D3 | L3, L4 |
+| pmle-p1-serve-11 | 4.2.e | T8 | yes | Prompt order that lets Gemini implicit context caching reuse a shared prefix | b | D4, D3, D2 | L3, L4 |
 | pmle-p1-serve-12 | 4.2.c | T8 | no | AutoML Edge model exported for an offline Edge TPU device | a | D4, D7, D7 | L2, L4 |
 
 ### Plan: automate
@@ -137,3 +137,4 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 - 2026-09-26: Authored the `automate` section. Replaced the Airflow question in automate-02 with versioned pipeline templates, because no Google-hosted page documents starting an Agent Platform pipeline from Airflow. automate-04 moves the transformations into the model instead of repeating the custom inference routine in serve-05, automate-06 uses point-in-time feature lookups instead of a third Feature Store question, and automate-05 uses deterministic reference-based metrics so that it does not overlap the LLM-as-a-judge question planned for monitor-08.
 - 2026-09-26: Authored the `monitor` section, which completes the 60 questions. monitor-02 tests Model Armor floor settings, so it does not repeat the template decision in monitor-01, and monitor-08 uses LLM-as-a-judge metrics because no reference answers exist, which separates it from the reference-based metrics in automate-05.
 - 2026-09-26: Addressed the independent review of the automate section after it merged. automate-07 now tests the retraining trigger, a drift alert against a nightly schedule, instead of repeating the evaluation gate of automate-01. automate-09 now tests a trigger on every commit against release tags instead of repeating the templates of automate-02. automate-10 gained a Cloud Run near-miss and a non-retail organization. automate-03 states the multi-machine need that rules out a single runtime, and automate-01, automate-04, and automate-08 were tightened. automate-05 relies on the GA evaluation module, which Google no longer actively develops, so re-check it before publication.
+- 2026-09-26: Addressed the independent review of the serve section after it merged. serve-05 and serve-07 now state the constraints that their distractors fail: no extra service in the request path, and 20-millisecond lookups. serve-12 drops a constraint that decided nothing. serve-02 states the response format. serve-04 gained a traffic-split near-miss that undeploys version 8. serve-11 replaced a strawman cache distractor with a summary and Provisioned Throughput. serve-06 and serve-11 moved to organizations that no longer repeat architect-07 and monitor-02.
