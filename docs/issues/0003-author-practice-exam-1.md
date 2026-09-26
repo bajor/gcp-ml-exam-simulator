@@ -117,11 +117,11 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 |---|---|---|---|---|---|---|---|
 | pmle-p1-monitor-01 | 6.1.a | T10 | yes | Model Armor prompt injection and jailbreak detection with Inspect and block | b | D7, D3, D7 | L2, L4 |
 | pmle-p1-monitor-02 | 6.1.a | T10 | yes | Model Armor floor settings with Sensitive Data Protection filters for every Gemini call | d | D8, D3, D7 | L2, L4 |
-| pmle-p1-monitor-03 | 6.1.b | T6 | no | Model quality compared across groups before deployment | a | D6, D8, D2 | L3, L6 |
-| pmle-p1-monitor-04 | 6.1.c | T10 | no | `ML.GLOBAL_EXPLAIN` for model-level feature importance | c | D7, D2, D3 | L3, L4 |
-| pmle-p1-monitor-05 | 6.2.a | T12 | no | Drift detection when the training data is unavailable | d | D7, D6, D3 | L2, L4 |
+| pmle-p1-monitor-03 | 6.1.b | T6 | no | Equality of opportunity measured per age group before deployment | a | D6, D8, D7 | L2, L4 |
+| pmle-p1-monitor-04 | 6.1.c | T10 | no | `ML.GLOBAL_EXPLAIN` for global importance consistent with local attributions | c | D7, D2, D6 | L2, L4 |
+| pmle-p1-monitor-05 | 6.2.a | T12 | no | Drift detection when the training data is unavailable | d | D7, D6, D1 | L2, L4 |
 | pmle-p1-monitor-06 | 6.2.b | T4 | no | Concept drift confirmed against ground truth | a | D6, D8, D6 | L4, L6 |
-| pmle-p1-monitor-07 | 6.2.b | T4 | no | Training-serving skew from a feature computed differently | c | D6, D8, D2 | L3, L4 |
+| pmle-p1-monitor-07 | 6.2.b | T4 | no | Training-serving skew from a unit change in one firmware version | c | D6, D6, D7 | L2, L3 |
 | pmle-p1-monitor-08 | 6.2.c | T6 | yes | LLM-as-a-judge regression evaluation before a prompt change | b | D6, D2, D7 | L2, L4 |
 
 ### Progress
@@ -138,3 +138,4 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 - 2026-09-26: Authored the `monitor` section, which completes the 60 questions. monitor-02 tests Model Armor floor settings, so it does not repeat the template decision in monitor-01, and monitor-08 uses LLM-as-a-judge metrics because no reference answers exist, which separates it from the reference-based metrics in automate-05.
 - 2026-09-26: Addressed the independent review of the automate section after it merged. automate-07 now tests the retraining trigger, a drift alert against a nightly schedule, instead of repeating the evaluation gate of automate-01. automate-09 now tests a trigger on every commit against release tags instead of repeating the templates of automate-02. automate-10 gained a Cloud Run near-miss and a non-retail organization. automate-03 states the multi-machine need that rules out a single runtime, and automate-01, automate-04, and automate-08 were tightened. automate-05 relies on the GA evaluation module, which Google no longer actively develops, so re-check it before publication.
 - 2026-09-26: Addressed the independent review of the serve section after it merged. serve-05 and serve-07 now state the constraints that their distractors fail: no extra service in the request path, and 20-millisecond lookups. serve-12 drops a constraint that decided nothing. serve-02 states the response format. serve-04 gained a traffic-split near-miss that undeploys version 8. serve-11 replaced a strawman cache distractor with a summary and Provisioned Throughput. serve-06 and serve-11 moved to organizations that no longer repeat architect-07 and monitor-02.
+- 2026-09-26: Addressed the independent review of the monitor section after it merged. monitor-03 now separates equality of opportunity from demographic parity. monitor-04 contrasts `ML.GLOBAL_EXPLAIN` with `ML.FEATURE_IMPORTANCE`, and scale-04 no longer describes `ML.GLOBAL_EXPLAIN`. monitor-07 no longer states the diagnosis and adds a near-miss that converts every request. monitor-08 states that the check runs without manual grading. monitor-01, monitor-02, monitor-05, and monitor-06 were tightened.

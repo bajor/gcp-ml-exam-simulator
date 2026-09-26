@@ -193,7 +193,7 @@ export const practiceExamOneScaleSection = {
         },
         {
           id: "c",
-          text: "Keep the boosted tree model, and use ML.GLOBAL_EXPLAIN to send every rejected applicant the features that have the highest overall influence on the model's predictions.",
+          text: "Keep the boosted tree model, and use ML.GLOBAL_EXPLAIN to generate the reasons that are sent to every rejected applicant about the decision on their application.",
           feedback: "Incorrect. ML.GLOBAL_EXPLAIN returns each feature's overall influence on the model, so every applicant would receive the same reasons rather than the characteristics that drove their own decision.",
           evidenceIds: ["bq-xai"],
         },

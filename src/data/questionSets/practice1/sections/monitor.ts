@@ -9,7 +9,7 @@ export const practiceExamOneMonitorSection = {
       kind: "single",
       section: "monitor",
       objective: "6.1 Identifying risks to AI solutions: 6.1.a securing AI systems",
-      prompt: "An airline's customer-support assistant uses Gemini on Agent Platform and can call internal tools that look up and change bookings. It handles about 40,000 conversations a day in 12 languages. Security testing showed that users can type instructions that tell the assistant to ignore its rules and reveal other passengers' bookings, and some of these attempts succeeded. The security team requires that such prompts be detected and stopped before they reach the model, without the team maintaining lists of attack phrases, while legitimate prompts keep working. What should you do?",
+      prompt: "An airline's customer-support assistant uses Gemini on Agent Platform and can call internal tools that look up and change bookings. It handles about 40,000 conversations a day. Security testing showed that users can type instructions that tell the assistant to ignore its rules and reveal other passengers' bookings, and some of these attempts succeeded. The security team requires that such prompts be detected and stopped before they reach the model, without the team maintaining lists of attack phrases, while legitimate prompts keep working. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -58,7 +58,7 @@ export const practiceExamOneMonitorSection = {
       kind: "single",
       section: "monitor",
       objective: "6.1 Identifying risks to AI solutions: 6.1.a securing AI systems",
-      prompt: "A law firm runs five internal assistants that call Gemini on Agent Platform, and different teams built them. The assistants draft letters, summarize case files, and answer questions about internal procedures. Lawyers sometimes paste client account numbers and national ID numbers into prompts, and the compliance team requires that such identifiers be detected and blocked before they reach Gemini and before any response that contains them reaches a user. The rule must apply to every Gemini call in the project, including assistants that teams build later, without changes to each assistant's code. What should you do?",
+      prompt: "A law firm runs five internal assistants that call Gemini on Agent Platform, and different teams built them. The assistants draft letters, summarize case files, and answer questions about internal procedures. Lawyers sometimes paste client account numbers and national ID numbers into prompts, and the compliance team requires that such identifiers be detected and blocked before they reach Gemini and before any response that contains them reaches a user. The rule must apply to every Gemini content-generation request in the project, including assistants that teams build later, without changes to each assistant's code. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -71,7 +71,7 @@ export const practiceExamOneMonitorSection = {
           id: "model-armor",
           title: "Model Armor overview",
           url: "https://docs.cloud.google.com/model-armor/overview",
-          claim: "Model Armor screens prompts and responses to reduce the risk of leaking sensitive data and personally identifiable information, and the Inspect and block enforcement type stops a violating prompt or response instead of only logging it.",
+          claim: "Model Armor screens prompts and responses to reduce the risk of leaking sensitive data and personally identifiable information; an advanced Sensitive Data Protection template configures the required infotypes, while basic Sensitive Data Protection provides limited infotypes mainly for the US region; and the Inspect and block enforcement type stops a violating prompt or response instead of only logging it.",
         },
       ],
       choices: [
@@ -89,13 +89,13 @@ export const practiceExamOneMonitorSection = {
         },
         {
           id: "c",
-          text: "Create a Model Armor template with Sensitive Data Protection filters in Inspect and block mode, and change each assistant to reference the template in its Gemini requests.",
+          text: "Create a Model Armor template with an advanced Sensitive Data Protection configuration in Inspect and block mode, and change each assistant to reference the template in its Gemini requests.",
           feedback: "Incorrect. Templates protect the requests that reference them, so each assistant, including later ones, would need code changes, while floor settings protect the whole project.",
           evidenceIds: ["model-armor-integration"],
         },
         {
           id: "d",
-          text: "Configure Model Armor floor settings for the project with Sensitive Data Protection filters in Inspect and block mode, and enable the Model Armor integration with Agent Platform.",
+          text: "Configure Model Armor floor settings for the project with an advanced Sensitive Data Protection configuration in Inspect and block mode, and enable the Model Armor integration with Agent Platform.",
           feedback: "Correct. With the integration, Model Armor intercepts prompts before they reach Gemini and responses before applications receive them, and floor settings apply the blocking to every call in the project.",
           evidenceIds: ["model-armor-integration", "model-armor"],
         },
@@ -117,22 +117,28 @@ export const practiceExamOneMonitorSection = {
           claim: "Metrics calculated against an entire test or validation set don't always give an accurate picture of fairness, because great overall performance may mask poor performance on a minority subset, and aggregate precision, recall, and accuracy won't necessarily expose it.",
         },
         {
-          id: "fairness-mitigation",
-          title: "Fairness: Mitigating bias",
-          url: "https://developers.google.com/machine-learning/crash-course/fairness/mitigating-bias",
-          claim: "Two primary strategies to mitigate bias are augmenting the training data and adjusting the model's loss function.",
+          id: "equality-of-opportunity",
+          title: "Fairness: Equality of opportunity",
+          url: "https://developers.google.com/machine-learning/crash-course/fairness/equality-of-opportunity",
+          claim: "Equality of opportunity focuses on qualified individuals having an equal chance of being accepted regardless of demographic group, and it is achieved when the acceptance rates for qualified individuals are the same across groups.",
+        },
+        {
+          id: "demographic-parity",
+          title: "Fairness: Demographic parity",
+          url: "https://developers.google.com/machine-learning/crash-course/fairness/demographic-parity",
+          claim: "Demographic parity aims for equal acceptance rates for groups regardless of individual qualifications, so it can overlook differences in qualifications between groups.",
         },
       ],
       choices: [
         {
           id: "a",
           text: "Compute the recall for qualified applicants separately for the 50-and-older group and for the younger group on the test set, and compare the two before deciding whether to deploy.",
-          feedback: "Correct. Aggregate recall can hide poor performance on a subgroup, so recall computed for each age group on the test set gives the evidence that the regulation requires before deployment.",
-          evidenceIds: ["fairness-evaluation"],
+          feedback: "Correct. Aggregate recall can hide poor performance on a subgroup, and comparing the recall of qualified applicants across age groups checks equality of opportunity, which is what the regulation requires, before deployment.",
+          evidenceIds: ["fairness-evaluation", "equality-of-opportunity"],
         },
         {
           id: "b",
-          text: "Report the overall recall of 0.91 as the evidence, because a high recall across all qualified applicants shows that no age group is selected at a lower rate.",
+          text: "Report the overall recall of 0.91 as the evidence that qualified applicants aged 50 and older are not selected at a lower rate than younger qualified applicants.",
           feedback: "Incorrect. Metrics over the entire test set can mask poor performance on a minority subgroup, so the overall recall does not show how older applicants are treated.",
           evidenceIds: ["fairness-evaluation"],
         },
@@ -144,9 +150,9 @@ export const practiceExamOneMonitorSection = {
         },
         {
           id: "d",
-          text: "Retrain the model with twice as many applicants aged 50 and older in the training data, and deploy it without measuring recall by age group, because more examples remove the bias.",
-          feedback: "Incorrect. Augmenting the training data is a way to mitigate bias, but deploying without measuring recall by age group still leaves no evidence of how older applicants are treated.",
-          evidenceIds: ["fairness-mitigation", "fairness-evaluation"],
+          text: "Compute the share of all applicants who are selected for interviews in each age group on the test set, and compare the two shares before deciding whether to deploy.",
+          feedback: "Incorrect. Selection rates across all applicants measure demographic parity, which ignores qualifications, while the regulation concerns qualified applicants, which equality of opportunity measures.",
+          evidenceIds: ["demographic-parity", "equality-of-opportunity"],
         },
       ],
       correctChoiceId: "a",
@@ -156,14 +162,20 @@ export const practiceExamOneMonitorSection = {
       kind: "single",
       section: "monitor",
       objective: "6.1 Identifying risks to AI solutions: 6.1.c model explainability",
-      prompt: "An online electronics retailer trained a BigQuery ML boosted tree classifier that predicts which orders will be returned, and it did not set any explanation options when it trained the model. The model uses 35 features, such as order value, product category, customer tenure, and shipping speed, and it scores about 50,000 orders a day. The finance team now asks which features have the most influence on the model's predictions overall, rather than for individual orders. The team wants the answer from the model itself, computed in BigQuery SQL with generally available BigQuery ML functions. What should you do?",
+      prompt: "An online electronics retailer returns per-order reasons from ML.EXPLAIN_PREDICT for a BigQuery ML boosted tree classifier that predicts which orders will be returned, and it did not set any other explanation options when it trained the model. The model uses 35 features, such as order value, product category, customer tenure, and shipping speed, and it scores about 50,000 orders a day. The finance team now asks which features have the most influence on the model's predictions overall, and it wants a ranking that is consistent with the per-order attributions and computed in BigQuery SQL. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
           id: "bq-xai",
           title: "BigQuery Explainable AI overview",
           url: "https://docs.cloud.google.com/bigquery/docs/xai-overview",
-          claim: "Local explainability returns feature attribution values for each explained example, while global explainability returns each feature's overall influence on the model, often by aggregating attributions over the entire dataset; boosted tree models use ML.EXPLAIN_PREDICT for local and ML.GLOBAL_EXPLAIN for global explanations.",
+          claim: "Local explainability returns feature attribution values for each explained example, while global explainability returns each feature's overall influence on the model, often by aggregating attributions over the entire dataset; boosted tree models use ML.EXPLAIN_PREDICT for local and ML.GLOBAL_EXPLAIN for global explanations, and ML.FEATURE_IMPORTANCE returns a Gini index-based score of how useful each feature was in the construction of the model during training.",
+        },
+        {
+          id: "custom-container",
+          title: "Use a custom container for inference",
+          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/use-custom-container",
+          claim: "To customize how Agent Platform serves online inferences from a custom-trained model, you can specify a custom container instead of a prebuilt container.",
         },
         {
           id: "global-explain",
@@ -175,15 +187,15 @@ export const practiceExamOneMonitorSection = {
       choices: [
         {
           id: "a",
-          text: "Run ML.EXPLAIN_PREDICT on the test table, and report the feature attributions of the first 100 orders as the features with the most influence on the model.",
-          feedback: "Incorrect. ML.EXPLAIN_PREDICT returns local attributions for each explained example, so 100 orders describe those predictions rather than each feature's overall influence on the model.",
+          text: "Query ML.FEATURE_IMPORTANCE for the trained model, and report the features with the highest importance scores as the features with the most influence on its predictions.",
+          feedback: "Incorrect. ML.FEATURE_IMPORTANCE scores how useful each feature was in constructing the model during training, rather than aggregating the per-order attributions that the ranking must be consistent with.",
           evidenceIds: ["bq-xai"],
         },
         {
           id: "b",
-          text: "Export the model, serve it from a custom container with an open-source attribution library on Agent Platform Inference, and compute the feature importance there.",
-          feedback: "Incorrect. An attribution library in a custom container could explain the model, but it moves the analysis out of BigQuery SQL, while ML.GLOBAL_EXPLAIN aggregates the attributions in BigQuery.",
-          evidenceIds: ["global-explain"],
+          text: "Export the model, serve it from a custom container that computes attributions with an open-source library on Agent Platform Inference, and aggregate the attributions there.",
+          feedback: "Incorrect. A custom container can serve the model with its own attribution code, but that moves the analysis out of BigQuery SQL, while ML.GLOBAL_EXPLAIN aggregates the local explanations in BigQuery.",
+          evidenceIds: ["custom-container", "global-explain"],
         },
         {
           id: "c",
@@ -205,7 +217,7 @@ export const practiceExamOneMonitorSection = {
       kind: "single",
       section: "monitor",
       objective: "6.2 Monitoring, testing, and troubleshooting AI solutions: 6.2.a configuring Model Monitoring",
-      prompt: "A real-estate platform acquired a startup whose home-price model runs on an Agent Platform endpoint. Under the acquisition contract, the startup deleted its original training data, and the model cannot be retrained soon. The endpoint receives about 200,000 requests a day with 40 input features, and buyer behavior in the region often shifts after interest-rate announcements. The platform team wants alerts when the distribution of the production input features changes significantly over time, from a managed, generally available monitoring service instead of custom monitoring code. What should you do?",
+      prompt: "A real-estate platform acquired a startup whose home-price model runs on an Agent Platform endpoint. Under the acquisition contract, the startup deleted its original training data, and the model cannot be retrained soon. The endpoint receives about 200,000 requests a day with 40 input features, and buyer behavior in the region often shifts after interest-rate announcements. The platform team wants alerts when the distribution of the production input features changes significantly over time, from a managed monitoring service instead of custom monitoring code. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -297,8 +309,8 @@ export const practiceExamOneMonitorSection = {
         },
         {
           id: "d",
-          text: "Increase the endpoint's maximum replica count so that the classifier can score more listings per second during the busiest hours of the day.",
-          feedback: "Incorrect. More replicas add serving capacity, but the problem is lower recall on new listings, a loss of prediction quality rather than of throughput.",
+          text: "Retrain the model with a larger architecture on the original training data, and deploy it if its recall on the original test set improves.",
+          feedback: "Incorrect. The original training and test data predate the scammers' change, so a better score on them does not show that the model catches the new kinds of listings.",
           evidenceIds: ["live-quality"],
         },
       ],
@@ -309,7 +321,7 @@ export const practiceExamOneMonitorSection = {
       kind: "single",
       section: "monitor",
       objective: "6.2 Monitoring, testing, and troubleshooting AI solutions: 6.2.b common production issues",
-      prompt: "A fitness app's churn model uses a session_minutes feature, and Model Monitoring v1 skew detection compares production requests with the training data. Two days after a new version of the mobile app was released, skew alerts started for session_minutes only, and values from the new version are about 60 times larger than before. The team found that the new version sends session length in seconds, while the training data uses minutes. The team wants to remove the cause without degrading the model. What should you do?",
+      prompt: "A smart-thermostat maker's churn model uses a heating_minutes feature, and Model Monitoring v1 skew detection compares production requests with the training data. Two days after a firmware update began rolling out, skew alerts started for heating_minutes only, and values from thermostats with the new firmware are about 60 times larger than values from thermostats with the previous firmware. About half of the thermostats still run the previous firmware. The team wants to remove the cause of the skew without degrading the model. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -328,26 +340,26 @@ export const practiceExamOneMonitorSection = {
       choices: [
         {
           id: "a",
-          text: "Retrain the model on the last two days of production requests, so that it learns the new range of session_minutes values that the app now sends.",
-          feedback: "Incorrect. Retraining on seconds that are labeled as minutes builds the discrepancy into the model, while the skew comes from handling the feature differently in training and serving.",
+          text: "Retrain the model on the last two days of production requests, so that it learns the new range of heating_minutes values that the thermostats now send.",
+          feedback: "Incorrect. Retraining on the mixed values builds the discrepancy into the model, while the skew comes from handling the feature differently in training and serving.",
           evidenceIds: ["rules-of-ml"],
         },
         {
           id: "b",
-          text: "Raise the skew alerting threshold for session_minutes so that the alerts stop while the team decides what to change in the app, and keep the current model.",
-          feedback: "Incorrect. A higher threshold hides the alert without fixing the unit mismatch, so the model keeps receiving values that are 60 times larger than its training data.",
+          text: "Raise the skew alerting threshold for heating_minutes so that the alerts stop while the team decides what to change in the firmware, and keep the current model.",
+          feedback: "Incorrect. A higher threshold hides the alert without fixing the discrepancy, so the model keeps receiving values from the new firmware that are 60 times larger than its training data.",
           evidenceIds: ["monitoring-overview"],
         },
         {
           id: "c",
-          text: "Convert the session length to minutes before it is sent to the model, as the training data does, and confirm that the skew alerts for session_minutes stop.",
-          feedback: "Correct. The skew comes from a discrepancy between how training and serving handle the feature, so converting to minutes removes the cause, and the end of the skew alerts confirms the fix.",
+          text: "Convert heating_minutes from the new firmware's seconds to minutes before it reaches the model, as the training data expects, and confirm that the skew alerts stop.",
+          feedback: "Correct. Values about 60 times larger point to seconds sent where minutes are expected, so converting the new firmware's values removes the discrepancy between training and serving, and the end of the skew alerts confirms the fix.",
           evidenceIds: ["rules-of-ml", "monitoring-overview"],
         },
         {
           id: "d",
-          text: "Replace the model with a new architecture that normalizes every numeric feature internally, and retrain it on the full history of production requests.",
-          feedback: "Incorrect. A new architecture and a full retraining are far more work than the fix, and the serving data would still disagree with how the training data handled the feature.",
+          text: "Divide heating_minutes by 60 for every request before it reaches the model, whichever firmware sent it, and confirm that the skew alerts for the feature stop.",
+          feedback: "Incorrect. Only the new firmware sends larger values, so dividing every request also shrinks the correct values from the half of the thermostats that still run the previous firmware.",
           evidenceIds: ["rules-of-ml"],
         },
       ],
@@ -358,7 +370,7 @@ export const practiceExamOneMonitorSection = {
       kind: "single",
       section: "monitor",
       objective: "6.2 Monitoring, testing, and troubleshooting AI solutions: 6.2.c evaluating generative AI in production",
-      prompt: "A software company's documentation assistant uses Gemini on Agent Platform, and the team wants to replace its system prompt with a shorter one that costs less. The assistant answers about 8,000 questions a day. There are no reference answers, but the team collected 500 real user questions as an evaluation dataset. Before rollout, the team must measure whether the new prompt makes the answers less helpful or less grounded in the documentation, and it wants a check that it can repeat for every future prompt change. What should you do?",
+      prompt: "A software company's documentation assistant uses Gemini on Agent Platform, and the team wants to replace its system prompt with a shorter one that costs less. The assistant answers about 8,000 questions a day. There are no reference answers, but the team collected 500 real user questions as an evaluation dataset. Before rollout, the team must measure whether the new prompt makes the answers less helpful or less grounded in the documentation, and the check must run automatically in the release pipeline for every future prompt change, with no manual grading. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -378,19 +390,19 @@ export const practiceExamOneMonitorSection = {
         {
           id: "b",
           text: "Run both prompts on the 500 questions, and use Agent Platform Evals with LLM-as-a-judge metrics for helpfulness and grounding to compare the two sets of answers.",
-          feedback: "Correct. The evaluation service supports prompt editing, LLM-as-a-judge metrics rate answers without reference answers, and rerunning the same dataset makes the check repeatable for each change.",
+          feedback: "Correct. The evaluation service supports prompt editing, its generally available module supports LLM-as-a-judge metrics, which don't need the ground truth that computation-based metrics require, and the same dataset reruns automatically for each change.",
           evidenceIds: ["genai-evaluation"],
         },
         {
           id: "c",
           text: "Ask a panel of five technical writers to read and grade all 500 answers from both prompts before every prompt change, and keep the prompt that they prefer.",
-          feedback: "Incorrect. Grading 1,000 answers by hand for every change is slow and costly, and an automated evaluation gives a more objective, repeatable, data-driven check.",
+          feedback: "Incorrect. A panel of writers grades the answers by hand, while the check must run automatically in the release pipeline with no manual grading.",
           evidenceIds: ["genai-evaluation"],
         },
         {
           id: "d",
           text: "Run both prompts on the 500 questions, and use Agent Platform Evals with ROUGE scores to compare the two sets of answers with each other.",
-          feedback: "Incorrect. Computation-based metrics such as ROUGE need a ground truth, and the team has no reference answers to compare against.",
+          feedback: "Incorrect. Computation-based metrics such as ROUGE need a ground truth, and the current answers are not one, so ROUGE would measure overlap with the old answers rather than helpfulness or grounding.",
           evidenceIds: ["genai-evaluation"],
         },
       ],
