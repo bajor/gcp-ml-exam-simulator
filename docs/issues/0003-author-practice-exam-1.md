@@ -25,7 +25,7 @@ The plan below allocates questions exactly as the coverage matrix requires and k
 |---|---|
 | Correct letters among 58 single-choice questions (13 to 17 each) | a 15, b 15, c 14, d 14 |
 | Choose-two questions (at most 3) | 2 |
-| Generative AI decisive (12 to 18) | 12 |
+| Generative AI decisive (12 to 18) | 14 |
 | T4 troubleshooting (at least 6) | 6 |
 | T6 evaluation and metrics (at least 5) | 6 |
 | T10 risk, security, and responsible AI (at least 4) | 7 |
@@ -40,26 +40,26 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 |---|---|---|---|---|---|---|---|
 | pmle-p1-architect-01 | 1.1.a | T2 | no | One ARIMA_PLUS model with `TIME_SERIES_ID_COL` and `HOLIDAY_REGION` | a | D3, D2, D3 | L2, L3, L4 |
 | pmle-p1-architect-02 | 1.1.b | T5 | no | `TRANSFORM` preprocessing applied automatically by `ML.PREDICT` | c | D3, D2, D7 | L2, L4 |
-| pmle-p1-architect-03 | 1.1.d | T6 | no | AutoML `maximize-au-prc` objective for the rare class | b | D7, D6, D5 | L2, L6 |
-| pmle-p1-architect-04 | 1.1.e | T11 | yes | Supervised tuning of a Gemini remote model evaluated with `ML.EVALUATE` | d | D1, D3, D6 | L2, L4 |
-| pmle-p1-architect-05 | 1.2.a | T2 | yes | Partner model as a service through Agent Platform endpoints | c | D1, D5, D7 | L1, L4 |
-| pmle-p1-architect-06 | 1.2.b | T2 | no | Document AI Invoice Parser | a | D2, D3, D3 | L2, L3 |
-| pmle-p1-architect-07 | 1.2.c | T11 | yes | Grounding on a RAG Engine corpus refreshed from Cloud Storage | d | D7, D2, D7 | L2, L4 |
-| pmle-p1-architect-08 | 1.2.d | T1 | yes | Gemini batch inference at a 50% discount with higher rate limits | b | D6, D2, D5 | L1, L2 |
+| pmle-p1-architect-03 | 1.1.d | T6 | no | AutoML `maximize-au-prc` objective for rare-class performance across thresholds | b | D7, D6, D7 | L2, L4 |
+| pmle-p1-architect-04 | 1.1.e | T11 | yes | Supervised tuning of a Gemini remote model evaluated with `ML.EVALUATE` | d | D1, D3, D3 | L2, L4 |
+| pmle-p1-architect-05 | 1.2.a | T2 | yes | Pay-as-you-go partner model as a service through Agent Platform endpoints | c | D1, D2, D5 | L1, L2, L4 |
+| pmle-p1-architect-06 | 1.2.b | T2 | no | Document AI Invoice Parser | a | D2, D3, D7 | L2, L3 |
+| pmle-p1-architect-07 | 1.2.c | T11 | yes | Grounding on a RAG Engine corpus refreshed from Cloud Storage | d | D7, D7, D7 | L2, L4 |
+| pmle-p1-architect-08 | 1.2.d | T1 | yes | Gemini batch inference at a 50% discount with higher rate limits | b | D6, D2, D4 | L1, L2 |
 
 ### Plan: collaborate
 
 | Question ID | Consideration | Type | Generative AI | Decisive feature | Correct letter | Distractor mechanisms | Levers |
 |---|---|---|---|---|---|---|---|
-| pmle-p1-collaborate-01 | 2.1.a | T5 | no | Images in Cloud Storage with an import file of URIs and labels | b | D3, D2, D7 | L2, L3 |
-| pmle-p1-collaborate-02 | 2.1.b | T4 | no | Move a terabyte-scale aggregation from in-memory Python to BigQuery SQL | d | D3, D1, D2 | L2, L6 |
-| pmle-p1-collaborate-03 | 2.1.c | T5 | no | Feature Store feature groups over BigQuery shared across teams | a | D1, D3, D2 | L2, L4 |
-| pmle-p1-collaborate-04 | 2.1.d | T10 | no | Sensitive Data Protection de-identification before training | c | D5, D3, D8 | L2, L4 |
-| pmle-p1-collaborate-05 | 2.2.a | T10 | no | Workbench single-user access mode for per-user identity | b | D5, D7, D2 | L2, L4 |
-| pmle-p1-collaborate-06 | 2.2.c | T11 | yes | Prototype Model Garden models from a notebook | d | D1, D2, D3 | L1, L4 |
-| pmle-p1-collaborate-07 | 2.3.a | T9 | no | Experiments on Agent Platform for run parameters and metrics | a | D3, D2, D3 | L2, L4 |
-| pmle-p1-collaborate-08 | 2.3.b | T6 | no | Precision-recall metrics instead of accuracy for a rare class | c | D6, D6, D7 | L2, L6 |
-| pmle-p1-collaborate-09 | 2.3.c | T9 | no | ML Metadata lineage from a deployed model to its dataset | b | D3, D6, D2 | L2, L3 |
+| pmle-p1-collaborate-01 | 2.1.a | T5 | no | Images in Cloud Storage with an `ML_USE` import column and a manual split | b | D7, D7, D1 | L2, L4 |
+| pmle-p1-collaborate-02 | 2.1.b | T4 | no | Move a terabyte-scale aggregation from in-memory pandas to BigQuery DataFrames | d | D7, D1, D3 | L2, L4 |
+| pmle-p1-collaborate-03 | 2.1.c | T5 | no | Feature Store feature groups over BigQuery with feature views for online serving | a | D2, D3, D2 | L2, L4 |
+| pmle-p1-collaborate-04 | 2.1.d | T10 | no | Sensitive Data Protection deterministic encryption with a surrogate annotation | c | D5, D7, D7 | L2, L4 |
+| pmle-p1-collaborate-05 | 2.2.a | T10 | no | New Workbench instances with the Single user only access mode | b | D7, D8, D6 | L2, L4 |
+| pmle-p1-collaborate-06 | 2.2.c | T11 | yes | Deploy self-deployed Model Garden models from a notebook, then undeploy | d | D1, D2, D1 | L2, L4 |
+| pmle-p1-collaborate-07 | 2.3.a | T9 | no | Experiments on Agent Platform with the trained model logged to each run | a | D7, D2, D1 | L2, L4 |
+| pmle-p1-collaborate-08 | 2.3.b | T6 | no | Regression error metric that matches a linear per-megawatt-hour cost | c | D6, D6, D7 | L2, L4 |
+| pmle-p1-collaborate-09 | 2.3.c | T9 | no | ML Metadata lineage from a deployed model to its dataset | b | D6, D2, D3 | L3, L4 |
 
 ### Plan: scale
 
@@ -93,7 +93,7 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 | pmle-p1-serve-09 | 4.2.c | T8 | yes | Accelerator with enough memory for large-model serving | d | D3, D2, D3 | L1, L2 |
 | pmle-p1-serve-10 | 4.2.d | T8 | no | Minimum and maximum replica counts for autoscaling (choose two) | two | D2, D4, D7 | L1, L4 |
 | pmle-p1-serve-11 | 4.2.e | T8 | no | Optimized TensorFlow runtime | b | D1, D2, D7 | L2, L4 |
-| pmle-p1-serve-12 | 4.2.c | T8 | no | Hardware choice for a small model under a cost constraint | a | D2, D2, D7 | L1, L2 |
+| pmle-p1-serve-12 | 4.2.c | T8 | yes | Cost-effective accelerator for serving a small open model | a | D2, D2, D7 | L1, L2 |
 
 ### Plan: automate
 
@@ -103,7 +103,7 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 | pmle-p1-automate-02 | 5.1.b | T9 | no | Start Agent Platform Pipelines from an existing Airflow DAG | a | D2, D3, D1 | L1, L2 |
 | pmle-p1-automate-03 | 5.1.b | T3 | no | Existing Ray code on Ray on Agent Platform | d | D2, D1, D3 | L2, L4 |
 | pmle-p1-automate-04 | 5.1.c | T5 | no | One preprocessing definition shared by training and serving | b | D3, D7, D2 | L2, L4 |
-| pmle-p1-automate-05 | 5.1.a | T6 | no | Evaluation of a critical data slice before promotion | a | D6, D8, D2 | L2, L6 |
+| pmle-p1-automate-05 | 5.1.a | T6 | yes | Model-based evaluation of a tuned Gemini model before promotion | a | D6, D8, D2 | L2, L6 |
 | pmle-p1-automate-06 | 5.1.c | T5 | no | Feature Store as the single feature source for training and serving | c | D3, D1, D7 | L2, L4 |
 | pmle-p1-automate-07 | 5.2.a | T9 | no | Retraining triggered by a monitoring alert behind an evaluation gate | d | D2, D8, D3 | L1, L2 |
 | pmle-p1-automate-08 | 5.2.a | T9 | no | Retraining schedule aligned with delayed labels | b | D6, D2, D8 | L3, L6 |
@@ -128,3 +128,6 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 
 - 2026-09-26: Planned all 60 questions and authored the `architect` section.
 - 2026-09-26: Authored the `collaborate` section.
+- 2026-09-26: Revised the `architect` section after independent review: corrected the batch-inference deadline arithmetic in architect-08, replaced request logging (Preview for partner models) and added a pay-as-you-go near-miss in architect-05, removed the stem echo in architect-03, replaced an implausible distractor in architect-06, and raised the planned generative AI count to 14.
+- 2026-09-26: Revised the `collaborate` section after independent review: replaced distractors that were impossible rather than wrong (a BigQuery image source in collaborate-01, an access-mode change in collaborate-05), removed the second defensible answer in collaborate-07 by requiring the trained model to be logged, corrected unsupported feedback in collaborate-03, collaborate-04, and collaborate-06, added near-miss pairs to six questions, and replaced collaborate-08 with a regression-metric question so that it no longer overlaps architect-03.
+- 2026-09-26: Addressed the second independent review: architect-03 now requires performance across thresholds and adds a precision-at-recall near-miss, architect-04 no longer overlaps scale-10, architect-06, architect-07, and architect-08 gained near-miss pairs, collaborate-05 replaced its unsupported metadata-edit distractor, and collaborate-07, collaborate-08, and collaborate-09 were reworded.

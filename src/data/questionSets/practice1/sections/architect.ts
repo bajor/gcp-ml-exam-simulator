@@ -96,7 +96,7 @@ export const practiceExamOneArchitectSection = {
         {
           id: "d",
           text: "Retrain the model with the same three functions in the TRANSFORM clause of CREATE MODEL, and keep applying the shared transformations in each prediction query before it calls ML.PREDICT.",
-          feedback: "Incorrect. The TRANSFORM clause already applies the preprocessing automatically during prediction, so transforming the columns again in the query applies it twice and keeps the duplicated logic.",
+          feedback: "Incorrect. ML.PREDICT expects the raw columns and applies the TRANSFORM preprocessing itself, so values that the query already transformed are not the inputs the model was trained on, and the duplicated logic remains.",
           evidenceIds: ["transform-clause"],
         },
       ],
@@ -107,34 +107,40 @@ export const practiceExamOneArchitectSection = {
       kind: "single",
       section: "architect",
       objective: "1.1 Developing ML models using BigQuery ML or AutoML on Gemini Enterprise Agent Platform: 1.1.d training models with Agent Platform AutoML",
-      prompt: "An insurer trains an Agent Platform AutoML tabular binary classification model on two million historical claims to flag possible fraud for a team of 40 investigators. Only 0.7% of the claims are fraudulent. The first model used the default optimization objective and shows a high ROC AUC on the test split, but the investigators report that too few of the claims it flags are actually fraudulent. You must keep every historical claim in the training data and change only the training configuration, and you want the next model optimized for the rare fraud class. What should you do?",
+      prompt: "An insurer trains an Agent Platform AutoML tabular binary classification model on two million historical claims to flag possible fraud for a team of 40 investigators. Only 0.7% of the claims are fraudulent. The first model used the default optimization objective and shows a high ROC AUC on the test split, but too few of the claims that it flags are actually fraudulent. The investigators change the alert threshold every month to match their staffing, so the model must perform well on the fraud class across all thresholds rather than at one operating point. You must keep every historical claim and change only the training configuration. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
           id: "automl-objectives",
           title: "Train a classification or regression model",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/tabular-data/classification-regression/train-model",
-          claim: "For AutoML classification, maximize-au-roc is the default for binary classification; maximize-au-prc maximizes the area under the precision-recall curve and optimizes results for inferences for the less common class; minimize-log-loss keeps inference probabilities as accurate as possible.",
+          claim: "For AutoML classification, maximize-au-roc is the default for binary classification; maximize-au-prc maximizes the area under the precision-recall curve and optimizes results for inferences for the less common class; maximize-precision-at-recall optimizes precision at a specific recall value; minimize-log-loss keeps inference probabilities as accurate as possible.",
+        },
+        {
+          id: "pr-curve",
+          title: "Classification: ROC and AUC",
+          url: "https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc",
+          claim: "When a dataset is imbalanced, precision-recall curves and the area under them may offer a better comparison of model performance than ROC AUC; a precision-recall curve plots precision against recall across all thresholds.",
         },
       ],
       choices: [
         {
           id: "a",
-          text: "Retrain the model with the minimize-log-loss optimization objective so that the predicted probabilities for both classes are as accurate as possible, and keep all two million claims in the training data.",
-          feedback: "Incorrect. Log loss is documented for keeping inference probabilities accurate; it does not focus optimization on the less common class as the AUC PR objective does.",
+          text: "Retrain the model with the maximize-precision-at-recall optimization objective at a recall value of 0.8, keep all two million historical claims in the training data, and compare the new model with the current one.",
+          feedback: "Incorrect. This objective optimizes precision at one specific recall value, which suits a fixed operating point, while the investigators change the threshold every month.",
           evidenceIds: ["automl-objectives"],
         },
         {
           id: "b",
-          text: "Retrain the model with the maximize-au-prc optimization objective, which maximizes the area under the precision-recall curve and optimizes results for the less common fraud class.",
-          feedback: "Correct. The maximize-au-prc objective is documented to optimize results for the less common class, and switching to it changes only the training configuration while keeping every claim.",
-          evidenceIds: ["automl-objectives"],
+          text: "Retrain the model with the maximize-au-prc optimization objective, keep all two million historical claims in the training data, and compare the new model with the current one on the test split.",
+          feedback: "Correct. The maximize-au-prc objective maximizes the area under the precision-recall curve, which spans all thresholds, and optimizes results for the less common class, while only the training configuration changes.",
+          evidenceIds: ["automl-objectives", "pr-curve"],
         },
         {
           id: "c",
           text: "Keep the current model with its default objective, and raise the classification threshold in the claims application step by step until the investigators receive fewer false alerts.",
-          feedback: "Incorrect. A threshold change in the application does not change what the model was optimized for; the default objective still maximizes ROC AUC rather than results for the rare class.",
-          evidenceIds: ["automl-objectives"],
+          feedback: "Incorrect. A new threshold only moves the operating point of a model that is still optimized for ROC AUC, the default objective, so its performance on the fraud class across thresholds does not improve.",
+          evidenceIds: ["automl-objectives", "pr-curve"],
         },
         {
           id: "d",
@@ -150,14 +156,14 @@ export const practiceExamOneArchitectSection = {
       kind: "single",
       section: "architect",
       objective: "1.1 Developing ML models using BigQuery ML or AutoML on Gemini Enterprise Agent Platform: 1.1.e fine-tuning Gemini models using BigQuery",
-      prompt: "A telecom company stores 40,000 closed support tickets in BigQuery, each with a one-sentence resolution summary that senior agents wrote in a strict house style. Analysts generate summaries for about 3,000 new tickets per day with ML.GENERATE_TEXT over a remote model that references Gemini, but even detailed prompts with style rules do not reproduce the house style. The team works only in SQL and has no machine learning engineers. Before production queries switch to a new model, the team needs an evaluation that it can rerun in SQL after every tuning job. What should you do?",
+      prompt: "A telecom company stores 40,000 closed support tickets in BigQuery, each with a one-sentence resolution summary that senior agents wrote in a strict house style. Analysts generate summaries for about 3,000 new tickets per day with AI.GENERATE_TEXT over a remote model that references Gemini, but even detailed prompts that describe the style rules do not reproduce the house style. The team works only in SQL and has no machine learning engineers. Before production queries switch to a new model, the team needs an evaluation that it can rerun in SQL after every model change. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
           id: "bq-tuning",
           title: "Use tuning and evaluation to improve model performance",
           url: "https://docs.cloud.google.com/bigquery/docs/tune-evaluate",
-          claim: "In BigQuery ML you create a remote model that references a Gemini Enterprise Agent Platform model, use supervised tuning, and evaluate the tuned model with ML.EVALUATE; tuning helps when the expected behavior is difficult to define in a prompt.",
+          claim: "In BigQuery ML you create a remote model that references a Gemini Enterprise Agent Platform model, check its baseline output with AI.GENERATE_TEXT, use supervised tuning, and evaluate the tuned model with ML.EVALUATE; tuning helps when the expected behavior is difficult to define in a prompt.",
         },
         {
           id: "model-garden-use",
@@ -175,14 +181,14 @@ export const practiceExamOneArchitectSection = {
         },
         {
           id: "b",
-          text: "Add a few hundred example tickets and summaries to the prompt of every ML.GENERATE_TEXT call so that the model can imitate the house style, and keep using the current remote model.",
-          feedback: "Incorrect. Prompting has already failed to produce the style, and BigQuery documents supervised tuning for behavior that is difficult to define in a prompt; this option also provides no repeatable evaluation.",
+          text: "Keep the current remote model, rewrite the prompts with more detailed style rules, and compare the new outputs with the current ones by using ML.EVALUATE before the production queries switch.",
+          feedback: "Incorrect. ML.EVALUATE gives an evaluation that the team can rerun in SQL, but detailed prompts already failed to reproduce the style, and supervised tuning is documented for behavior that is difficult to define in a prompt.",
           evidenceIds: ["bq-tuning"],
         },
         {
           id: "c",
           text: "Create a remote model with supervised tuning on the ticket and summary columns, and ask two senior agents to read twenty summaries from each model before the production queries switch.",
-          feedback: "Incorrect. Supervised tuning addresses the style problem, but a manual reading of twenty summaries is not an evaluation that the team can rerun in SQL after every tuning job.",
+          feedback: "Incorrect. Supervised tuning addresses the style problem, but a manual reading of twenty summaries is not an evaluation that the team can rerun in SQL after every model change.",
           evidenceIds: ["bq-tuning"],
         },
         {
@@ -199,14 +205,14 @@ export const practiceExamOneArchitectSection = {
       kind: "single",
       section: "architect",
       objective: "1.2 Building AI solutions using Google Cloud AI APIs or foundational models: 1.2.a selecting a model from Model Garden",
-      prompt: "After a three-month contract review, a media company's legal team has approved one specific partner large language model from Model Garden for summarizing licensed news articles. The platform team has no experience planning GPU capacity and must not operate serving infrastructure. Monthly volume varies between a few thousand and several million requests, depending on news events. Applications must call the approved model through the same Agent Platform endpoints that they already use for Gemini, so that the existing authentication and request logging keep working. What should you do?",
+      prompt: "After a three-month contract review, a media company's legal team has approved one specific partner large language model from Model Garden for summarizing licensed news articles. The platform team has no experience planning GPU capacity and must not operate serving infrastructure. Monthly volume swings between a few thousand and several million requests depending on news events, and finance wants spending to follow actual usage rather than a fixed fee. Applications must call the approved model through the same Agent Platform endpoints and IAM roles that they already use for Gemini. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
           id: "partner-maas",
           title: "Gemini Enterprise Agent Platform partner models for MaaS",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models",
-          claim: "Partner models can be used as a model as a service (MaaS) and are offered as a managed API; requests go to Gemini Enterprise Agent Platform endpoints, and the models are serverless, so there is no need to provision or manage infrastructure.",
+          claim: "Partner models are offered as a managed API (model as a service) through Agent Platform endpoints and are serverless, with no infrastructure to provision; calls require the aiplatform.endpoints.predict permission in the Agent Platform User role; standard requests are pay-as-you-go, and Provisioned Throughput for some partner models reserves capacity for a fixed fee.",
         },
         {
           id: "model-garden-use",
@@ -224,20 +230,20 @@ export const practiceExamOneArchitectSection = {
         },
         {
           id: "b",
-          text: "Create an account with the model's developer, call the developer's own public API from the applications with a separate API key, and pay the developer directly for each request.",
-          feedback: "Incorrect. The developer's own API bypasses the Agent Platform endpoints that the applications must use, although the partner model is available through those endpoints.",
+          text: "Enable the approved partner model in Model Garden, and purchase Provisioned Throughput for it that is sized for the busiest month so that capacity is always reserved.",
+          feedback: "Incorrect. The model and endpoints are right, but Provisioned Throughput reserves capacity for a fixed fee, while finance wants spending to follow a volume that swings from thousands to millions of requests.",
           evidenceIds: ["partner-maas"],
         },
         {
           id: "c",
           text: "Enable the approved partner model in Model Garden, and call it as a model as a service through the existing Agent Platform endpoints without provisioning any serving infrastructure.",
-          feedback: "Correct. Partner models are offered as a managed API through Agent Platform endpoints and are serverless, so the team neither plans GPU capacity nor operates infrastructure as volume changes.",
+          feedback: "Correct. Partner models are offered as a serverless managed API through Agent Platform endpoints with the Agent Platform User role, and standard requests are pay-as-you-go, so cost follows usage without any capacity planning.",
           evidenceIds: ["partner-maas"],
         },
         {
           id: "d",
-          text: "Replace the partner model with Gemini, prompt Gemini to imitate the style of the partner model's summaries, and call it through the existing Agent Platform endpoints.",
-          feedback: "Incorrect. Gemini uses the same endpoints, but the requirement is to use the specific partner model that the legal team approved, which is itself available as a managed API.",
+          text: "Create an account with the model's developer, call the developer's own public API from the applications with a separate API key, and pay the developer directly for each request.",
+          feedback: "Incorrect. The developer's own API bypasses the Agent Platform endpoints and IAM roles that the applications must use, although the partner model is available through them.",
           evidenceIds: ["partner-maas"],
         },
       ],
@@ -255,7 +261,7 @@ export const practiceExamOneArchitectSection = {
           id: "docai-processors",
           title: "Processor list",
           url: "https://docs.cloud.google.com/document-ai/docs/processors-list",
-          claim: "The Invoice Parser extracts text and values from invoices, such as invoice number, supplier name, invoice amount, and tax amount; a Custom Extractor extracts fields by using generative AI or custom models that you can fine-tune.",
+          claim: "The Invoice Parser extracts text and values from invoices, such as invoice number, supplier name, invoice amount, and tax amount; the Form Parser extracts general key-value pairs, tables, and generic entities in addition to OCR text; a Custom Extractor extracts fields by using generative AI or custom models that you can fine-tune.",
         },
         {
           id: "vision-features",
@@ -285,8 +291,8 @@ export const practiceExamOneArchitectSection = {
         },
         {
           id: "d",
-          text: "Train an AutoML image classification model that identifies the supplier of each invoice, and look up the four fields in a reference table that the team maintains for every supplier.",
-          feedback: "Incorrect. Identifying the supplier does not extract per-invoice values such as the total and tax amount, which the Invoice Parser extracts directly, and training requires labeled images.",
+          text: "Send each PDF to the Document AI Form Parser processor, and write the extracted key-value pairs of every invoice to a BigQuery table as the four invoice fields.",
+          feedback: "Incorrect. The Form Parser extracts general key-value pairs rather than invoice fields, so turning the pairs from hundreds of layouts into the four fields needs the layout-dependent code that the team wants to avoid.",
           evidenceIds: ["docai-processors"],
         },
       ],
@@ -297,7 +303,7 @@ export const practiceExamOneArchitectSection = {
       kind: "single",
       section: "architect",
       objective: "1.2 Building AI solutions using Google Cloud AI APIs or foundational models: 1.2.c building solutions and tuning for use cases",
-      prompt: "An HR department builds a Gemini-based assistant that answers questions about benefits, leave, and relocation policies for 30,000 employees. The 1,200 pages of policy documents are stored as PDF files in Cloud Storage, and the HR team changes some of them every week. Answers must reflect the current version of each policy and show which document supports them, and the cost of each request must stay low. A prototype that pastes a few policy sections into each prompt works only when someone pasted the right sections. What should you do?",
+      prompt: "An HR department builds a Gemini-based assistant that answers questions about benefits, leave, and relocation policies for 30,000 employees. The 1,200 pages of policy documents are stored as PDF files in Cloud Storage, and the HR team changes some of them every week. Answers must reflect the current version of each policy and show which document supports them. A prototype that pastes a few policy sections into each prompt works only when someone pasted the right sections. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -322,15 +328,15 @@ export const practiceExamOneArchitectSection = {
       choices: [
         {
           id: "a",
-          text: "Run supervised tuning of Gemini every week on question-and-answer pairs generated from the latest policy documents, and serve the most recently tuned model to all employees.",
+          text: "Run supervised tuning of Gemini every week on question-and-answer pairs generated from the latest policy documents, and serve the most recently tuned model to all 30,000 employees through the existing HR assistant.",
           feedback: "Incorrect. Tuning adapts the model to tasks from training examples; it does not attach supporting documents to answers, and every policy change would wait for a new tuning job.",
           evidenceIds: ["tuning", "grounding"],
         },
         {
           id: "b",
-          text: "Paste all 1,200 pages of policy documents into the system instruction of every request, and instruct the model to quote the paragraph that supports each of its answers.",
-          feedback: "Incorrect. Sending every page with every request makes each request large and costly, which breaks the cost requirement, while retrieval adds only the passages relevant to each question.",
-          evidenceIds: ["rag-engine"],
+          text: "Ingest the policy documents from Cloud Storage into a corpus in RAG Engine on Agent Platform once at launch, and ground Gemini's answers on that corpus with source references.",
+          feedback: "Incorrect. Grounding on a RAG Engine corpus cites the supporting documents, but a corpus that is ingested only once at launch misses the weekly policy changes, so answers can reflect outdated versions.",
+          evidenceIds: ["rag-engine", "grounding"],
         },
         {
           id: "c",
@@ -340,8 +346,8 @@ export const practiceExamOneArchitectSection = {
         },
         {
           id: "d",
-          text: "Ingest the policy documents from Cloud Storage into a RAG Engine corpus, update the corpus when documents change, and ground Gemini's answers on it with source references.",
-          feedback: "Correct. RAG Engine ingests the documents from Cloud Storage and retrieves only relevant passages at request time, and grounding anchors answers to these sources with links, so answers follow each weekly update.",
+          text: "Ingest the policy documents from Cloud Storage into a corpus in RAG Engine on Agent Platform, update the corpus when documents change, and ground Gemini's answers on it with source references.",
+          feedback: "Correct. RAG Engine ingests the documents from Cloud Storage and adds the passages relevant to each question, grounding anchors answers to these sources with links, and updating the corpus when documents change keeps answers current.",
           evidenceIds: ["rag-engine", "grounding"],
         },
       ],
@@ -352,14 +358,14 @@ export const practiceExamOneArchitectSection = {
       kind: "single",
       section: "architect",
       objective: "1.2 Building AI solutions using Google Cloud AI APIs or foundational models: 1.2.d optimizing Gemini applications",
-      prompt: "An online retailer uses Gemini to write a two-sentence summary of each new product review that customers submit. About 150,000 reviews arrive every day, and each prompt contains only the review text and a short instruction. The summaries are not time-sensitive: the business accepts that a summary appears on its product page up to four days after the review arrives. The application sends online requests throughout the day, receives quota errors at peak hours, and costs are 40% above budget. You need to reduce cost and remove the peak-hour errors without changing the model or skipping any review. What should you do?",
+      prompt: "An online retailer uses Gemini to write a two-sentence summary of each new product review, and the team is satisfied with the quality of the summaries. About 150,000 reviews arrive every day, and each prompt contains only the review text and a short instruction. The summaries feed a digest email that is sent every other Monday, so a summary can be produced up to two weeks after its review arrives. The application sends online requests throughout the day, receives quota errors at peak hours, and costs are 40% above budget. You need to reduce cost and remove the peak-hour errors while still summarizing every review. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
           id: "batch-inference",
           title: "Batch inference with Gemini",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/batch-inference",
-          claim: "Batch inference is offered at a 50% discounted rate compared with real-time inference for large-scale non-urgent tasks, has a higher rate limit than the real-time Gemini API, and accepts up to 200,000 requests per job; a job can queue for up to 72 hours, and most jobs complete within 24 hours after they start running.",
+          claim: "Batch inference is offered at a 50% discounted rate compared with real-time inference for large-scale non-urgent tasks, has a higher rate limit than the real-time Gemini API, and accepts up to 200,000 requests per job; a job can queue for up to 72 hours, most jobs complete within 24 hours after they start running, and after 24 hours incomplete jobs are cancelled and only completed requests are charged.",
         },
         {
           id: "provisioned-throughput",
@@ -377,20 +383,20 @@ export const practiceExamOneArchitectSection = {
         },
         {
           id: "b",
-          text: "Collect each day's reviews in a BigQuery table, and every night submit them as one batch inference job that writes the summaries to a BigQuery table for the product pages.",
-          feedback: "Correct. Batch inference costs 50% less than real-time inference, has a higher rate limit, and accepts up to 200,000 requests per job, which covers a day of reviews. A job can queue for up to 72 hours, which the four-day tolerance allows.",
+          text: "Collect each day's reviews in a BigQuery table, submit them every night as one batch inference job that writes the summaries to BigQuery, and resubmit any requests that do not complete.",
+          feedback: "Correct. Batch inference costs 50% less than real-time inference, has a higher rate limit, and accepts up to 200,000 requests per job, which covers a day of reviews. Even a job that waits a day for submission, 72 hours in the queue, and 24 hours running finishes well within two weeks, and resubmitting incomplete requests covers every review.",
           evidenceIds: ["batch-inference"],
         },
         {
           id: "c",
-          text: "Purchase Provisioned Throughput sized for the daily peak, and keep sending online requests throughout the day so that no request for any of the daily reviews is rejected at peak hours.",
-          feedback: "Incorrect. Provisioned Throughput reserves capacity as a fixed-cost subscription, so it can prevent rejections but adds a fixed commitment instead of reducing cost.",
-          evidenceIds: ["provisioned-throughput"],
+          text: "Purchase Provisioned Throughput sized for the daily peak, and keep sending online requests throughout the day so that capacity is reserved for the reviews that arrive at peak hours.",
+          feedback: "Incorrect. Provisioned Throughput is a fixed-cost, fixed-term subscription that would be sized for the peak, so it reserves capacity without reducing cost, while batch inference is billed at a 50% discount.",
+          evidenceIds: ["provisioned-throughput", "batch-inference"],
         },
         {
           id: "d",
-          text: "Summarize reviews online only for the most popular 10% of products during the day, and leave the remaining reviews without summaries to stay within quota and budget.",
-          feedback: "Incorrect. Skipping reviews breaks the requirement to summarize every review, while batch inference processes all of them at a lower rate.",
+          text: "Collect each day's reviews in a BigQuery table, and send them every night as online requests from a scheduled job that writes the summaries to BigQuery and retries any failed requests.",
+          feedback: "Incorrect. Sending the requests at night moves them away from the daytime peak, but online requests are still billed at the real-time rate, while batch inference costs 50% less for the same non-urgent work.",
           evidenceIds: ["batch-inference"],
         },
       ],
