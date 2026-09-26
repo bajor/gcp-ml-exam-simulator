@@ -9,7 +9,7 @@ export const practiceExamOneAutomateSection = {
       kind: "single",
       section: "automate",
       objective: "5.1 Developing end-to-end ML pipelines: 5.1.a validating data and models",
-      prompt: "A pet-supplies retailer's Agent Platform pipeline retrains a custom-trained purchase-propensity classifier every week and deploys each new model to the production endpoint automatically. Last month, a retrained model with a lower AUC than the current model replaced it, and conversions fell for two weeks before anyone noticed. The team wants the pipeline itself to compute each new model's AUC on a held-out test set with Google-provided components, and to deploy a new model only when its AUC is higher than the current model's. What should you do?",
+      prompt: "A pet-supplies retailer's Agent Platform pipeline retrains a custom-trained tabular purchase-propensity classifier every week and deploys each new model to the production endpoint automatically. Last month, a retrained model with a lower AUC than the current model replaced it, and conversions fell for two weeks before anyone noticed. The team wants the pipeline itself to compute each new model's AUC on a held-out test set with Google-provided components, and to deploy a new model only when its AUC is higher than the current model's. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -17,6 +17,12 @@ export const practiceExamOneAutomateSection = {
           title: "Model evaluation components",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/model-evaluation-component",
           claim: "Model evaluation components take ground truth and batch prediction results as input and generate evaluation metrics.",
+        },
+        {
+          id: "evaluation-metrics",
+          title: "Model evaluation in Agent Platform",
+          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/evaluation/introduction",
+          claim: "For tabular classification models, model evaluation reports metrics such as AuPRC, AuROC, and log loss.",
         },
         {
           id: "mlops",
@@ -41,8 +47,8 @@ export const practiceExamOneAutomateSection = {
         {
           id: "c",
           text: "Add a batch prediction step and a model evaluation component that computes the new model's AUC on the test set, and deploy the model only when that AUC is higher than the current model's.",
-          feedback: "Correct. Model evaluation components generate metrics from ground truth and batch prediction results, and comparing the new AUC with the current model's before promotion keeps a worse model out of production.",
-          evidenceIds: ["model-evaluation", "mlops"],
+          feedback: "Correct. Model evaluation components generate metrics such as AuROC from ground truth and batch prediction results, and comparing the new AUC with the current model's before promotion keeps a worse model out of production.",
+          evidenceIds: ["model-evaluation", "evaluation-metrics", "mlops"],
         },
         {
           id: "d",
@@ -107,7 +113,7 @@ export const practiceExamOneAutomateSection = {
       kind: "single",
       section: "automate",
       objective: "5.1 Developing end-to-end ML pipelines: 5.1.b building and orchestrating pipelines",
-      prompt: "A research team runs open source Ray code for distributed feature generation and hyperparameter search on a self-managed Ray cluster of Compute Engine VMs, and it spends several days each month patching and resizing the cluster. The team wants to move the workload to a Ray environment on Google Cloud that it does not have to operate, keep its existing Ray code with minimal changes, and read its training data from BigQuery. What should you do?",
+      prompt: "A research team runs open source Ray code for distributed feature generation and hyperparameter search on a self-managed Ray cluster of Compute Engine VMs, and it spends several days each month patching and resizing the cluster. The team runs about 30 jobs each week, and each job needs more memory and cores than any single machine provides. The team wants to move the workload to a Ray environment on Google Cloud that it does not have to operate, keep its existing Ray code with minimal changes, and read its training data from BigQuery. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -133,7 +139,7 @@ export const practiceExamOneAutomateSection = {
         {
           id: "c",
           text: "Run the Ray code in local mode inside a Colab Enterprise notebook runtime on a single large machine type, and read the data from BigQuery.",
-          feedback: "Incorrect. A single notebook runtime removes the distributed computing that the feature generation and the search rely on Ray to provide.",
+          feedback: "Incorrect. A single notebook runtime cannot provide more memory and cores than one machine has, while Ray provides distributed computing across a cluster.",
           evidenceIds: ["ray"],
         },
         {
@@ -150,7 +156,7 @@ export const practiceExamOneAutomateSection = {
       kind: "single",
       section: "automate",
       objective: "5.1 Developing end-to-end ML pipelines: 5.1.c consistent data preprocessing",
-      prompt: "A mobile game studio retrains a TensorFlow model every week in Agent Platform Pipelines to predict whether a player will buy something in the next session, and the model serves online requests that contain raw player fields. A Python pipeline component normalizes 15 numeric fields and encodes 10 categorical fields before training, and the game backend team reimplemented the same steps in Go for serving. After each change to the Python code, online accuracy drops until the Go code catches up. The team wants a single definition of the transformations for training and online prediction, and it accepts a small increase in prediction latency. What should you do?",
+      prompt: "A mobile game studio retrains a TensorFlow model every week in Agent Platform Pipelines to predict whether a player will buy something in the next session, and the model serves online requests that contain raw player fields. A Python pipeline component normalizes 15 numeric fields and encodes 10 categorical fields before training, and the game backend team reimplemented the same steps in Go for serving. After each change to the Python code, online accuracy drops until the Go code catches up. The team wants a single definition of the transformations, so that the same raw fields always produce the same transformed values in training and in online prediction, and it accepts a small increase in prediction latency. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -182,13 +188,13 @@ export const practiceExamOneAutomateSection = {
         {
           id: "c",
           text: "Replace online prediction with nightly batch predictions for every player that the Python component and the model compute, and serve the stored scores to the game.",
-          feedback: "Incorrect. Static inference can reuse the training software, but the team needs online predictions for requests with current player fields, which scores computed the night before do not provide.",
+          feedback: "Incorrect. Static inference can sometimes use the same software as training, but the team needs online predictions for requests with current player fields, which scores computed the night before do not provide.",
           evidenceIds: ["transform-timing"],
         },
         {
           id: "d",
           text: "Move the transformations into the model code, with normalization statistics computed from each training batch as the batch is processed during training, so that the model transforms raw fields itself.",
-          feedback: "Incorrect. Transformations in the model run on each batch, and statistics computed from single batches differ when batches vary, so a normalized value would not mean the same thing across batches.",
+          feedback: "Incorrect. Transformations in the model run on each batch, and statistics computed from single batches differ when batches vary, so the same raw value would produce different transformed values.",
           evidenceIds: ["transform-timing"],
         },
       ],
@@ -297,7 +303,7 @@ export const practiceExamOneAutomateSection = {
       kind: "single",
       section: "automate",
       objective: "5.2 Automating model retraining: 5.2.a retraining policy",
-      prompt: "An online bookstore serves a recommendation model on an Agent Platform endpoint, and Model Monitoring v1 checks its features for drift. Each retraining costs about $2,000, and significant drift appears only a few times a year, after marketing campaigns change the customer mix. Today, the team retrains every night regardless of drift, and last month a nightly model that was worse than the current one replaced it automatically. The team wants to retrain only when drift is detected and to deploy a retrained model only if it beats the current model on a held-out test set. What should you do?",
+      prompt: "A music-streaming service serves a recommendation model on an Agent Platform endpoint, and Model Monitoring v1 checks its input features for drift. Each retraining run costs about $2,000, and significant drift appears only a few times a year, when catalog changes or marketing campaigns shift listening patterns. Every retraining must go through the existing Agent Platform pipeline, which deploys a new model only if it beats the current model on a held-out test set. The team wants retraining to start without manual steps whenever significant drift is detected, and it does not want to pay for retraining when nothing has changed. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -313,35 +319,41 @@ export const practiceExamOneAutomateSection = {
           claim: "You can trigger a pipeline run with an event-driven Cloud Run function that a Pub/Sub topic triggers and that runs a compiled pipeline definition.",
         },
         {
+          id: "pipeline-schedule",
+          title: "Schedule a pipeline run with scheduler API",
+          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/schedule-pipeline-run",
+          claim: "The scheduler API creates one-time or recurring pipeline runs according to a cron expression.",
+        },
+        {
           id: "mlops",
           title: "MLOps: Continuous delivery and automation pipelines in machine learning",
           url: "https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
-          claim: "Pipelines can be retrained on a schedule, on the availability of new data, on performance degradation, or on significant changes in data distributions; model validation compares a newly trained model with the current model before promotion.",
+          claim: "Pipelines can be retrained on a schedule, on the availability of new data, on performance degradation, or on significant changes in data distributions, and the retraining frequency depends on how often data patterns change and how expensive retraining is; model validation compares a newly trained model with the current model before promotion.",
         },
       ],
       choices: [
         {
           id: "a",
-          text: "Keep the nightly retraining schedule, and add a Model Monitoring alert that emails the team whenever feature drift exceeds its alerting threshold.",
-          feedback: "Incorrect. An email alert informs the team, but nightly retraining still runs without drift, and nothing stops a worse model from being deployed.",
-          evidenceIds: ["monitoring-alerts", "mlops"],
+          text: "Create a schedule with the scheduler API that runs the retraining pipeline every night, and rely on the pipeline's evaluation gate to discard models that do not beat the current one.",
+          feedback: "Incorrect. The evaluation gate keeps worse models out, but a nightly schedule pays for a retraining run every night, although significant drift appears only a few times a year.",
+          evidenceIds: ["pipeline-schedule", "mlops"],
         },
         {
           id: "b",
-          text: "Send drift alerts to a Pub/Sub notification channel, start the retraining pipeline from it with a Cloud Run function, and deploy each retrained model to the endpoint automatically as soon as its training step finishes.",
-          feedback: "Incorrect. The drift-triggered retraining is right, but deploying every retrained model skips the comparison with the current model that must happen before promotion.",
-          evidenceIds: ["monitoring-alerts", "pubsub-trigger", "mlops"],
+          text: "Send drift alerts to the on-call engineer by email, and have the engineer start the retraining pipeline from the console after reviewing each alert.",
+          feedback: "Incorrect. Email alerts reach a person, so every retraining depends on a manual step, while a Pub/Sub notification channel can start the pipeline automatically.",
+          evidenceIds: ["monitoring-alerts", "pubsub-trigger"],
         },
         {
           id: "c",
-          text: "Have an engineer check the Model Monitoring feature distributions every Monday, and start the training pipeline by hand when the distributions look different.",
-          feedback: "Incorrect. A weekly manual check delays retraining and depends on judgment, while Model Monitoring can send drift alerts to a channel that starts the pipeline.",
-          evidenceIds: ["monitoring-alerts"],
+          text: "Send drift alerts to a Pub/Sub notification channel, and have a Cloud Run function that the topic triggers retrain the model itself and deploy the result to the endpoint.",
+          feedback: "Incorrect. Retraining inside the function bypasses the existing pipeline and its comparison with the current model, so a worse model could replace a better one.",
+          evidenceIds: ["pubsub-trigger", "mlops"],
         },
         {
           id: "d",
-          text: "Send drift alerts to a Pub/Sub notification channel, start the retraining pipeline from it with a Cloud Run function, and deploy a retrained model only if it beats the current one on the test set.",
-          feedback: "Correct. Model Monitoring sends drift alerts to a Pub/Sub channel, a Pub/Sub-triggered function starts the pipeline, and validating against the current model before promotion keeps worse models out.",
+          text: "Send drift alerts to a Pub/Sub notification channel, and have a Cloud Run function that the topic triggers start a run of the existing retraining pipeline.",
+          feedback: "Correct. Model Monitoring sends drift alerts to a Pub/Sub channel and a Pub/Sub-triggered function starts the pipeline, so retraining runs only on significant changes in the data distributions, with the evaluation gate intact.",
           evidenceIds: ["monitoring-alerts", "pubsub-trigger", "mlops"],
         },
       ],
@@ -371,8 +383,8 @@ export const practiceExamOneAutomateSection = {
       choices: [
         {
           id: "a",
-          text: "Retrain the model whenever Model Monitoring detects feature drift in the prediction requests, even when no new outcomes have been loaded since the last retraining.",
-          feedback: "Incorrect. Drift in the requests does not add confirmed outcomes, so a retraining triggered this way can run without any new labeled data.",
+          text: "Retrain the model whenever Model Monitoring detects significant feature drift in the prediction requests that the model receives.",
+          feedback: "Incorrect. Drift in the requests does not add confirmed outcomes, which arrive only on the fifth day of each month, so a drift-triggered run can retrain without any new labeled data.",
           evidenceIds: ["mlops"],
         },
         {
@@ -383,7 +395,7 @@ export const practiceExamOneAutomateSection = {
         },
         {
           id: "c",
-          text: "Keep the daily schedule, and train each day on the previous 30 days of data so that the model always reflects the most recent patient records.",
+          text: "Keep the daily schedule, and train each day on the previous 30 days of data so that each model reflects the most recent patient records.",
           feedback: "Incorrect. Daily runs still cost about $300 each, although new confirmed outcomes arrive only once a month, and the data patterns change slowly.",
           evidenceIds: ["mlops"],
         },
@@ -401,7 +413,7 @@ export const practiceExamOneAutomateSection = {
       kind: "single",
       section: "automate",
       objective: "5.2 Automating model retraining: 5.2.b CI/CD/CT pipelines",
-      prompt: "An ML platform team maintains eight Kubeflow pipelines. When a data scientist changes a component, an engineer runs shell scripts from a laptop that build the component's container image, run unit tests, compile the pipeline, and upload it, and steps are sometimes skipped. The team wants every commit to the repository to build, test, and publish the components and the compiled pipeline the same way, with versioned pipeline definitions that other teams can reuse, and without operating build servers. What should you do?",
+      prompt: "An ML platform team maintains eight Kubeflow pipelines. When a data scientist changes a component, an engineer runs shell scripts from a laptop that build the component's container image, run unit tests, and compile the pipeline, and steps are sometimes skipped. The team wants every commit to the repository to build, test, and package the components and the compiled pipeline the same way, without operating build servers. Commits must not change anything in production, because releases happen separately. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -416,18 +428,12 @@ export const practiceExamOneAutomateSection = {
           url: "https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
           claim: "In continuous integration for ML, the pipeline and its components are built, tested, and packaged when new code is committed or pushed to the source code repository.",
         },
-        {
-          id: "pipeline-templates",
-          title: "Create, upload, and use a pipeline template",
-          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/create-pipeline-template",
-          claim: "A pipeline template publishes a workflow definition for reuse, and Artifact Registry provides version control for pipeline templates.",
-        },
       ],
       choices: [
         {
           id: "a",
-          text: "Keep the shell scripts, and add a release checklist to the repository that the engineer must complete and sign for every pipeline change.",
-          feedback: "Incorrect. A checklist still relies on a person running the scripts by hand, so steps can be skipped, while CI builds and tests the components on every commit.",
+          text: "Create a Cloud Build trigger that, on every commit, runs the full training pipeline on production data and deploys the resulting model to the production endpoint when the run succeeds.",
+          feedback: "Incorrect. Training and deploying on every commit changes production, which commits must not do, while continuous integration builds, tests, and packages the pipeline and its components.",
           evidenceIds: ["mlops"],
         },
         {
@@ -438,15 +444,15 @@ export const practiceExamOneAutomateSection = {
         },
         {
           id: "c",
-          text: "Create a Cloud Build trigger on the repository that builds and tests the component images, compiles the pipeline, and uploads it as a versioned pipeline template to Artifact Registry.",
-          feedback: "Correct. A Cloud Build trigger builds, tests, and packages the pipeline and its components on every commit without build servers to operate, and Artifact Registry versions the templates for reuse.",
-          evidenceIds: ["cloud-build", "mlops", "pipeline-templates"],
+          text: "Create a Cloud Build trigger that runs on every commit to the repository, builds and unit-tests the component container images, and compiles and packages the pipeline.",
+          feedback: "Correct. A Cloud Build trigger starts a build for each code change on pools that Cloud Build manages, and building, testing, and packaging the pipeline and its components on every commit is continuous integration that leaves production unchanged.",
+          evidenceIds: ["cloud-build", "mlops"],
         },
         {
           id: "d",
-          text: "Create a Cloud Build trigger that runs the full training pipeline on production data for every commit and deploys the resulting model to the production endpoint when the pipeline run succeeds.",
-          feedback: "Incorrect. Training and deploying a model on every commit goes beyond building, testing, and packaging the pipeline, and it still publishes no versioned pipeline definitions.",
-          evidenceIds: ["mlops", "pipeline-templates"],
+          text: "Create a Cloud Build trigger that runs only when a release tag is pushed, builds and unit-tests the component container images, and compiles and packages the pipeline.",
+          feedback: "Incorrect. A trigger on release tags skips the commits between releases, so changes are not built and tested on every commit, as the team requires.",
+          evidenceIds: ["cloud-build", "mlops"],
         },
       ],
       correctChoiceId: "c",
@@ -456,7 +462,7 @@ export const practiceExamOneAutomateSection = {
       kind: "multiple",
       section: "automate",
       objective: "5.2 Automating model retraining: 5.2.b CI/CD/CT pipelines",
-      prompt: "A retailer receives supplier price files at unpredictable times, a few times each week. Each file lands in a Cloud Storage bucket, and a compiled Agent Platform pipeline that retrains a pricing model must start within minutes after each file arrives, with the file's path as a parameter. The team does not want to run any always-on servers or check the bucket on a schedule. Which two actions should you take? Choose two.",
+      prompt: "An agricultural cooperative receives crop-yield files from satellite data providers at unpredictable times, a few times each week. Each file lands in a Cloud Storage bucket, and a compiled Agent Platform pipeline that retrains a yield model must start within minutes after each file arrives, with the file's path as a parameter. The team does not want to run any always-on servers or check the bucket on a schedule. Which two actions should you take? Choose two.",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -476,6 +482,12 @@ export const practiceExamOneAutomateSection = {
           title: "Schedule a pipeline run with scheduler API",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/schedule-pipeline-run",
           claim: "The scheduler API creates one-time or recurring pipeline runs according to a cron expression.",
+        },
+        {
+          id: "cloud-run-min",
+          title: "Set minimum instances for services",
+          url: "https://docs.cloud.google.com/run/docs/configuring/min-instances",
+          claim: "Minimum instances keep Cloud Run service instances idle and ready, and instances kept running by the minimum instances feature incur billing costs.",
         },
       ],
       choices: [
@@ -499,9 +511,9 @@ export const practiceExamOneAutomateSection = {
         },
         {
           id: "d",
-          text: "Run a small Compute Engine VM with a script that watches the bucket and submits a pipeline run whenever a new file appears in it.",
-          feedback: "Incorrect. A VM that watches the bucket is an always-on server that the team does not want to run, while Pub/Sub notifications and a function react to events.",
-          evidenceIds: ["storage-notifications", "pubsub-trigger"],
+          text: "Deploy a Cloud Run service with a minimum of one instance that pulls messages from a Pub/Sub subscription on the topic and submits a run of the compiled pipeline for each message.",
+          feedback: "Incorrect. The service would react to each message, but an instance kept running by the minimum instances setting incurs billing costs even without files, which makes it an always-on server.",
+          evidenceIds: ["cloud-run-min", "pubsub-trigger"],
         },
         {
           id: "e",

@@ -100,15 +100,15 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 | Question ID | Consideration | Type | Generative AI | Decisive feature | Correct letter | Distractor mechanisms | Levers |
 |---|---|---|---|---|---|---|---|
 | pmle-p1-automate-01 | 5.1.a | T6 | no | Model evaluation component whose AUC gates deployment | c | D8, D3, D7 | L2, L4 |
-| pmle-p1-automate-02 | 5.1.b | T9 | no | Versioned pipeline templates in Artifact Registry | a | D2, D3, D1 | L2, L4 |
+| pmle-p1-automate-02 | 5.1.b | T9 | no | Versioned pipeline templates in Artifact Registry | a | D2, D3, D1 | L4, L7 |
 | pmle-p1-automate-03 | 5.1.b | T3 | no | Existing Ray code on Ray on Agent Platform | d | D2, D1, D3 | L3, L4 |
 | pmle-p1-automate-04 | 5.1.c | T5 | no | Transformations inside the model with dataset-wide normalization constants | b | D3, D4, D7 | L2, L4 |
 | pmle-p1-automate-05 | 5.1.a | T6 | yes | Deterministic reference-based metrics for a tuned Gemini model before promotion | a | D6, D7, D8 | L2, L4 |
-| pmle-p1-automate-06 | 5.1.c | T5 | no | Point-in-time training features with `ML.ENTITY_FEATURES_AT_TIME` | c | D3, D1, D7 | L2, L4 |
-| pmle-p1-automate-07 | 5.2.a | T9 | no | Retraining triggered by a monitoring alert behind an evaluation gate | d | D2, D8, D3 | L1, L2 |
+| pmle-p1-automate-06 | 5.1.c | T5 | no | Point-in-time training features with `ML.ENTITY_FEATURES_AT_TIME` | c | D6, D1, D7 | L2, L4 |
+| pmle-p1-automate-07 | 5.2.a | T9 | no | Retraining triggered by a drift alert through Pub/Sub instead of a fixed schedule | d | D2, D3, D8 | L1, L2 |
 | pmle-p1-automate-08 | 5.2.a | T9 | no | Retraining schedule aligned with delayed labels | b | D6, D2, D8 | L2, L6 |
-| pmle-p1-automate-09 | 5.2.b | T3 | no | Cloud Build trigger that builds, tests, and publishes versioned pipeline templates | c | D3, D1, D2 | L2, L4 |
-| pmle-p1-automate-10 | 5.2.b | T9 | no | Cloud Storage notifications and a Pub/Sub-triggered function that start a pipeline run (choose two) | two | D2, D1, D3 | L2, L4 |
+| pmle-p1-automate-09 | 5.2.b | T3 | no | Cloud Build trigger that builds, tests, and packages pipeline components on every commit | c | D2, D1, D7 | L2, L4 |
+| pmle-p1-automate-10 | 5.2.b | T9 | no | Cloud Storage notifications and a Pub/Sub-triggered function that start a pipeline run (choose two) | two | D4, D2, D3 | L2, L4 |
 | pmle-p1-automate-11 | 5.2.b | T9 | no | Cloud Build trigger that requires approval before deployment | a | D3, D8, D2 | L4, L5 |
 
 ### Plan: monitor
@@ -121,7 +121,7 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 | pmle-p1-monitor-04 | 6.1.c | T10 | no | `ML.GLOBAL_EXPLAIN` for model-level feature importance | c | D7, D2, D3 | L3, L4 |
 | pmle-p1-monitor-05 | 6.2.a | T12 | no | Drift detection when the training data is unavailable | d | D7, D6, D3 | L2, L4 |
 | pmle-p1-monitor-06 | 6.2.b | T4 | no | Concept drift confirmed against ground truth | a | D6, D8, D6 | L4, L6 |
-| pmle-p1-monitor-07 | 6.2.b | T4 | no | Training-serving skew from a feature computed differently | c | D6, D8, D2 | L4, L6 |
+| pmle-p1-monitor-07 | 6.2.b | T4 | no | Training-serving skew from a feature computed differently | c | D6, D8, D2 | L3, L4 |
 | pmle-p1-monitor-08 | 6.2.c | T6 | yes | LLM-as-a-judge regression evaluation before a prompt change | b | D6, D2, D7 | L2, L4 |
 
 ### Progress
@@ -136,3 +136,4 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 - 2026-09-26: Authored the `serve` section. Replaced two planned topics that are no longer supported: the optimized TensorFlow runtime (serve-11, now Gemini context caching) has no stable images left, and prebuilt inference containers (serve-02, now custom container routes) are past their end of patch and support. The generative AI question moved from serve-12 to serve-11, and serve-06 now uses Cloud Run GPUs so that it no longer overlaps the Model Garden deployment in collaborate-06.
 - 2026-09-26: Authored the `automate` section. Replaced the Airflow question in automate-02 with versioned pipeline templates, because no Google-hosted page documents starting an Agent Platform pipeline from Airflow. automate-04 moves the transformations into the model instead of repeating the custom inference routine in serve-05, automate-06 uses point-in-time feature lookups instead of a third Feature Store question, and automate-05 uses deterministic reference-based metrics so that it does not overlap the LLM-as-a-judge question planned for monitor-08.
 - 2026-09-26: Authored the `monitor` section, which completes the 60 questions. monitor-02 tests Model Armor floor settings, so it does not repeat the template decision in monitor-01, and monitor-08 uses LLM-as-a-judge metrics because no reference answers exist, which separates it from the reference-based metrics in automate-05.
+- 2026-09-26: Addressed the independent review of the automate section after it merged. automate-07 now tests the retraining trigger, a drift alert against a nightly schedule, instead of repeating the evaluation gate of automate-01. automate-09 now tests a trigger on every commit against release tags instead of repeating the templates of automate-02. automate-10 gained a Cloud Run near-miss and a non-retail organization. automate-03 states the multi-machine need that rules out a single runtime, and automate-01, automate-04, and automate-08 were tightened. automate-05 relies on the GA evaluation module, which Google no longer actively develops, so re-check it before publication.
