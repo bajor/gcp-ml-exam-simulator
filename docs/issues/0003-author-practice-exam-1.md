@@ -115,13 +115,13 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 
 | Question ID | Consideration | Type | Generative AI | Decisive feature | Correct letter | Distractor mechanisms | Levers |
 |---|---|---|---|---|---|---|---|
-| pmle-p1-monitor-01 | 6.1.a | T10 | yes | Model Armor prompt injection and jailbreak detection | b | D7, D3, D2 | L2, L4 |
-| pmle-p1-monitor-02 | 6.1.a | T10 | yes | Model Armor sensitive data protection on prompts and responses | d | D8, D3, D5 | L2, L4 |
-| pmle-p1-monitor-03 | 6.1.b | T6 | no | Model quality compared across groups before deployment | a | D6, D8, D2 | L2, L6 |
-| pmle-p1-monitor-04 | 6.1.c | T10 | no | `ML.GLOBAL_EXPLAIN` for model-level feature importance | c | D7, D2, D3 | L2, L4 |
-| pmle-p1-monitor-05 | 6.2.a | T12 | no | Drift detection when the training data is unavailable | d | D7, D3, D2 | L2, L4 |
-| pmle-p1-monitor-06 | 6.2.b | T4 | no | Concept drift confirmed against ground truth | a | D6, D8, D6 | L2, L6 |
-| pmle-p1-monitor-07 | 6.2.b | T4 | no | Training-serving skew from a feature computed differently | c | D6, D8, D2 | L2, L6 |
+| pmle-p1-monitor-01 | 6.1.a | T10 | yes | Model Armor prompt injection and jailbreak detection with Inspect and block | b | D7, D3, D7 | L2, L4 |
+| pmle-p1-monitor-02 | 6.1.a | T10 | yes | Model Armor floor settings with Sensitive Data Protection filters for every Gemini call | d | D8, D3, D7 | L2, L4 |
+| pmle-p1-monitor-03 | 6.1.b | T6 | no | Model quality compared across groups before deployment | a | D6, D8, D2 | L3, L6 |
+| pmle-p1-monitor-04 | 6.1.c | T10 | no | `ML.GLOBAL_EXPLAIN` for model-level feature importance | c | D7, D2, D3 | L3, L4 |
+| pmle-p1-monitor-05 | 6.2.a | T12 | no | Drift detection when the training data is unavailable | d | D7, D6, D3 | L2, L4 |
+| pmle-p1-monitor-06 | 6.2.b | T4 | no | Concept drift confirmed against ground truth | a | D6, D8, D6 | L4, L6 |
+| pmle-p1-monitor-07 | 6.2.b | T4 | no | Training-serving skew from a feature computed differently | c | D6, D8, D2 | L4, L6 |
 | pmle-p1-monitor-08 | 6.2.c | T6 | yes | LLM-as-a-judge regression evaluation before a prompt change | b | D6, D2, D7 | L2, L4 |
 
 ### Progress
@@ -135,3 +135,4 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 - 2026-09-26: Addressed the independent review of the scale section: scale-05 and scale-06 gained stated cost and memory constraints, scale-12 now states the NCCL and custom-container prerequisites of Reduction Server and adds a GPU worker-pool near-miss, scale-08 gained a near-miss, scale-01 replaced its ARIMA_PLUS distractor with the Natural Language API, scale-11 no longer asks for documentation recall, and the scale plan rows now record only real near-miss pairs and scope words.
 - 2026-09-26: Authored the `serve` section. Replaced two planned topics that are no longer supported: the optimized TensorFlow runtime (serve-11, now Gemini context caching) has no stable images left, and prebuilt inference containers (serve-02, now custom container routes) are past their end of patch and support. The generative AI question moved from serve-12 to serve-11, and serve-06 now uses Cloud Run GPUs so that it no longer overlaps the Model Garden deployment in collaborate-06.
 - 2026-09-26: Authored the `automate` section. Replaced the Airflow question in automate-02 with versioned pipeline templates, because no Google-hosted page documents starting an Agent Platform pipeline from Airflow. automate-04 moves the transformations into the model instead of repeating the custom inference routine in serve-05, automate-06 uses point-in-time feature lookups instead of a third Feature Store question, and automate-05 uses deterministic reference-based metrics so that it does not overlap the LLM-as-a-judge question planned for monitor-08.
+- 2026-09-26: Authored the `monitor` section, which completes the 60 questions. monitor-02 tests Model Armor floor settings, so it does not repeat the template decision in monitor-01, and monitor-08 uses LLM-as-a-judge metrics because no reference answers exist, which separates it from the reference-based metrics in automate-05.
