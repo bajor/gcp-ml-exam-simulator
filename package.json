@@ -14,6 +14,7 @@
     "lint": "eslint .",
     "create-rejection-record": "tsx scripts/create-rejection-record.ts",
     "create-review-record": "tsx scripts/create-review-record.ts",
+    "question-set-report": "tsx scripts/question-set-report.ts",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
     "test:sources": "vitest run --config vitest.sources.config.ts"
