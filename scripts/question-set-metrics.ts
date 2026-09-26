@@ -1,7 +1,8 @@
 import { countWords, type ChoiceId, type Question } from "../src/domain/questions";
 
 const singleChoiceIds: readonly ChoiceId[] = ["a", "b", "c", "d"];
-const unmapped = "none";
+// Label for a question whose objective lacks an objective or consideration identifier.
+export const unmappedLabel = "none";
 
 export interface Spread {
   readonly min: number;
@@ -45,7 +46,7 @@ export function measureQuestions(questions: readonly Question[]): QuestionSetMet
     readingLoad: spread(measured.map((question) => question.readingLoad)),
     correctIsLongestCount: singles.filter((question) => question.correctIsLongest).length,
     correctLetterCounts: countBy(singleChoiceIds, singles.map((question) => question.correctChoiceIds[0])),
-    objectiveCounts: countBy([], questions.map((question) => question.objective.match(/^(\d\.\d)\b/)?.[1] ?? unmapped)),
+    objectiveCounts: countBy([], questions.map((question) => question.objective.match(/^(\d\.\d)\b/)?.[1] ?? unmappedLabel)),
     considerationCounts: countBy([], measured.map((question) => question.consideration)),
   };
 }
@@ -59,7 +60,7 @@ function measureQuestion(question: Question): QuestionMetrics {
   const otherWords = question.choices.filter((choice) => choice.id !== correctChoiceIds[0]).map((choice) => choiceWords.get(choice.id) ?? 0);
   return {
     id: question.id,
-    consideration: question.objective.match(/\b(\d\.\d\.[a-z])\b/)?.[1] ?? unmapped,
+    consideration: question.objective.match(/\b(\d\.\d\.[a-z])\b/)?.[1] ?? unmappedLabel,
     kind: question.kind,
     stemWords,
     shortestChoiceWords: Math.min(...lengths),
@@ -71,10 +72,11 @@ function measureQuestion(question: Question): QuestionMetrics {
 }
 
 function spread(values: readonly number[]): Spread {
+  if (values.length === 0) return { min: 0, median: 0, max: 0 };
   const sorted = [...values].sort((a, b) => a - b);
   const middle = Math.floor(sorted.length / 2);
   const median = sorted.length % 2 === 1 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
-  return { min: sorted[0] ?? 0, median: median ?? 0, max: sorted[sorted.length - 1] ?? 0 };
+  return { min: sorted[0], median, max: sorted[sorted.length - 1] };
 }
 
 function countBy(keys: readonly string[], values: readonly string[]): Record<string, number> {

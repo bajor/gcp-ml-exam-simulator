@@ -170,7 +170,7 @@ Personally Identifiable Information.
 
 ## Plan table
 
-The table in a practice exam's issue record that lists, for each planned question, its consideration, question type, decisive feature, correct letter, distractor mechanisms, and difficulty levers.
+The table in a practice exam's issue record that lists, for each planned question, its consideration, question type, whether generative AI is decisive, decisive feature, correct letter, distractor mechanisms, and difficulty levers.
 
 ## PMLE
 

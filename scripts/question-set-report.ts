@@ -1,6 +1,6 @@
 import { candidateQuestionSets, draftQuestionSets } from "../src/data/questionSets/registry";
-import type { Question } from "../src/domain/questions";
-import { measureQuestions, type QuestionSetMetrics, type Spread } from "./question-set-metrics";
+import { examSectionIds, type Question } from "../src/domain/questions";
+import { measureQuestions, unmappedLabel, type QuestionSetMetrics, type Spread } from "./question-set-metrics";
 
 const [questionSetId] = process.argv.slice(2);
 if (!questionSetId) throw new Error("Usage: npm run question-set-report -- <question-set-id>");
@@ -11,7 +11,7 @@ const questions: readonly Question[] | undefined =
   candidate?.questions ?? draft?.sections.flatMap((section): readonly Question[] => section.questions);
 if (!questions) throw new Error(`${questionSetId}: question set not found among drafts or candidates.`);
 
-const source = candidate ? `candidate version ${candidate.version}` : `draft with ${draft?.sections.length ?? 0} of 6 sections`;
+const source = candidate ? `candidate version ${candidate.version}` : `draft with ${draft?.sections.length ?? 0} of ${examSectionIds.length} sections`;
 console.log(formatReport(`${questionSetId} (${source})`, measureQuestions(questions)));
 
 function formatReport(title: string, metrics: QuestionSetMetrics): string {
@@ -25,7 +25,11 @@ function formatReport(title: string, metrics: QuestionSetMetrics): string {
     question.correctChoiceIds.join("+"),
     question.correctIsLongest ? "yes" : "no",
   ]);
-  const repeated = Object.entries(metrics.considerationCounts).filter(([, count]) => count > 1);
+  const repeated = Object.entries(metrics.considerationCounts)
+    .filter(([consideration, count]) => consideration !== unmappedLabel && count > 1);
+  const unmapped = metrics.questions
+    .filter((question) => question.consideration === unmappedLabel)
+    .map((question) => question.id);
   const singleCount = metrics.questions.length - metrics.multipleSelectCount;
   return [
     `Question set: ${title}`,
@@ -40,6 +44,7 @@ function formatReport(title: string, metrics: QuestionSetMetrics): string {
     `Correct letters (single-choice): ${formatCounts(metrics.correctLetterCounts)}`,
     `Objectives: ${formatCounts(metrics.objectiveCounts)}`,
     `Considerations used more than once: ${repeated.length ? formatCounts(Object.fromEntries(repeated)) : "none"}`,
+    `Questions without a consideration identifier: ${unmapped.length ? unmapped.join(", ") : "none"}`,
   ].join("\n");
 }
 

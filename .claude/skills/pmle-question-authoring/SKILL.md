@@ -23,6 +23,9 @@ Read these files completely before planning:
 2. `docs/authoring/coverage-matrix.md`: objective allocation, consideration identifiers, decisions to test, common traps, availability notices, and documentation starting points.
 3. `docs/context/product-names.md`: the only product names allowed in questions.
 4. `docs/prd/0002-practice-exam-question-sets.md`: the set-level targets.
+5. `docs/research/0003-candidate-reported-question-types.md`: the question types T1 to T12 used in the plan table.
+
+The official sources are the [certification page](https://cloud.google.com/learn/certification/machine-learning-engineer) and the [exam guide PDF](https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english_new.pdf).
 
 ## Plan the Section
 
@@ -30,10 +33,12 @@ Read these files completely before planning:
 2. Open or create the practice exam's issue record, `docs/issues/<NNNN>-author-practice-exam-<n>.md`, and index it in `docs/issues/index.md`.
 3. Before writing any question, add a plan table for the section to that issue record:
 
-   | Question ID | Consideration | Type | Decisive feature | Correct letter | Distractor mechanisms | Levers |
-   |---|---|---|---|---|---|---|
+   | Question ID | Consideration | Type | Generative AI | Decisive feature | Correct letter | Distractor mechanisms | Levers |
+   |---|---|---|---|---|---|---|---|
 
-4. Follow the matrix allocation for the section's objectives. Use no consideration as the primary topic more than three times in the set, and spread correct letters so that the set can reach 13 to 17 per letter.
+4. Tally the plan tables of this set's other sections and of every earlier practice exam before choosing topics.
+   - Within the set, follow the matrix allocation, use no consideration as the primary topic more than three times, and keep the set on track for PRD 0002 requirements 5 and 6: 13 to 17 correct answers per letter, near-miss pairs (lever L2) in at least 30 questions, at most 3 choose-two questions, generative AI decisive in 12 to 18 questions, and at least 6 T4, 5 T6, 4 T10, and 4 T3 questions.
+   - Across sets, prefer considerations that earlier sets used fewer than two times, so that every consideration reaches two uses by Practice Exam 3. Objective 2.2 has only 6 slots across three sets for 3 considerations, so each of its considerations must be used exactly twice.
 5. Check every other practice exam's plan tables and modules for scenario reuse, for example with `grep -rn "<decisive feature>" src/data/questionSets docs/issues`. A scenario is reused when the organization type, the problem, and the decisive feature all match.
 
 ## Source Rules
@@ -138,7 +143,7 @@ Run after registering each section:
 ```sh
 make test
 make verify-sources
-npm run question-set-report -- professional-ml-engineer-2026-06-practice-<n>
+npm run question-set-report -- <question-set-id>
 ```
 
 The first two commands must pass. The report measures the draft; compare it with the targets in the style guide and PRD 0002, and revise before handoff. It lists per-question stem, option, and reading-load word counts, the set median reading load, correct-letter counts, how often the correct option is the longest, objective counts, and repeated considerations.
@@ -147,7 +152,7 @@ The first two commands must pass. The report measures the draft; compare it with
 
 Give the reviewer the section, author identifier, question identifiers, a link to the plan table, the unique source URLs, the report output, and the verification results. After all six sections are assembled into a candidate, a separate session uses the `pmle-question-review` skill to review all 60 questions. An author never reviews their own questions.
 
-If the review rejects the candidate, keep the rejected draft and candidate registered and unchanged, because the rejection record is bound to them. Make corrections under a new draft and candidate identifier and version, reusing unchanged section modules.
+If the review rejects the candidate, keep the rejected draft and candidate registered and unchanged, because the rejection record is bound to them. Make corrections under a new draft and candidate identifier and version, reusing unchanged section modules. Put every changed section in a new module file, such as `sections/architectV2.ts`, and list it in a new sections array, such as `practiceExamOneV2Sections`. Never edit a module that a rejected candidate uses: the rejection record is bound to that content, and `make verify-sources` fails if it changes. Revise or replace every rejected question before handoff.
 
 ## Publication
 

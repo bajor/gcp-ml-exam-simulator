@@ -66,7 +66,7 @@ Use these phrases, or close variants, so the decisive property is unambiguous.
 
 1. Write each option as a complete imperative action, not a product name. Multi-step options are allowed and may be numbered.
 2. Every option must be technically possible on Google Cloud. A distractor is wrong because it fails a stated constraint, never because the feature does not exist.
-3. Keep options parallel in grammar, detail, and length. Among single-choice questions, the correct option may be the longest option in at most 18 questions of a set.
+3. Keep options parallel in grammar, detail, and length. Among single-choice questions, the correct option may be strictly longer than every other option in at most 18 questions of a set.
 4. In at least 30 of 60 questions, give two options the same skeleton that differ in one decisive component. This is a near-miss pair.
 5. Do not use "all of the above", "none of the above", negative stems such as "Which is NOT", joke options, or absolute words such as "always" and "never" as clues.
 6. Balance the answer key. Among single-choice questions, each letter from `a` to `d` is correct in 13 to 17 questions of a set.

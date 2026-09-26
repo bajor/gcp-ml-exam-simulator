@@ -10,32 +10,34 @@ Review a complete 60-question candidate without editing its questions, choices, 
 ## Independence Gate
 
 1. Choose a stable reviewer identifier for this session.
-2. Read the candidate's `authors` list.
+2. Read the `author` field of every section module in the candidate; together these values form the candidate's `authors` list.
 3. Stop if your identifier appears in `authors`, or if this session authored or edited any of the candidate's content.
 
 ## Required Checks
 
-1. Re-fetch the certification page and the exam guide dated June 1, 2026. Stop and report if either changed.
+1. Re-fetch the [certification page](https://cloud.google.com/learn/certification/machine-learning-engineer) and the [exam guide](https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english_new.pdf) dated June 1, 2026. Stop and report if either changed.
 2. Run `make test` and `make verify-sources`. Both must pass before semantic review.
 3. Run `npm run question-set-report -- <question-set-id>` and keep the output for the review document.
 4. Open every unique evidence URL yourself. Do not rely on the author's claims or feedback.
-5. For each question, verify all of these conditions:
+5. If `docs/reviews/` contains rejection reports for earlier versions of this practice exam, confirm that every previously rejected question was revised or replaced in this candidate, by comparing it with the rejected candidate that stays registered. Reject any rejected question that returns unchanged.
+6. For each question, verify all of these conditions:
    - The `objective` names a consideration identifier from `docs/authoring/coverage-matrix.md`, and the question tests that consideration.
-   - The stem states every constraint needed for a deterministic answer.
+   - The stem states two or three explicit constraints, and every constraint needed for a deterministic answer.
    - Exactly one single-choice option, or exactly two choose-two options, satisfy every constraint.
    - Every distractor is technically possible on Google Cloud and fails at least one named constraint for a documented reason.
-   - Every feedback sentence is supported by its cited evidence.
+   - Every choice has two to four sentences of feedback, and every feedback sentence is supported by its cited evidence.
+   - The options follow the style guide's option rules: no "all of the above" or "none of the above", no negative stem, no absolute word as a clue, and no multi-line code.
    - Product names match `docs/context/product-names.md`, and the decisive feature is generally available and not deprecated.
    - The question is original. It does not copy, paraphrase, or re-skin an official sample, and it does not reuse a scenario from another practice set.
    - At least two difficulty levers from `docs/authoring/question-style-guide.md` are present.
-6. For the whole set, compare the report and your notes with requirements 2 to 6 of `docs/prd/0002-practice-exam-question-sets.md`: objective allocation, consideration caps, length targets and median reading load, near-miss pairs, the longest-option limit, answer-letter balance, the choose-two count, question-type minimums, and the generative AI range.
-7. Reject every question that is ambiguous, unsupported, deprecated, preview-dependent, or unoriginal. For a set-level target miss, either reject the questions whose revision fixes it, or accept the set and explain the exception in the review summary.
+7. For the whole set, compare the report and your notes with requirements 2 to 6 of `docs/prd/0002-practice-exam-question-sets.md`: objective allocation, consideration caps, length targets and median reading load, near-miss pairs, the longest-option limit, answer-letter balance, the choose-two count, question-type minimums, and the generative AI range. The report does not measure near-miss pairs, question types, or generative AI; tally them from the questions yourself. When reviewing Practice Exam 3, also confirm across Practice Exams 1 to 3 that every consideration is the primary topic of at least two questions.
+8. Reject every question that is ambiguous, unsupported, deprecated, preview-dependent, or unoriginal. For a set-level target miss, either reject the questions whose revision fixes it, or accept the set and explain the exception in the review summary.
 
 Do not create an acceptance record while any question is rejected.
 
 ## Rejection Report
 
-If any question fails, generate the machine-readable rejection record from the exact candidate content. Pass every rejected identifier and a concrete reason in one JSON array:
+If any question fails, generate the machine-readable rejection record from the exact candidate content. Pass every rejected identifier and a concrete reason in one JSON array. If a reason contains an apostrophe, write the array to a file and pass `"$(cat rejections.json)"` instead of the single-quoted literal:
 
 ```sh
 npm run create-rejection-record -- <question-set-id> <reviewer-id> <YYYY-MM-DD> '[{"id":"<question-id>","reason":"<concrete reason>"}]'
@@ -68,7 +70,7 @@ timestamp: YYYY-MM-DDT00:00:00Z
 
 ## Review Summary
 
-State the reviewer identifier, the independence check, the guide date, the commands run, the unique source count, the set-level metrics from the report, any accepted exception, and that all 60 questions passed the required checks.
+State the reviewer identifier, the independence check, the guide date, the commands run, the unique source count, the set-level metrics from the report, your tallies of near-miss pairs, question types, and generative AI questions, the check of earlier rejections, any accepted exception, and that all 60 questions passed the required checks.
 
 ## Review Record
 
