@@ -64,6 +64,14 @@ Conflict of Interest. A source relationship that could influence a claim; projec
 
 A stated requirement or restriction in a question stem, such as minimal operational overhead, low latency, or no access to production data. Constraints decide which option is correct.
 
+## Coverage matrix
+
+The document `docs/authoring/coverage-matrix.md`, which assigns every guide consideration an identifier such as `3.2.e` and fixes the questions per objective in each set.
+
+## Difficulty lever
+
+A deliberate technique that makes a question as hard as the real exam, such as constraint tension or a near-miss pair. The style guide defines levers L1 to L7.
+
 ## Distractor
 
 An incorrect answer option. In this project every distractor must be technically possible on Google Cloud and must fail at least one stated constraint for a documented reason.
@@ -95,6 +103,10 @@ Google's official Professional Machine Learning Engineer certification exam guid
 ## Exam-guide section
 
 One of the six weighted parts of the exam guide. The code identifies them as `architect` (Architecting low-code AI solutions), `collaborate` (Collaborating within and across teams to manage data and models), `scale` (Scaling prototypes into ML models), `serve` (Serving and scaling models), `automate` (Automating and orchestrating ML pipelines), and `monitor` (Monitoring AI solutions).
+
+## GA
+
+Generally Available. A product or feature without a Preview label. Practice questions test only GA features.
 
 ## Generative AI
 
@@ -135,6 +147,10 @@ Machine learning operations. Practices that automate and monitor the training, d
 ## Multiple-select
 
 A question that states the required number of choices and is correct only when the selected identifier set exactly equals the correct identifier set. This project supports choose-two questions with five choices.
+
+## Near-miss pair
+
+Two options that share the same skeleton and differ in one decisive component, so the candidate must read both to the end.
 
 ## PDE
 

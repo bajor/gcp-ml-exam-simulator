@@ -61,6 +61,8 @@ The samples show a consistent construction: a concrete current state, two or thr
 - Take topics from the guide weights, including generative AI, not from the sample mix.
 - Never copy, paraphrase, or re-skin a sample scenario, and never publish inferred sample answer keys.
 
+The [question style guide](/authoring/question-style-guide.md) turns these recommendations into authoring rules.
+
 # References
 
 [1] GOOGLE CLOUD. **Professional Machine Learning Engineer Sample Questions**. Available at: <https://docs.google.com/forms/d/e/1FAIpQLSeYmkCANE81qSBqLW0g2X7RoskBX9yGYQu-m1TtsjMvHabGqg/viewform>. Accessed on: 2026-09-25.
