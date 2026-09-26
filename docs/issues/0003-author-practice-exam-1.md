@@ -127,3 +127,4 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 ### Progress
 
 - 2026-09-26: Planned all 60 questions and authored the `architect` section.
+- 2026-09-26: Authored the `collaborate` section.
