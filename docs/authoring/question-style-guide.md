@@ -114,7 +114,7 @@ Avoid artificial difficulty. Do not use trick wording, undocumented defaults, pr
 
 ## Feedback Rules
 
-Each choice has two to four sentences of feedback. The correct choice's feedback names every constraint it satisfies. Each distractor's feedback names the constraint it fails and the documented reason. Every sentence must be supported by the cited evidence, and each choice cites at least one evidence item.
+Each choice's feedback starts with the verdict "Correct." or "Incorrect." followed by one to three sentences of explanation. The correct choice's feedback names every constraint it satisfies. Each distractor's feedback names the constraint it fails and the documented reason. Every sentence must be supported by the cited evidence, and each choice cites at least one evidence item.
 
 ## Calibration Example
 

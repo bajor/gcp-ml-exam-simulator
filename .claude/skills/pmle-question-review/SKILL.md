@@ -25,7 +25,7 @@ Review a complete 60-question candidate without editing its questions, choices, 
    - The stem states two or three explicit constraints, and every constraint needed for a deterministic answer.
    - Exactly one single-choice option, or exactly two choose-two options, satisfy every constraint.
    - Every distractor is technically possible on Google Cloud and fails at least one named constraint for a documented reason.
-   - Every choice has two to four sentences of feedback, and every feedback sentence is supported by its cited evidence.
+   - Every choice's feedback starts with "Correct." or "Incorrect." followed by one to three sentences of explanation, and every feedback sentence is supported by its cited evidence.
    - The options follow the style guide's option rules: no "all of the above" or "none of the above", no negative stem, no absolute word as a clue, and no multi-line code.
    - Product names match `docs/context/product-names.md`, and the decisive feature is generally available and not deprecated.
    - The question is original. It does not copy, paraphrase, or re-skin an official sample, and it does not reuse a scenario from another practice set.
