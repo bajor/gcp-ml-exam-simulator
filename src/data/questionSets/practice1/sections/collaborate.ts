@@ -212,7 +212,7 @@ export const practiceExamOneCollaborateSection = {
           id: "workbench-access",
           title: "Manage access to an Agent Platform Workbench instance's JupyterLab interface",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/notebooks/workbench/instances/manage-access-jupyterlab",
-          claim: "You control access to a Workbench instance's JupyterLab interface through its access mode, which you set when you create the instance and can't change afterward: Single user only grants access only to the specified user, and Service account grants access to a service account through which you can grant access to one or more users. Access to the JupyterLab interface is separate from access to the instance itself, and changing the access mode metadata, such as proxy-mode, is not supported and can make the JupyterLab interface inaccessible.",
+          claim: "You control access to a Workbench instance's JupyterLab interface through its access mode, which you set when you create the instance and can't change afterward: Single user only grants access only to the specified user, and Service account grants access to a service account through which you can grant access to one or more users. Access to the JupyterLab interface is separate from access to the instance itself.",
         },
       ],
       choices: [
@@ -230,8 +230,8 @@ export const practiceExamOneCollaborateSection = {
         },
         {
           id: "c",
-          text: "Keep the existing instances, and edit each instance's metadata so that proxy-mode is set to mail and proxy-user-mail is set to the assigned data scientist's email address.",
-          feedback: "Incorrect. These entries are where the access mode is stored, but the access mode can't be changed after an instance is created, and changing the access mode metadata is not supported and can make the JupyterLab interface inaccessible.",
+          text: "Create a new instance with the Single user only access mode for each data scientist, and delete the existing instance as soon as the new one is ready.",
+          feedback: "Incorrect. The Single user only access mode meets the access requirement, but deleting the existing instances without copying their notebooks and data loses the work that the data scientists must keep.",
           evidenceIds: ["workbench-access"],
         },
         {
@@ -309,7 +309,7 @@ export const practiceExamOneCollaborateSection = {
       kind: "single",
       section: "collaborate",
       objective: "2.3 Tracking and running ML experiments: 2.3.a choosing the experimentation environment",
-      prompt: "A team of four data scientists trains XGBoost models in Agent Platform Workbench notebooks and records each run's hyperparameters and validation metrics in a shared spreadsheet. Each run takes about 20 minutes on a single machine. Entries are often missing or mistyped, and the team lead could not tell which run produced the model that the team promoted last month. From now on, the team wants each run's parameters, metrics, and trained model recorded from the training code, without building its own tracking tables or reports, and with minimal changes to the notebook workflow. What should you do?",
+      prompt: "A team of four data scientists trains XGBoost models in Agent Platform Workbench notebooks and records each run's hyperparameters and validation metrics in a shared spreadsheet. Each run takes about 20 minutes on a single machine. Entries are often missing or mistyped, so the team cannot reliably compare runs. The team wants each run's parameters, metrics, and trained model recorded from the training code so that the best run's model can be registered directly from its run, without building its own tracking tables or reports, and with minimal changes to the notebook workflow. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -329,13 +329,13 @@ export const practiceExamOneCollaborateSection = {
         {
           id: "a",
           text: "Create an experiment in Experiments on Agent Platform, and in the training code start a run for each training run, log the hyperparameters and metrics, and log the trained model with the SDK's log_model method.",
-          feedback: "Correct. Experiments tracks the parameters and metrics of each run from the training code, and log_model logs the trained XGBoost model to the current run, so each promoted model can be traced to its run with only SDK calls added.",
+          feedback: "Correct. Experiments tracks the parameters and metrics of each run from the training code, and log_model logs the trained XGBoost model to the current run, from which the chosen model can be registered, with only SDK calls added.",
           evidenceIds: ["experiments", "log-models"],
         },
         {
           id: "b",
           text: "Create an experiment in Experiments on Agent Platform, and in the training code start a run for each training run, log the hyperparameters and metrics, and compare the runs side by side in the console.",
-          feedback: "Incorrect. Logging parameters and metrics tracks and compares the runs, but the trained model is not logged to its run, so a promoted model still cannot be traced to the run that produced it.",
+          feedback: "Incorrect. Logging parameters and metrics tracks and compares the runs, but the trained model is not logged to its run, so the best run's model cannot be registered from the run.",
           evidenceIds: ["experiments", "log-models"],
         },
         {
@@ -377,25 +377,25 @@ export const practiceExamOneCollaborateSection = {
       choices: [
         {
           id: "a",
-          text: "Rank the candidate models by root-mean-squared error (RMSE), so that the models that make the fewest very large hourly forecast errors on the test split rank highest.",
+          text: "Rank the candidate models by root-mean-squared error (RMSE), and choose the model with the lowest RMSE on the hourly forecasts of the test split.",
           feedback: "Incorrect. RMSE is more sensitive to outliers than MAE, so the rare storm hours would weigh heavily in the ranking, although every megawatt-hour of error costs the same fee.",
           evidenceIds: ["regression-metrics", "loss-outliers"],
         },
         {
           id: "b",
-          text: "Rank the candidate models by r squared (r^2), so that the models whose hourly forecasts correlate most closely with the actual output on the test split rank highest.",
+          text: "Rank the candidate models by r squared (r^2), and choose the model with the highest r^2 on the hourly forecasts of the test split.",
           feedback: "Incorrect. The r^2 metric is the square of the Pearson correlation between the labels and the predictions, so it measures how closely the forecasts follow the actual output rather than the megawatt-hours of error that the fees are charged on.",
           evidenceIds: ["regression-metrics"],
         },
         {
           id: "c",
-          text: "Rank the candidate models by mean absolute error (MAE), so that the models with the lowest average megawatt-hours of error per hour on the test split rank highest.",
+          text: "Rank the candidate models by mean absolute error (MAE), and choose the model with the lowest MAE on the hourly forecasts of the test split.",
           feedback: "Correct. MAE is the average absolute difference between the actual and predicted values, so it grows in proportion to the per-megawatt-hour fees, and it is less sensitive to the rare storm hours than RMSE.",
           evidenceIds: ["regression-metrics", "loss-outliers"],
         },
         {
           id: "d",
-          text: "Rank the candidate models by mean absolute percentage error (MAPE), so that the models with the lowest average error relative to each hour's actual output on the test split rank highest.",
+          text: "Rank the candidate models by mean absolute percentage error (MAPE), and choose the model with the lowest MAPE on the hourly forecasts of the test split.",
           feedback: "Incorrect. MAPE is undefined when the target contains zero values, as it does for the night hours, and a percentage error does not match a fee that is charged per megawatt-hour.",
           evidenceIds: ["regression-metrics"],
         },
@@ -407,7 +407,7 @@ export const practiceExamOneCollaborateSection = {
       kind: "single",
       section: "collaborate",
       objective: "2.3 Tracking and running ML experiments: 2.3.c tracking artifacts, versions, and lineage",
-      prompt: "An auditor asks a bank's ML team which exact training dataset and preprocessing run produced the credit-risk model that is currently deployed to an Agent Platform endpoint. The model was trained two months ago by an Agent Platform Pipelines run, the pipeline has run 40 times since then on different data snapshots, and the snapshots are BigQuery tables with date suffixes. The team must answer from recorded metadata rather than from memory or file names, and without rerunning any pipeline. What should you do?",
+      prompt: "An auditor asks a bank's ML team which exact training dataset and preprocessing run produced the credit-risk model that is currently deployed to an Agent Platform endpoint. The model was trained two months ago by an Agent Platform Pipelines run, the pipeline has run 40 times since then on different data snapshots, and the snapshots are BigQuery tables with date suffixes. The auditor accepts only lineage that was recorded when the model was trained, and the team cannot rerun any pipeline before the audit. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -427,7 +427,7 @@ export const practiceExamOneCollaborateSection = {
         {
           id: "a",
           text: "Compare the file names of the model artifacts in Cloud Storage with the date suffixes of the snapshot tables, and report the snapshot whose date is closest to the model's upload date.",
-          feedback: "Incorrect. Matching file names and dates is an inference rather than recorded metadata, and nothing guarantees that the closest date is the snapshot that the run used.",
+          feedback: "Incorrect. Matching file names and dates is an inference rather than lineage recorded at training time, and nothing guarantees that the closest date is the snapshot that the run used.",
           evidenceIds: ["ml-metadata"],
         },
         {
@@ -439,13 +439,13 @@ export const practiceExamOneCollaborateSection = {
         {
           id: "c",
           text: "Rerun the pipeline on each of the 40 recent snapshots, and report the snapshot whose resulting model has the same evaluation metrics as the deployed model.",
-          feedback: "Incorrect. The team must not rerun pipelines, and matching metrics would only suggest a snapshot, while the recorded lineage already identifies it.",
+          feedback: "Incorrect. The team cannot rerun pipelines before the audit, and matching metrics would only suggest a snapshot, while the recorded lineage already identifies it.",
           evidenceIds: ["pipelines"],
         },
         {
           id: "d",
           text: "Ask each team member which snapshot they used two months ago, and record the answers in the description field of the model in Agent Platform Model Registry for future audits.",
-          feedback: "Incorrect. Answers from memory are not recorded metadata, which the auditor requires, while the pipeline already recorded its inputs in ML Metadata.",
+          feedback: "Incorrect. Answers from memory are not lineage recorded at training time, which the auditor requires, while the pipeline already recorded its inputs in ML Metadata.",
           evidenceIds: ["pipelines"],
         },
       ],

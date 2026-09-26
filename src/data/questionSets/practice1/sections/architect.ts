@@ -107,33 +107,39 @@ export const practiceExamOneArchitectSection = {
       kind: "single",
       section: "architect",
       objective: "1.1 Developing ML models using BigQuery ML or AutoML on Gemini Enterprise Agent Platform: 1.1.d training models with Agent Platform AutoML",
-      prompt: "An insurer trains an Agent Platform AutoML tabular binary classification model on two million historical claims to flag possible fraud for a team of 40 investigators. Only 0.7% of the claims are fraudulent. The first model used the default optimization objective and shows a high ROC AUC on the test split, but the investigators report that too few of the claims it flags are actually fraudulent. You must keep every historical claim in the training data and change only the training configuration, and the investigators want a larger share of the flagged claims to be fraudulent without missing more fraud. What should you do?",
+      prompt: "An insurer trains an Agent Platform AutoML tabular binary classification model on two million historical claims to flag possible fraud for a team of 40 investigators. Only 0.7% of the claims are fraudulent. The first model used the default optimization objective and shows a high ROC AUC on the test split, but too few of the claims that it flags are actually fraudulent. The investigators change the alert threshold every month to match their staffing, so the model must perform well on the fraud class across all thresholds rather than at one operating point. You must keep every historical claim and change only the training configuration. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
           id: "automl-objectives",
           title: "Train a classification or regression model",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/tabular-data/classification-regression/train-model",
-          claim: "For AutoML classification, maximize-au-roc is the default for binary classification; maximize-au-prc maximizes the area under the precision-recall curve and optimizes results for inferences for the less common class; minimize-log-loss keeps inference probabilities as accurate as possible.",
+          claim: "For AutoML classification, maximize-au-roc is the default for binary classification; maximize-au-prc maximizes the area under the precision-recall curve and optimizes results for inferences for the less common class; maximize-precision-at-recall optimizes precision at a specific recall value; minimize-log-loss keeps inference probabilities as accurate as possible.",
+        },
+        {
+          id: "pr-curve",
+          title: "Classification: ROC and AUC",
+          url: "https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc",
+          claim: "When a dataset is imbalanced, precision-recall curves and the area under them may offer a better comparison of model performance than ROC AUC; a precision-recall curve plots precision against recall across all thresholds.",
         },
       ],
       choices: [
         {
           id: "a",
-          text: "Retrain the model with the minimize-log-loss optimization objective, keep all two million historical claims in the training data, and compare the new model with the current one on the test split.",
-          feedback: "Incorrect. Log loss is documented for keeping inference probabilities as accurate as possible; unlike the AUC PR objective, it does not optimize results for the less common class, which is the fraud class here.",
+          text: "Retrain the model with the maximize-precision-at-recall optimization objective at a recall value of 0.8, keep all two million historical claims in the training data, and compare the new model with the current one.",
+          feedback: "Incorrect. This objective optimizes precision at one specific recall value, which suits a fixed operating point, while the investigators change the threshold every month.",
           evidenceIds: ["automl-objectives"],
         },
         {
           id: "b",
           text: "Retrain the model with the maximize-au-prc optimization objective, keep all two million historical claims in the training data, and compare the new model with the current one on the test split.",
-          feedback: "Correct. The maximize-au-prc objective maximizes the area under the precision-recall curve and is documented to optimize results for the less common class, which improves the trade-off between flagged fraud and missed fraud while changing only the training configuration.",
-          evidenceIds: ["automl-objectives"],
+          feedback: "Correct. The maximize-au-prc objective maximizes the area under the precision-recall curve, which spans all thresholds, and optimizes results for the less common class, while only the training configuration changes.",
+          evidenceIds: ["automl-objectives", "pr-curve"],
         },
         {
           id: "c",
           text: "Keep the current model with its default objective, and raise the classification threshold in the claims application step by step until the investigators receive fewer false alerts.",
-          feedback: "Incorrect. Raising the threshold flags fewer claims, so the investigators would miss more fraud, and the model would still be optimized for ROC AUC, the default objective, rather than for the less common class.",
+          feedback: "Incorrect. A new threshold only moves the operating point of a model that is still optimized for ROC AUC, the default objective, so its performance on the fraud class across thresholds does not improve.",
           evidenceIds: ["automl-objectives"],
         },
         {
@@ -150,7 +156,7 @@ export const practiceExamOneArchitectSection = {
       kind: "single",
       section: "architect",
       objective: "1.1 Developing ML models using BigQuery ML or AutoML on Gemini Enterprise Agent Platform: 1.1.e fine-tuning Gemini models using BigQuery",
-      prompt: "A telecom company stores 40,000 closed support tickets in BigQuery, each with a one-sentence resolution summary that senior agents wrote in a strict house style. Analysts generate summaries for about 3,000 new tickets per day with AI.GENERATE_TEXT over a remote model that references Gemini, but even detailed prompts with style rules and 20 examples do not reproduce the house style. The team works only in SQL and has no machine learning engineers. Before production queries switch to a new model, the team needs an evaluation that it can rerun in SQL after every model change. What should you do?",
+      prompt: "A telecom company stores 40,000 closed support tickets in BigQuery, each with a one-sentence resolution summary that senior agents wrote in a strict house style. Analysts generate summaries for about 3,000 new tickets per day with AI.GENERATE_TEXT over a remote model that references Gemini, but even detailed prompts that describe the style rules do not reproduce the house style. The team works only in SQL and has no machine learning engineers. Before production queries switch to a new model, the team needs an evaluation that it can rerun in SQL after every model change. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -175,8 +181,8 @@ export const practiceExamOneArchitectSection = {
         },
         {
           id: "b",
-          text: "Add a few hundred more example tickets and summaries to the prompt of every AI.GENERATE_TEXT call so that the model can imitate the house style, and keep using the current remote model.",
-          feedback: "Incorrect. Prompts with rules and 20 examples already fell short, and BigQuery documents supervised tuning for behavior that is difficult to define in a prompt; this option also provides no evaluation that the team can rerun in SQL.",
+          text: "Change the remote model to reference a larger Gemini model, keep the current prompts, and compare the larger model with the current one by using ML.EVALUATE before the production queries switch.",
+          feedback: "Incorrect. ML.EVALUATE gives an evaluation that the team can rerun in SQL, but a larger model still depends on the prompts that fell short, while supervised tuning is documented for behavior that is difficult to define in a prompt.",
           evidenceIds: ["bq-tuning"],
         },
         {
@@ -206,7 +212,7 @@ export const practiceExamOneArchitectSection = {
           id: "partner-maas",
           title: "Gemini Enterprise Agent Platform partner models for MaaS",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models",
-          claim: "Partner models are offered as a managed API (model as a service) through Agent Platform endpoints and are serverless, with no infrastructure to provision; calls require the aiplatform.endpoints.predict permission in the Agent Platform User role; standard requests are pay-as-you-go, and provisioned throughput for some partner models reserves capacity for a fixed fee.",
+          claim: "Partner models are offered as a managed API (model as a service) through Agent Platform endpoints and are serverless, with no infrastructure to provision; calls require the aiplatform.endpoints.predict permission in the Agent Platform User role; standard requests are pay-as-you-go, and Provisioned Throughput for some partner models reserves capacity for a fixed fee.",
         },
         {
           id: "model-garden-use",
@@ -224,8 +230,8 @@ export const practiceExamOneArchitectSection = {
         },
         {
           id: "b",
-          text: "Enable the approved partner model in Model Garden, and purchase provisioned throughput for it that is sized for the busiest month so that capacity is always reserved.",
-          feedback: "Incorrect. The model and endpoints are right, but provisioned throughput reserves capacity for a fixed fee, while finance wants spending to follow a volume that swings from thousands to millions of requests.",
+          text: "Enable the approved partner model in Model Garden, and purchase Provisioned Throughput for it that is sized for the busiest month so that capacity is always reserved.",
+          feedback: "Incorrect. The model and endpoints are right, but Provisioned Throughput reserves capacity for a fixed fee, while finance wants spending to follow a volume that swings from thousands to millions of requests.",
           evidenceIds: ["partner-maas"],
         },
         {
@@ -285,8 +291,8 @@ export const practiceExamOneArchitectSection = {
         },
         {
           id: "d",
-          text: "Process each PDF with the Document AI Form Parser, and write a mapping for each supplier layout that turns the extracted key-value pairs into the four invoice fields in BigQuery.",
-          feedback: "Incorrect. The Form Parser extracts general key-value pairs, so the team would maintain a mapping for each of hundreds of supplier layouts, which is the layout-dependent code it wants to avoid.",
+          text: "Send each PDF to the Document AI Form Parser processor, and write the extracted key-value pairs of every invoice to a BigQuery table as the four invoice fields.",
+          feedback: "Incorrect. The Form Parser extracts general key-value pairs rather than invoice fields, so turning the pairs from hundreds of layouts into the four fields needs the layout-dependent code that the team wants to avoid.",
           evidenceIds: ["docai-processors"],
         },
       ],
@@ -297,7 +303,7 @@ export const practiceExamOneArchitectSection = {
       kind: "single",
       section: "architect",
       objective: "1.2 Building AI solutions using Google Cloud AI APIs or foundational models: 1.2.c building solutions and tuning for use cases",
-      prompt: "An HR department builds a Gemini-based assistant that answers questions about benefits, leave, and relocation policies for 30,000 employees. The 1,200 pages of policy documents are stored as PDF files in Cloud Storage, and the HR team changes some of them every week. Answers must reflect the current version of each policy and show which document supports them, and the cost of each request must stay low. A prototype that pastes a few policy sections into each prompt works only when someone pasted the right sections. What should you do?",
+      prompt: "An HR department builds a Gemini-based assistant that answers questions about benefits, leave, and relocation policies for 30,000 employees. The 1,200 pages of policy documents are stored as PDF files in Cloud Storage, and the HR team changes some of them every week. Answers must reflect the current version of each policy and show which document supports them. A prototype that pastes a few policy sections into each prompt works only when someone pasted the right sections. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -328,8 +334,8 @@ export const practiceExamOneArchitectSection = {
         },
         {
           id: "b",
-          text: "Paste all 1,200 pages of policy documents into the system instruction of every request, and instruct the model to quote the paragraph that supports each of its answers.",
-          feedback: "Incorrect. Sending every page with every request makes each request large and costly, which breaks the cost requirement, while retrieval adds only the passages relevant to each question.",
+          text: "Ingest the policy documents from Cloud Storage into a corpus in RAG Engine on Agent Platform once at launch, and ground Gemini's answers on that corpus with source references.",
+          feedback: "Incorrect. Grounding on a RAG Engine corpus cites the supporting documents, but a corpus that is ingested only once at launch misses the weekly policy changes, so answers can reflect outdated versions.",
           evidenceIds: ["rag-engine"],
         },
         {
@@ -341,7 +347,7 @@ export const practiceExamOneArchitectSection = {
         {
           id: "d",
           text: "Ingest the policy documents from Cloud Storage into a corpus in RAG Engine on Agent Platform, update the corpus when documents change, and ground Gemini's answers on it with source references.",
-          feedback: "Correct. RAG Engine ingests the documents from Cloud Storage and adds only the relevant passages to each request, which keeps requests small, and grounding anchors answers to these sources with links, so answers follow each weekly update.",
+          feedback: "Correct. RAG Engine ingests the documents from Cloud Storage and adds the passages relevant to each question, grounding anchors answers to these sources with links, and updating the corpus when documents change keeps answers current.",
           evidenceIds: ["rag-engine", "grounding"],
         },
       ],
@@ -384,13 +390,13 @@ export const practiceExamOneArchitectSection = {
         {
           id: "c",
           text: "Purchase Provisioned Throughput sized for the daily peak, and keep sending online requests throughout the day so that capacity is reserved for the reviews that arrive at peak hours.",
-          feedback: "Incorrect. Provisioned Throughput is a fixed-cost, fixed-term subscription that reserves throughput, so it addresses capacity by adding a fixed commitment rather than the discounted rate of batch inference.",
-          evidenceIds: ["provisioned-throughput"],
+          feedback: "Incorrect. Provisioned Throughput is a fixed-cost, fixed-term subscription that would be sized for the peak, so it reserves capacity without reducing cost, while batch inference is billed at a 50% discount.",
+          evidenceIds: ["provisioned-throughput", "batch-inference"],
         },
         {
           id: "d",
-          text: "Summarize reviews online only for the most popular 10% of products during the day, and leave the remaining reviews without summaries so that the application stays within the quota and the budget.",
-          feedback: "Incorrect. Skipping reviews breaks the requirement to summarize every review, while batch inference processes all of them at the discounted rate.",
+          text: "Collect each day's reviews in a BigQuery table, and send them every night as online requests from a scheduled job that writes the summaries to BigQuery and retries any failed requests.",
+          feedback: "Incorrect. Sending the requests at night moves them away from the daytime peak, but online requests are still billed at the real-time rate, while batch inference costs 50% less for the same non-urgent work.",
           evidenceIds: ["batch-inference"],
         },
       ],
