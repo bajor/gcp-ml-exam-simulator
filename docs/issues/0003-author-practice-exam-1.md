@@ -51,15 +51,15 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 
 | Question ID | Consideration | Type | Generative AI | Decisive feature | Correct letter | Distractor mechanisms | Levers |
 |---|---|---|---|---|---|---|---|
-| pmle-p1-collaborate-01 | 2.1.a | T5 | no | Images in Cloud Storage with an import file of URIs and labels | b | D3, D2, D7 | L2, L3 |
-| pmle-p1-collaborate-02 | 2.1.b | T4 | no | Move a terabyte-scale aggregation from in-memory Python to BigQuery SQL | d | D3, D1, D2 | L2, L6 |
-| pmle-p1-collaborate-03 | 2.1.c | T5 | no | Feature Store feature groups over BigQuery shared across teams | a | D1, D3, D2 | L2, L4 |
-| pmle-p1-collaborate-04 | 2.1.d | T10 | no | Sensitive Data Protection de-identification before training | c | D5, D3, D8 | L2, L4 |
-| pmle-p1-collaborate-05 | 2.2.a | T10 | no | Workbench single-user access mode for per-user identity | b | D5, D7, D2 | L2, L4 |
-| pmle-p1-collaborate-06 | 2.2.c | T11 | yes | Prototype Model Garden models from a notebook | d | D1, D2, D3 | L1, L4 |
-| pmle-p1-collaborate-07 | 2.3.a | T9 | no | Experiments on Agent Platform for run parameters and metrics | a | D3, D2, D3 | L2, L4 |
-| pmle-p1-collaborate-08 | 2.3.b | T6 | no | Regression error metric that matches the business cost of outliers | c | D6, D6, D7 | L2, L6 |
-| pmle-p1-collaborate-09 | 2.3.c | T9 | no | ML Metadata lineage from a deployed model to its dataset | b | D3, D6, D2 | L2, L3 |
+| pmle-p1-collaborate-01 | 2.1.a | T5 | no | Images in Cloud Storage with an `ML_USE` import column and a manual split | b | D7, D7, D1 | L2, L4 |
+| pmle-p1-collaborate-02 | 2.1.b | T4 | no | Move a terabyte-scale aggregation from in-memory pandas to BigQuery DataFrames | d | D7, D1, D3 | L2, L4 |
+| pmle-p1-collaborate-03 | 2.1.c | T5 | no | Feature Store feature groups over BigQuery with feature views for online serving | a | D2, D3, D2 | L2, L4 |
+| pmle-p1-collaborate-04 | 2.1.d | T10 | no | Sensitive Data Protection deterministic encryption with a surrogate annotation | c | D5, D7, D7 | L2, L4 |
+| pmle-p1-collaborate-05 | 2.2.a | T10 | no | New Workbench instances with the Single user only access mode | b | D7, D7, D6 | L2, L4 |
+| pmle-p1-collaborate-06 | 2.2.c | T11 | yes | Deploy self-deployed Model Garden models from a notebook, then undeploy | d | D1, D2, D1 | L2, L4 |
+| pmle-p1-collaborate-07 | 2.3.a | T9 | no | Experiments on Agent Platform with the trained model logged to each run | a | D7, D2, D1 | L2, L4 |
+| pmle-p1-collaborate-08 | 2.3.b | T6 | no | Regression error metric that matches the business cost of outliers | c | D6, D6, D7 | L2, L4 |
+| pmle-p1-collaborate-09 | 2.3.c | T9 | no | ML Metadata lineage from a deployed model to its dataset | b | D6, D2, D3 | L3, L4 |
 
 ### Plan: scale
 
@@ -129,3 +129,4 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 - 2026-09-26: Planned all 60 questions and authored the `architect` section.
 - 2026-09-26: Authored the `collaborate` section.
 - 2026-09-26: Revised the `architect` section after independent review: corrected the batch-inference deadline arithmetic in architect-08, replaced request logging (Preview for partner models) and added a pay-as-you-go near-miss in architect-05, removed the stem echo in architect-03, replaced an implausible distractor in architect-06, and raised the planned generative AI count to 14.
+- 2026-09-26: Revised the `collaborate` section after independent review: replaced distractors that were impossible rather than wrong (a BigQuery image source in collaborate-01, an access-mode change in collaborate-05), removed the second defensible answer in collaborate-07 by requiring the trained model to be logged, corrected unsupported feedback in collaborate-03, collaborate-04, and collaborate-06, added near-miss pairs to six questions, and replaced collaborate-08 with a regression-metric question so that it no longer overlaps architect-03.
