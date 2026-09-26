@@ -5,7 +5,7 @@ description: Port the Data Engineer simulator without its content, adopt the PML
 status: in-progress
 labels: [feature, frontend]
 blocked_by: []
-tracker: "PR [1/3] and PR [2/3]"
+tracker: "PR [1/5] and PR [2/5]"
 timestamp: 2026-09-25T00:00:00Z
 ---
 
@@ -15,10 +15,10 @@ Implement [PRD 0001](/prd/0001-ml-engineer-exam-simulator.md), [ADR 0001](/adr/0
 
 ### Scope
 
-1. PR [1/3]: Copy the application, tooling, tests, and workflows without Data Engineer content. Adopt six sections, 60 questions, reading-length floors, PMLE storage keys, the `/gcp-ml-exam-simulator/` base path, and a coming-soon catalog.
-2. PR [2/3]: Restyle the application in a dense Pearson-style presentation in which question and answer text share one font size.
+1. PR [1/5]: Copy the application, tooling, tests, and workflows without Data Engineer content. Adopt six sections, 60 questions, reading-length floors, PMLE storage keys, the `/gcp-ml-exam-simulator/` base path, and a coming-soon catalog.
+2. PR [2/5]: Restyle the application in a dense Pearson-style presentation in which question and answer text share one font size.
 
-Question-authoring preparation, PR [3/3], is tracked by a separate issue.
+Question-authoring preparation is tracked by [issue 0002](/issues/0002-prepare-question-authoring.md).
 
 ### Acceptance
 
@@ -28,5 +28,5 @@ Question-authoring preparation, PR [3/3], is tracked by a separate issue.
 
 ### Progress
 
-- 2026-09-25: PR [1/3] ports the application and documentation.
-- 2026-09-25: PR [2/3] applies the dense exam presentation specified by [BDR 0003](/bdr/0003-exam-presentation.md).
+- 2026-09-25: PR [1/5] ports the application and documentation.
+- 2026-09-25: PR [2/5] applies the dense exam presentation specified by [BDR 0003](/bdr/0003-exam-presentation.md).
