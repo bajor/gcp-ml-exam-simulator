@@ -19,22 +19,16 @@ export const practiceExamOneScaleSection = {
           claim: "You can include examples in the prompt that show the model what a good response looks like.",
         },
         {
-          id: "automl-text",
-          title: "Vertex AI deprecations",
-          url: "https://docs.cloud.google.com/vertex-ai/docs/deprecations",
-          claim: "AutoML Text was deprecated on September 15, 2024, with a shutdown date of June 15, 2025; since September 15, 2024, text classification, entity extraction, and sentiment analysis can be customized only by moving to Gemini.",
-        },
-        {
           id: "model-types",
           title: "End-to-end user journeys for ML models",
           url: "https://docs.cloud.google.com/bigquery/docs/e2e-journey",
           claim: "BigQuery ML lists k-means clustering among unsupervised learning models.",
         },
         {
-          id: "arima-plus",
-          title: "The CREATE MODEL statement for ARIMA_PLUS models",
-          url: "https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-create-time-series",
-          claim: "ARIMA_PLUS models fit and forecast time series, and ML.FORECAST retrieves the forecasted values.",
+          id: "nl-classify",
+          title: "Classifying Content",
+          url: "https://docs.cloud.google.com/natural-language/docs/classifying-text",
+          claim: "The Natural Language API classifyText method analyzes a document and returns the content categories that apply to it, from the complete list of categories that the API defines.",
         },
       ],
       choices: [
@@ -42,19 +36,19 @@ export const practiceExamOneScaleSection = {
           id: "a",
           text: "Classify each email with Gemini by using a prompt that defines the six categories and includes a few labeled examples, and measure accuracy on the 300 labeled emails before launch.",
           feedback: "Correct. A prompt with clear category definitions and a few labeled examples uses the model the company already runs, needs no training pipeline, and fits the one-week deadline, while the labeled emails provide a check before launch.",
-          evidenceIds: ["few-shot", "automl-text"],
+          evidenceIds: ["few-shot"],
         },
         {
           id: "b",
           text: "Label 50,000 more emails over the next two months, and then train a text classification model from scratch in a custom training job before routing any email.",
-          feedback: "Incorrect. Two months of labeling and a custom training pipeline miss the one-week deadline and need the ML engineers that the team does not have, while Gemini is the documented path for customizing text classification.",
-          evidenceIds: ["automl-text"],
+          feedback: "Incorrect. Two months of labeling and a custom training pipeline miss the one-week deadline and need the ML engineers that the team does not have, while a prompt with a few labeled examples needs no training pipeline.",
+          evidenceIds: ["few-shot"],
         },
         {
           id: "c",
-          text: "Train an ARIMA_PLUS model in BigQuery ML on the daily count of emails in each category, and route each new email to the category that has the highest forecast.",
-          feedback: "Incorrect. ARIMA_PLUS forecasts time series such as daily volumes; it does not read an email's content, so it cannot decide which category a given email belongs to.",
-          evidenceIds: ["arima-plus"],
+          text: "Send each email to the classifyText method of the Natural Language API, and route the email by the content category that the API returns with the highest confidence.",
+          feedback: "Incorrect. The classifyText method returns content categories from a fixed list that the API defines, so it cannot return the company's own six product categories.",
+          evidenceIds: ["nl-classify"],
         },
         {
           id: "d",
@@ -70,7 +64,7 @@ export const practiceExamOneScaleSection = {
       kind: "single",
       section: "scale",
       objective: "3.1 Building models given the task considering cost, complexity, latency, and scalability: 3.1.b choosing the product",
-      prompt: "A logistics company predicts delivery delays in hours. Underestimated delays cost the company three times as much as overestimated ones, so the data science team designed an asymmetric loss function, and leadership wants that loss to be the training objective rather than a post-processing adjustment. The team writes PyTorch code, the training data is 400 GB of Parquet files in Cloud Storage, and training takes about six hours on one GPU. The platform team wants the training to run on managed infrastructure. What should you do?",
+      prompt: "A logistics company predicts delivery delays in hours. Underestimated delays cost the company three times as much as overestimated ones, so the data science team designed an asymmetric loss function, and leadership wants that loss to be the training objective rather than a post-processing adjustment. The team writes PyTorch code, the training data is 40 GB of Parquet files in Cloud Storage, and training takes about six hours on one GPU. The platform team wants the training to run on managed infrastructure. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -89,7 +83,7 @@ export const practiceExamOneScaleSection = {
       choices: [
         {
           id: "a",
-          text: "Train an Agent Platform AutoML tabular regression model on the Parquet data, and choose the optimization objective that is closest to the asymmetric loss function.",
+          text: "Load the data into BigQuery, train an Agent Platform AutoML tabular regression model on it, and choose the optimization objective that is closest to the asymmetric loss function.",
           feedback: "Incorrect. AutoML regression optimizes one of its documented objectives, RMSE, MAE, or RMSLE, none of which is the team's asymmetric loss.",
           evidenceIds: ["automl-objectives"],
         },
@@ -101,14 +95,14 @@ export const practiceExamOneScaleSection = {
         },
         {
           id: "c",
-          text: "Package the PyTorch code with the asymmetric loss in a custom container image, and run it as an Agent Platform custom training job with a GPU that reads the Parquet files from Cloud Storage.",
+          text: "Run the PyTorch code with the asymmetric loss as an Agent Platform custom training job on a GPU machine, and have the job read the Parquet files from Cloud Storage.",
           feedback: "Correct. Custom training runs the team's own PyTorch code in a container image, so the asymmetric loss is the training objective, and the job runs on managed infrastructure.",
           evidenceIds: ["custom-training"],
         },
         {
           id: "d",
-          text: "Run the PyTorch training on a self-managed Compute Engine VM with a GPU, and have the platform team patch the VM and start and stop it with a cron job for each training run.",
-          feedback: "Incorrect. The code would train with the right loss, but a self-managed VM is infrastructure that the platform team must operate, while Agent Platform provides managed training for any framework.",
+          text: "Create a GKE cluster with a GPU node pool that the platform team operates, and start each training run as a Kubernetes Job that executes the PyTorch code and reads the Parquet files.",
+          feedback: "Incorrect. The code would train with the right loss, but the GKE cluster is infrastructure that the platform team must operate, while Agent Platform provides managed training for any framework.",
           evidenceIds: ["custom-training"],
         },
       ],
@@ -134,6 +128,12 @@ export const practiceExamOneScaleSection = {
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/configure-compute",
           claim: "A deployment's node count is increased or decreased as required by the inference load, never fewer than the minimum replica count and up to the maximum replica count.",
         },
+        {
+          id: "deployment",
+          title: "Deploy a model to an endpoint",
+          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/deployment",
+          claim: "You can add a new model to the same endpoint and gradually shift its traffic split, so that you don't have to update your application to point to a new endpoint URL.",
+        },
       ],
       choices: [
         {
@@ -158,7 +158,7 @@ export const practiceExamOneScaleSection = {
           id: "d",
           text: "Deploy the model to an Agent Platform endpoint with minimum and maximum replica counts for autoscaling, and send a synchronous online inference request for each checkout.",
           feedback: "Correct. Online inference returns synchronous results for requests driven by application input, autoscaling between the replica counts follows the sales peaks, and the ML team can deploy a new model to the endpoint without touching the checkout service.",
-          evidenceIds: ["inference-modes", "replica-counts"],
+          evidenceIds: ["inference-modes", "replica-counts", "deployment"],
         },
       ],
       correctChoiceId: "d",
@@ -211,7 +211,7 @@ export const practiceExamOneScaleSection = {
       kind: "single",
       section: "scale",
       objective: "3.2 Training models: 3.2.a organizing training data",
-      prompt: "A media company trains a custom audio classification model on 12 million WAV clips of two to five seconds each, stored as individual objects in a Cloud Storage bucket. The Agent Platform custom training job reads the clips through the Cloud Storage FUSE mount, and profiling shows that the GPUs are idle most of the time while files are being looked up and opened. The team retrains every month and wants to keep the training data in Cloud Storage and keep reading it through the mounted file system. What should you do?",
+      prompt: "A media company trains a custom audio classification model on 12 million WAV clips of two to five seconds each, stored as individual objects in a Cloud Storage bucket. The Agent Platform custom training job reads the clips through the Cloud Storage FUSE mount, and profiling shows that the GPUs are idle most of the time while files are being looked up and opened. The team retrains every month, cannot increase the training budget, and wants to keep the training data in Cloud Storage and keep reading it through the mounted file system. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -230,7 +230,7 @@ export const practiceExamOneScaleSection = {
         },
         {
           id: "b",
-          text: "Copy all 12 million clips from Cloud Storage to the local disk of the training machine at the start of every job, and read them from the local disk during training.",
+          text: "Copy all 12 million clips from Cloud Storage to the local disk of the training machine at the start of every job, and read them from the local disk during every epoch of training.",
           feedback: "Incorrect. The copy still looks up and opens 12 million objects in every job, and the requirement is to keep reading the data through the mounted file system.",
           evidenceIds: ["gcs-fuse"],
         },
@@ -242,8 +242,8 @@ export const practiceExamOneScaleSection = {
         },
         {
           id: "d",
-          text: "Increase the number of GPUs and data loader workers in the training job so that more files are opened in parallel, and keep all 12 million individual clips unchanged in the bucket.",
-          feedback: "Incorrect. More GPUs do not reduce the per-object lookup and open latency that leaves the GPUs idle, so the added accelerators would mostly wait as well.",
+          text: "Add more GPUs to the training job so that more clips are processed in parallel, and keep all 12 million individual clips unchanged in the bucket.",
+          feedback: "Incorrect. More GPUs raise the cost that the fixed budget does not allow, and they do not reduce the latency of looking up and opening millions of small objects, so the added accelerators would mostly wait too.",
           evidenceIds: ["gcs-fuse"],
         },
       ],
@@ -254,7 +254,7 @@ export const practiceExamOneScaleSection = {
       kind: "single",
       section: "scale",
       objective: "3.2 Training models: 3.2.b ingesting data into training pipelines",
-      prompt: "A recommendation model trains on Agent Platform custom training with four GPUs and reads a 1.5 TB BigQuery table at the start of every epoch through the paginated tabledata.list REST API. Each epoch spends most of its time waiting for rows, and GPU utilization stays below 20%. The table has about 900 million rows with 40 feature columns and is updated every day. The team does not want to create or maintain exported copies of the data, and the training code is written in TensorFlow. What should you do?",
+      prompt: "A recommendation model trains on Agent Platform custom training with four GPUs and reads a 1.5 TB BigQuery table at the start of every epoch through the paginated tabledata.list REST API. Each epoch spends most of its time waiting for rows, and GPU utilization stays below 20%. The table has about 900 million rows with 40 feature columns and is updated every day. The training machine has 208 GB of memory, the team cannot increase the training cost, and it does not want to create or maintain exported copies of the data. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -267,7 +267,7 @@ export const practiceExamOneScaleSection = {
       choices: [
         {
           id: "a",
-          text: "Read the table through the BigQuery Storage Read API, which provides fast access to BigQuery-managed storage over an RPC-based protocol, and stream the rows into the input pipeline.",
+          text: "Read the table through the BigQuery Storage Read API, and stream the rows of the current table into the input pipeline at the start of each epoch.",
           feedback: "Correct. The Storage Read API provides fast access to BigQuery-managed storage instead of paginated row responses, and it reads the current table directly, so no exported copies are needed.",
           evidenceIds: ["storage-read-api"],
         },
@@ -280,13 +280,13 @@ export const practiceExamOneScaleSection = {
         {
           id: "c",
           text: "Add four more GPUs to the training job so that each batch is processed faster, and keep reading the table through the paginated tabledata.list REST API.",
-          feedback: "Incorrect. The GPUs are already idle while they wait for rows, so more GPUs would only wait longer for the paginated reads that cause the bottleneck.",
+          feedback: "Incorrect. More GPUs raise the training cost, which the team cannot increase, and the GPUs are already idle while they wait for the paginated reads that cause the bottleneck.",
           evidenceIds: ["storage-read-api"],
         },
         {
           id: "d",
           text: "Keep the paginated tabledata.list REST API, and cache all rows of the first epoch in the memory of the training machine so that later epochs can reuse them.",
-          feedback: "Incorrect. Paginated record-based access suits small results, and caching 1.5 TB in the memory of one training machine is not a realistic fix for the slow reads.",
+          feedback: "Incorrect. Paginated record-based access suits small result sets, and 1.5 TB of rows does not fit in the 208 GB of memory of the training machine.",
           evidenceIds: ["storage-read-api"],
         },
       ],
@@ -372,13 +372,13 @@ export const practiceExamOneScaleSection = {
         {
           id: "b",
           text: "Move the training job to CPU-only machines with more cores, because the documentation recommends CPUs for models that are limited by input and output bandwidth.",
-          feedback: "Incorrect. That guidance describes workloads bound by the host system's I/O, but here the sequential reads are the bottleneck, and CPU-only training of an image model would be much slower.",
+          feedback: "Incorrect. That guidance describes workloads bound by the host system's I/O, but the goal is to raise TPU utilization, and moving to CPUs abandons the TPU instead of fixing the sequential reads.",
           evidenceIds: ["tpu-intro", "tpu-performance"],
         },
         {
           id: "c",
-          text: "Convert the 2,000 TFRecord files into CSV files, which are simpler to parse, and keep reading them one file at a time in the existing input pipeline.",
-          feedback: "Incorrect. The reads would still be sequential, which is the documented cause of the idle TPU, and converting the files adds work without addressing the bottleneck.",
+          text: "Change the tf.data input pipeline to shuffle the order of the 2,000 TFRecord files before each epoch, and keep reading the files one at a time.",
+          feedback: "Incorrect. Shuffling changes which file is read first, but the files are still read one at a time, so data loading still cannot keep a steady stream of data flowing to the TPU.",
           evidenceIds: ["tpu-performance"],
         },
         {
@@ -487,7 +487,7 @@ export const practiceExamOneScaleSection = {
       kind: "single",
       section: "scale",
       objective: "3.3 Choosing appropriate hardware for training: 3.3.a compute and accelerators",
-      prompt: "A research team trains a 3-billion-parameter PyTorch model with large batches. The model's attention layers call several custom operations inside the main training loop, and these operations cannot be rewritten before the project deadline. Training runs for about ten days on Agent Platform custom training and writes checkpoints to Cloud Storage every hour, and the team's budget allows either GPUs or TPUs. The team is now choosing the accelerator type. The team wants the hardware that the Cloud TPU documentation recommends for this kind of model. What should you do?",
+      prompt: "A research team trains a 3-billion-parameter PyTorch model with large batches. The model's attention layers call several custom operations inside the main training loop, and these operations cannot be rewritten before the project deadline. Each training run lasts about ten days on Agent Platform custom training and writes checkpoints to Cloud Storage every hour, the team plans about four runs every quarter, and its budget allows either GPUs or TPUs. The team is now choosing the accelerator type and wants the one on which this model trains efficiently with its custom operations unchanged. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -500,13 +500,13 @@ export const practiceExamOneScaleSection = {
       choices: [
         {
           id: "a",
-          text: "Use Cloud TPUs, because the model is large, trains for days, and uses large batch sizes, which are workloads that TPUs are optimized for in the documentation.",
+          text: "Use Cloud TPUs for the training job, because the model is large, trains for days, and uses large batch sizes.",
           feedback: "Incorrect. Size and training time favor TPUs in general, but the documentation states that TPUs are not suited to workloads with custom operations in the main training loop.",
           evidenceIds: ["tpu-intro"],
         },
         {
           id: "b",
-          text: "Use CPU-only machines with many cores, because the custom operations would run on CPUs and CPU-only training avoids moving data between the host and accelerators.",
+          text: "Use CPU-only machines with many cores, so that the custom operations run natively and no data moves between the host and the accelerators.",
           feedback: "Incorrect. The documentation recommends CPUs for quick prototyping, simple models, and small models, not for a 3-billion-parameter model trained with large batches.",
           evidenceIds: ["tpu-intro"],
         },
@@ -518,7 +518,7 @@ export const practiceExamOneScaleSection = {
         },
         {
           id: "d",
-          text: "Use GPU machines, because the documentation recommends GPUs for models with many custom PyTorch operations and says that TPUs do not suit custom operations in the main training loop.",
+          text: "Use GPU machines for the training job, keep the custom operations in the main training loop unchanged, and write checkpoints to Cloud Storage as before.",
           feedback: "Correct. The Cloud TPU guidance recommends GPUs for models with a significant number of custom PyTorch operations and warns against TPUs for custom operations inside the main training loop.",
           evidenceIds: ["tpu-intro"],
         },
@@ -530,33 +530,39 @@ export const practiceExamOneScaleSection = {
       kind: "single",
       section: "scale",
       objective: "3.3 Choosing appropriate hardware for training: 3.3.b distributed training",
-      prompt: "A team trains a 1.2-billion-parameter language model on Agent Platform with data parallelism across 16 GPU nodes of eight GPUs each, reading its training data from Cloud Storage. The model fits in the memory of a single GPU, but profiling shows that gradient communication between the nodes takes most of each training step, and adding nodes barely increases throughput. Each training run lasts about four days, and the training recipe fixes the global batch size. The team wants higher training throughput without changing the model architecture or moving the training to another platform. What should you do?",
+      prompt: "A team trains a 1.2-billion-parameter language model on Agent Platform with data parallelism across 16 GPU nodes of eight GPUs each, reading its training data from Cloud Storage. The PyTorch training code uses NCCL all-reduce and runs in a custom container. The model fits in the memory of a single GPU, but profiling shows that gradient communication between the nodes takes most of each training step, and adding nodes barely increases throughput. Each training run lasts about four days, and the training recipe fixes the global batch size. The team wants higher training throughput without changing the model architecture, moving the training to another platform, or paying for more GPUs. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
           id: "reduction-server",
           title: "Distributed training",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/training/distributed-training",
-          claim: "When you train a large model on multiple nodes, communicating gradients between nodes can add significant latency; Reduction Server is an all-reduce algorithm that can increase throughput and reduce latency for distributed training, and it runs in a dedicated worker pool.",
+          claim: "When you train a large model on multiple nodes, communicating gradients between nodes can add significant latency; Reduction Server is an all-reduce algorithm that can increase throughput and reduce latency for multi-host data-parallel training with GPUs that uses NCCL all-reduce; it runs in a separate worker pool whose nodes don't use GPUs, and a custom container needs NCCL 2.7 or later and the google-reduction-server package.",
+        },
+        {
+          id: "model-parallelism",
+          title: "Machine Learning Glossary",
+          url: "https://developers.google.com/machine-learning/glossary",
+          claim: "Model parallelism puts different parts of one model on different devices, which enables models that are too big to fit on a single device, and model parallelism slows training.",
         },
       ],
       choices: [
         {
           id: "a",
           text: "Switch from data parallelism to model parallelism and split the layers of the model across the GPUs, so that no gradients need to be communicated between the nodes.",
-          feedback: "Incorrect. The model already fits on one GPU, and splitting its layers across GPUs changes how the model is trained while still requiring communication, whereas Reduction Server targets the gradient exchange directly.",
-          evidenceIds: ["reduction-server"],
+          feedback: "Incorrect. Model parallelism is for models that are too big to fit on a single device, and it slows training, while this model fits on one GPU and Reduction Server targets the gradient exchange directly.",
+          evidenceIds: ["model-parallelism", "reduction-server"],
         },
         {
           id: "b",
-          text: "Add a Reduction Server worker pool to the Agent Platform training job, which uses an all-reduce algorithm that increases throughput and reduces latency for distributed training.",
-          feedback: "Correct. Gradient communication between nodes is the documented source of latency that Reduction Server addresses, and adding its worker pool changes neither the model nor the platform.",
+          text: "Install the google-reduction-server package in the custom container, and add a Reduction Server worker pool of CPU-only machines to the Agent Platform training job.",
+          feedback: "Correct. Reduction Server reduces the latency of gradient communication in NCCL data-parallel GPU training, the custom container needs its package, and its worker pool uses no GPUs, so the model, platform, and GPU count stay the same.",
           evidenceIds: ["reduction-server"],
         },
         {
           id: "c",
-          text: "Double the number of GPU nodes to 32, so that each node processes a smaller share of every global batch and finishes its part of each step sooner.",
-          feedback: "Incorrect. Adding nodes already barely increases throughput because gradient communication dominates each step, and more nodes add more communication.",
+          text: "Install the google-reduction-server package in the custom container, and add a Reduction Server worker pool that uses the same eight-GPU machine type as the training nodes.",
+          feedback: "Incorrect. Reduction Server nodes don't use GPUs, so a worker pool of eight-GPU machines pays for many more GPUs, which the team wants to avoid.",
           evidenceIds: ["reduction-server"],
         },
         {
