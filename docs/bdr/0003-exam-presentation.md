@@ -24,10 +24,10 @@ timestamp: 2026-09-25T00:00:00Z
 | Header | A dark title bar shows the exam title, "Question N of 60", and the time remaining. |
 | Choices | A radio button or checkbox, a letter such as "A.", and the choice text. There are no cards, rounded corners, or shadows. The selected choice has a thin border and a light fill. |
 | Controls | Gray raised buttons. Previous and Next sit in a gray toolbar under the choices. |
-| Navigator | A numbered grid at the right on wide screens and below the question on screens up to 800 pixels wide. The current question has a thick border and bold number, an answered question has an underline bar, and a marked question has a yellow fill and an asterisk. |
+| Navigator | A numbered grid at the right on wide screens and below the question on screens up to 800 pixels wide. The current question has a thick border and a bold number, an answered question has a thick bottom border, and a marked question has a yellow fill and an asterisk. Borders stay visible in forced-colors (high-contrast) mode. |
 | Other screens | Catalog, start, confirmation, and result screens use the same font, title bars, bordered panels, and buttons. |
 
-The presentation keeps the accessibility constraints of the ported application. Sizes use `rem` units, so browser zoom and font settings still apply. Controls are at least 24 CSS pixels tall. Keyboard focus shows a 2-pixel dotted outline. Question state is conveyed by text, borders, and accessible names in addition to color. The layout has no horizontal scrolling at a width of 390 pixels.
+The presentation keeps the accessibility constraints of the ported application. Sizes use `rem` units, including the navigator column, so browser zoom and font settings still apply. Long unbroken words wrap instead of widening the page. Controls are at least 24 CSS pixels tall. Keyboard focus shows a 2-pixel dotted outline. Question state is conveyed by text, borders, and accessible names in addition to color. The layout has no horizontal scrolling at a width of 390 pixels.
 
 ## Scenarios
 
@@ -35,7 +35,7 @@ The presentation keeps the accessibility constraints of the ported application. 
 
 - Given an attempt in progress
 - When the exam screen renders a question
-- Then the computed font size of the question text equals the computed font size of each choice's text
+- Then the computed font size of the question text equals the computed font size of the choice text, on the exam screen and in the result review
 
 **Scenario 2: Narrow viewport**
 
@@ -53,7 +53,7 @@ The presentation keeps the accessibility constraints of the ported application. 
 
 | Case | Level | Input or scenario | Observable assertion | Proves |
 |---|---|---|---|---|
-| Equal text size | End-to-end | First fixture question on desktop and mobile viewports | The question heading and a choice's text have the same computed font size | The candidate's explicit requirement holds in a real browser. |
+| Equal text size | End-to-end | First fixture question on the exam screen and in the result review, on desktop and mobile viewports | The question text and a choice's text have the same computed font size on both screens | The candidate's explicit requirement holds in a real browser. |
 | Viewport fit | End-to-end | Attempt on desktop and mobile viewports | Document width does not exceed the viewport | The dense layout stays usable on phones. |
 | Keyboard order | End-to-end | Tab from the focused question | Mark for review receives focus | The restyle did not change control order. |
 
