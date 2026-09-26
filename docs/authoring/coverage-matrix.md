@@ -127,12 +127,12 @@ Documentation: [end-to-end user journeys](https://docs.cloud.google.com/bigquery
 |---|---|---|
 | 3.2.a | Organizing training data | Store tabular, text, speech, image, and video data in Cloud Storage and BigQuery in formats that scale. |
 | 3.2.b | Ingesting data into training pipelines | Read structured and unstructured sources efficiently from training code and pipelines. |
-| 3.2.c | Training with SDKs | Agent Platform custom training with prebuilt or custom containers, Kubeflow on GKE, AutoML, and Tabular Workflows. Among Tabular Workflows, only End-to-End AutoML for classification and regression is GA. |
+| 3.2.c | Training with SDKs | Agent Platform custom training with custom containers, Kubeflow on GKE, AutoML, and Tabular Workflows. Among Tabular Workflows, only End-to-End AutoML for classification and regression is GA. The newest prebuilt training containers for TensorFlow, PyTorch, scikit-learn, and XGBoost passed their end-of-availability dates in July 2026, after which their images can no longer be used, so neither a prebuilt training container nor autopackaging, which builds on one, may be the decisive feature. |
 | 3.2.d | Troubleshooting training failures | Out-of-memory errors, diverging loss, slow input pipelines, idle accelerators, and permission errors. |
 | 3.2.e | Hyperparameter tuning | Search space, metric, search algorithm (Bayesian optimization is the default), and trial budget. |
 | 3.2.f | Fine-tuning foundation models | When tuning beats prompting or grounding, and how supervised tuning uses labeled examples. |
 
-Common traps: a custom container where a prebuilt container works (D1); a larger machine for a slow input pipeline (D6).
+Common traps: a self-managed VM where Agent Platform custom training works (D1); a larger machine for a slow input pipeline (D6).
 
 Documentation: [serverless training](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/training/overview), [custom training jobs](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/training/create-custom-job), [custom containers](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/training/containers-overview), [Tabular Workflows](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/tabular-data/tabular-workflows/overview), [hyperparameter tuning](https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/training/hyperparameter-tuning-overview), [model tuning](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/tuning).
 

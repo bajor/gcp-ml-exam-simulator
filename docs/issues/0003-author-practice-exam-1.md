@@ -71,7 +71,7 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 | pmle-p1-scale-04 | 3.1.d | T10 | no | Boosted trees with `ML.EXPLAIN_PREDICT` for per-decision explanations | b | D3, D2, D7 | L2, L4 |
 | pmle-p1-scale-05 | 3.2.a | T5 | no | Unstructured data in Cloud Storage with URIs and labels in BigQuery | c | D3, D2, D3 | L2, L3 |
 | pmle-p1-scale-06 | 3.2.b | T4 | no | Faster BigQuery reads for a training input pipeline | a | D6, D2, D3 | L2, L6 |
-| pmle-p1-scale-07 | 3.2.c | T3 | no | Existing script as a custom training job with a prebuilt container | b | D1, D2, D3 | L2, L4 |
+| pmle-p1-scale-07 | 3.2.c | T3 | no | Notebook code with an unsupported framework version and private dependencies moved to a custom container training job | b | D1, D3, D2 | L2, L4 |
 | pmle-p1-scale-08 | 3.2.d | T4 | no | Input-bound accelerators fixed with a parallel, prefetching input pipeline | d | D6, D2, D6 | L2, L6 |
 | pmle-p1-scale-09 | 3.2.e | T7 | no | Hyperparameter tuning job with a reported metric | a | D3, D2, D7 | L2, L4 |
 | pmle-p1-scale-10 | 3.2.f | T11 | yes | Supervised fine-tuning for a strict output format | c | D7, D2, D6 | L2, L4 |
@@ -131,4 +131,4 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 - 2026-09-26: Revised the `architect` section after independent review: corrected the batch-inference deadline arithmetic in architect-08, replaced request logging (Preview for partner models) and added a pay-as-you-go near-miss in architect-05, removed the stem echo in architect-03, replaced an implausible distractor in architect-06, and raised the planned generative AI count to 14.
 - 2026-09-26: Revised the `collaborate` section after independent review: replaced distractors that were impossible rather than wrong (a BigQuery image source in collaborate-01, an access-mode change in collaborate-05), removed the second defensible answer in collaborate-07 by requiring the trained model to be logged, corrected unsupported feedback in collaborate-03, collaborate-04, and collaborate-06, added near-miss pairs to six questions, and replaced collaborate-08 with a regression-metric question so that it no longer overlaps architect-03.
 - 2026-09-26: Addressed the second independent review: architect-03 now requires performance across thresholds and adds a precision-at-recall near-miss, architect-04 no longer overlaps scale-10, architect-06, architect-07, and architect-08 gained near-miss pairs, collaborate-05 replaced its unsupported metadata-edit distractor, and collaborate-07, collaborate-08, and collaborate-09 were reworded.
-- 2026-09-26: Authored the `scale` section.
+- 2026-09-26: Authored the `scale` section. Because the newest prebuilt training containers passed their end-of-availability dates in July 2026, scale-02 uses a custom container and scale-07 tests custom containers instead of autopackaging.
