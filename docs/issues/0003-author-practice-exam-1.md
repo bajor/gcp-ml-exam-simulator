@@ -67,7 +67,7 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 |---|---|---|---|---|---|---|---|
 | pmle-p1-scale-01 | 3.1.a | T2 | yes | Gemini with few-shot prompting for a small labeled text task | a | D2, D3, D3 | L3, L4 |
 | pmle-p1-scale-02 | 3.1.b | T2 | no | Custom training for a custom loss function | c | D3, D3, D1 | L3, L4 |
-| pmle-p1-scale-03 | 3.1.c | T8 | no | Online inference for a real-time decision | d | D4, D4, D2 | L3, L4 |
+| pmle-p1-scale-03 | 3.1.c | T8 | no | Online inference for a real-time decision | d | D4, D4, D1 | L3, L4 |
 | pmle-p1-scale-04 | 3.1.d | T10 | no | Boosted trees with `ML.EXPLAIN_PREDICT` for per-decision explanations | b | D3, D7, D2 | L2, L4 |
 | pmle-p1-scale-05 | 3.2.a | T5 | no | Fewer, larger files in Cloud Storage behind Cloud Storage FUSE | c | D3, D2, D2 | L3, L4 |
 | pmle-p1-scale-06 | 3.2.b | T4 | no | BigQuery Storage Read API instead of paginated `tabledata.list` reads | a | D2, D6, D3 | L3, L4 |
