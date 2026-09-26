@@ -168,6 +168,10 @@ The testing provider that delivers the real exam, online-proctored or at a test 
 
 Personally Identifiable Information.
 
+## Plan table
+
+The table in a practice exam's issue record that lists, for each planned question, its consideration, question type, decisive feature, correct letter, distractor mechanisms, and difficulty levers.
+
 ## PMLE
 
 Professional Machine Learning Engineer. The Google Cloud certification this simulator prepares for.
@@ -191,6 +195,10 @@ An immutable, versioned collection of exactly 60 original practice questions wit
 ## Question type
 
 The primary task a question asks the candidate to perform, such as troubleshooting or product selection. Research 0003 defines types T1 to T12.
+
+## Question-set report
+
+The output of `npm run question-set-report -- <question-set-id>`: per-question word counts and set-level measurements that authors and reviewers compare with the style-guide targets.
 
 ## Reading load
 
