@@ -8,6 +8,10 @@ timestamp: 2026-09-26T00:00:00Z
 
 # Project Glossary
 
+## A/B test
+
+A rollout in which two model versions serve comparable shares of live traffic so that their results can be compared.
+
 ## ADR
 
 Architecture Decision Record. An append-only record of a structural or implementation decision and its rejected alternatives.
@@ -20,6 +24,10 @@ Short name for Gemini Enterprise Agent Platform, the Google Cloud AI and machine
 
 Application Programming Interface. A defined interface through which software components communicate.
 
+## ARIMA_PLUS
+
+The BigQuery ML model type for time-series forecasting, based on the autoregressive integrated moving average (ARIMA) method.
+
 ## Attempt
 
 The local state of one candidate working through one question set, including answers, review flags, position, and deadline. An attempt is compatible with the application only when its schema version, question-set identifier and version, answer identifiers, timestamps, and status pass runtime validation.
@@ -27,6 +35,10 @@ The local state of one candidate working through one question set, including ans
 ## BDR
 
 Behavior Decision Record. An append-only specification of observable behavior and how that behavior is tested.
+
+## Canary rollout
+
+A rollout in which a new model version first receives a small share of live traffic and receives more only if it performs well.
 
 ## Candidate question set
 
@@ -68,6 +80,10 @@ Deep Neural Network.
 
 The partial manifest used while independently mergeable question sections are being authored. A draft may omit sections, but every registered section must already contain its final required question count and pass structural and live-source checks.
 
+## Drift
+
+A change over time in the distribution of production input data or predictions, measured against a baseline. Concept drift is a change in the relationship between inputs and the correct output.
+
 ## Exam catalog
 
 The compiled list of practice-exam entries shown to the candidate. An available entry contains one complete question set; a coming-soon entry contains metadata only and cannot create an attempt.
@@ -91,6 +107,10 @@ Graphics Processing Unit. A hardware accelerator used for training and serving M
 ## Guide consideration
 
 One bullet point under an exam-guide objective, such as "Hyperparameter tuning" under objective 3.2. The June 1, 2026 guide has 52 considerations across 14 objectives.
+
+## HTTP
+
+Hypertext Transfer Protocol. The web protocol whose status codes, such as 200 or 404, show whether a documentation page was fetched successfully.
 
 ## IAM
 
@@ -172,6 +192,10 @@ The machine-readable JSON block in an indexed rejected review report. It binds r
 
 The independently authored document under `docs/reviews/` that records a successful semantic audit. Its JSON record identifies the exact question-set version and SHA-256 content digest, reviewer, authors, review date, successful source-check command, unique source count, and every accepted question identifier.
 
+## SDK
+
+Software Development Kit. A library for calling a platform from code, such as the Agent Platform SDK for Python.
+
 ## Set-specific question registry
 
 The section, draft, and candidate modules owned by one practice exam under `src/data/questionSets/practice<number>/`. The aggregate registry combines these modules without changing another exam's files.
@@ -191,6 +215,10 @@ The question text before the answer options, called `prompt` in the code.
 ## TPU
 
 Tensor Processing Unit. A Google-designed accelerator for ML training and inference.
+
+## Training-serving skew
+
+A difference between the feature data distribution used to train a model and the distribution the model receives in production.
 
 ## UI
 

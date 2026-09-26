@@ -29,9 +29,11 @@ Documented owner fact: All eight official sample items are scenario-based single
 
 Documented owner fact: The certification page does not mention case studies. [1]
 
+Documented owner fact: The previous exam guide, version 3.1 (PDF created on September 20, 2024), already covered generative AI, including "generative AI solutions based on foundational models" and retrieval-augmented generation (RAG) applications. Both 2025 forum reports most likely took that version. [COI: Google] [6]
+
 Candidate report, forum, January 23, 2025: The thread's author lists the format as multiple choice and multiple select, two hours, and about 50 questions. The author describes the platform (then Vertex AI) as "the heart of the exam", covering AutoML, Pipelines, Training, Prediction, Feature Store, Explainable AI, and Model Monitoring. ML fundamentals, including algorithms, evaluation metrics, model monitoring, and hardware (TPUs, GPUs, CPUs), are estimated at 20-25%. [single source, previous exam guide] [4]
 
-Candidate report, forum reply, November 15, 2025: A candidate who took the exam at a test center writes that "99% questions are scenario based" and that they did not recall any question that was a direct pull from Python or command-line code. They list these important areas: MLOps, pipelines, experiments, the related SDKs, train and serve skew, classification metrics and their use cases, BigQuery ML features, endpoints compared with Dataflow for inference, and GPU and TPU training strategies. They note that "Boosted trees are as important as DNNs" and that they saw little generative AI. That exam predates the June 2026 guide, which adds generative AI throughout. [single source, previous exam guide] [4]
+Candidate report, forum reply, November 15, 2025: A candidate who took the exam at a test center writes that "99% questions are scenario based" and that they did not recall any question that was a direct pull from Python or command-line code. They list these important areas: MLOps, pipelines, experiments, the related SDKs, train and serve skew, classification metrics and their use cases, BigQuery ML features, endpoints compared with Dataflow, and GPU and TPU training strategies. They note that "Boosted trees are as important as DNNs" and that they saw little generative AI. That exam predates the June 2026 guide. [single source, previous exam guide] [4]
 
 Candidate report, project owner, 2026-09-25: On the real PDE exam, questions were much longer and harder than the PDE simulator's, and time ran out. [candidate-reported] See [research 0001](/research/0001-exam-format-and-blueprint.md).
 
@@ -45,18 +47,18 @@ Google lists multiple-select questions, while the samples and one unverified rep
 
 The guide says code snippets can appear, while the November 2025 candidate recalls no code-based question. Code snippets are therefore at most occasional.
 
-Candidates under the previous guide saw little generative AI, but the June 2026 guide mentions it in 11 of its 52 considerations. Practice sets follow the current guide.
+One candidate under the previous guide reported little generative AI, although that guide already listed generative AI topics. The June 2026 guide expands them to 11 of its 52 considerations. Practice sets follow the current guide.
 
 ## Analysis
 
-The evidence consistently describes scenario-based decisions, not recall of facts or syntax. Across all sources, the recurring tasks are: choosing a product or model type, designing an architecture under constraints, diagnosing a failure, choosing and interpreting evaluation metrics, automating pipelines and retraining, serving and rolling out models, and monitoring for skew and drift. The June 2026 guide adds generative AI tasks: selecting and tuning foundation models, optimizing Gemini-based applications, evaluating with LLM-as-a-judge, and protecting against malicious prompting and data leaks with tools such as Model Armor.
+The evidence consistently describes scenario-based decisions, not recall of facts or syntax. Across all sources, the recurring tasks are: choosing a product or model type, designing an architecture under constraints, diagnosing a failure, choosing and interpreting evaluation metrics, automating pipelines and retraining, serving and rolling out models, and monitoring for skew and drift. The June 2026 guide expands the generative AI tasks: selecting and tuning foundation models, optimizing Gemini-based applications, evaluating with LLM-as-a-judge, and protecting against malicious prompting and data leaks with tools such as Model Armor.
 
 Format taxonomy, with the simulator policy each item implies:
 
 | Format | Evidence | Simulator policy |
 |---|---|---|
-| Single-answer scenario, four options | Samples (8 of 8), forum report, certification page | The default format; at least 57 of 60 questions per set. |
-| Multiple-select, "Choose two" with five options | Certification page and forum report | 0 to 3 questions per set. |
+| Single-answer scenario, four options | The certification page and forum report say "multiple choice"; all 8 samples are single-answer with four options | The default format; at least 57 of 60 questions per set. |
+| Multiple-select | The certification page and forum report say "multiple select"; no sample shows the number of options or selections | 0 to 3 questions per set, using the project convention "Choose two" with five options. |
 | Code or SQL snippet in the stem | Guide note; not recalled by the November 2025 candidate | Not supported by the renderer yet. Inline names such as `ML.PREDICT` in running text are allowed. Multi-line snippets are an open question. |
 | Case study | Not mentioned for this exam | Not used. |
 
@@ -83,7 +85,7 @@ The owner's report and the sample measurements show that difficulty comes mainly
 
 - Write every question as a scenario that requires a decision; never test isolated facts, syntax, or command flags.
 - Use single-answer questions for at least 57 of 60 questions, and at most 3 choose-two questions per set.
-- In every set, include at least 6 troubleshooting (T4) questions, at least 5 evaluation and metrics (T6) questions, at least 4 risk, security, and responsible AI (T10) questions, and at least 4 migration (T3) questions. The evidence ties these areas to real-exam difficulty.
+- In every set, include at least 6 troubleshooting (T4) questions, at least 5 evaluation and metrics (T6) questions, at least 4 risk, security, and responsible AI (T10) questions, and at least 4 migration (T3) questions. These minimums are a project decision: every listed area appears in the guide and in the candidate reports, and the numbers make each area recur several times per set.
 - Make generative AI the decisive topic in 12 to 18 of 60 questions. Generative AI appears in 11 of the guide's 52 considerations (21%, about 13 of 60 questions), and those considerations sit in sections that together hold 49 of the 60 questions, so the range allows for more.
 - Give BigQuery ML, boosted trees, classification metrics, and train and serve skew visible weight, as the November 2025 report recommends.
 - Keep multi-line code snippets out of practice sets until the owner decides whether the renderer should support them.
@@ -100,3 +102,5 @@ The owner's report and the sample measurements show that difficulty comes mainly
 [4] GOOGLE DEVELOPER FORUMS. **Google Cloud's Professional ML Engineer (PMLE) Exam: How I passed in 30 days (and you can too!)**. Posted 2025-01-23; reply cited from 2025-11-15. Available at: <https://discuss.google.dev/t/google-clouds-professional-ml-engineer-pmle-exam-how-i-passed-in-30-days-and-you-can-too/179510>. Accessed on: 2026-09-26.
 
 [5] GOOGLE CLOUD. **Identifying and Preventing Misconduct**. Available at: <https://support.google.com/cloud-certification/answer/9908051?hl=en>. Accessed on: 2026-09-25.
+
+[6] GOOGLE CLOUD. **Professional Machine Learning Engineer Certification Exam Guide, version 3.1**. Available at: <https://services.google.com/fh/files/misc/professional_machine_learning_engineer_exam_guide_english_3.1_final.pdf>. Accessed on: 2026-09-26.

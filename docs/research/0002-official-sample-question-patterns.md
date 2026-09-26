@@ -35,34 +35,28 @@ Observation: Every stem states two or three explicit constraints (median two). T
 | Scalability | 1 of 8 | scalable |
 | Availability | 1 of 8 | zero downtime, optimal user experience |
 
-Observation: Options are complete actions in the imperative mood, not product names. In seven of eight items, at least two options share the same opening and differ only in a later step, such as the orchestrator, the ML service, the alerting channel, or an added remediation step. One item uses explicitly numbered two-step options. The candidate therefore has to read every option to its end.
+Observation: Options are complete actions in the imperative mood, not product names. In seven of eight items, at least two options share a long common skeleton, a run of nine or more identical words, and differ in one or two components such as the orchestrator, the ML service, the alerting channel, or an added remediation step. In five of those items the shared skeleton is the opening of the options. One item uses explicitly numbered two-step options. The candidate therefore has to read every option to its end.
 
-Observation: The options use these recurring distractor mechanisms. The list describes what the options do and does not claim which option is correct.
+Observation: Within an item, the options contrast a few recurring alternatives: a managed capability against self-managed infrastructure, a minimal solution against one that adds work the stem does not request, a tool that meets every stated requirement against one that cannot, a step that respects an explicit restriction against one that breaks it, and a purpose-built feature against an ad hoc mechanism. This record deliberately does not tie these contrasts to individual items or options, because doing so would reveal answer keys.
 
-- Self-managed infrastructure where a managed Google Cloud capability exists, for example Google Kubernetes Engine with open-source traffic routers or a separate cache for features. Seen in at least three items.
-- Extra, unrequested work, such as copying data to another store, starting retraining when only monitoring was requested, or emailing an encrypted file. Seen in at least two items.
-- A tool that cannot meet a stated requirement, such as a pre-trained API for a custom object class, or comparing model file sizes as a quality check. Seen in at least two items.
-- A step that breaks an explicit restriction, such as requesting production access that the stem forbids. Seen in one item.
-- An ad hoc mechanism where a purpose-built feature exists, such as scheduling a notebook for a production pipeline, or writing a custom transform that calls an endpoint instead of using a built-in inference transform. Seen in at least three items.
+Observation: The stems and options name Google-managed products and open-source tools side by side: Agent Platform Workbench, Pipelines, Feature Store, Inference and endpoints, ML Metadata, TensorBoard, Model Monitoring, and AutoML; BigQuery and BigQuery ML; Cloud Storage, Pub/Sub, Dataflow, Cloud Run, Cloud Run functions, Google Kubernetes Engine, Memorystore, Cloud Workflows, Managed Service for Apache Airflow, Data Studio, and the Cloud Vision API; and the open-source TensorFlow Extended, TensorFlow Transform, TensorFlow Data Validation, Kubeflow Pipelines SDK, Istio, and Seldon Core.
 
-Observation: The options name Google-managed products and open-source tools side by side: Agent Platform Workbench, Pipelines, Feature Store, Inference and endpoints, ML Metadata, TensorBoard, Model Monitoring, and AutoML; BigQuery and BigQuery ML; Cloud Storage, Pub/Sub, Dataflow, Cloud Run, Cloud Run functions, Google Kubernetes Engine, Memorystore, Cloud Workflows, Managed Service for Apache Airflow, Data Studio, and the Cloud Vision API; and the open-source TensorFlow Extended, TensorFlow Transform, TensorFlow Data Validation, Kubeflow Pipelines SDK, Istio, and Seldon Core.
+Observation: The samples use current product names, such as Agent Platform, Managed Service for Apache Airflow, Cloud Run functions, and Data Studio. Two options lack a space after "Agent Platform", which suggests that earlier Vertex AI wording was renamed mechanically.
 
-Observation: The samples use the post-April 2026 product names, such as Agent Platform, Managed Service for Apache Airflow, Cloud Run functions, and Data Studio. Two options lack a space after "Agent Platform". That suggests the names were replaced mechanically in earlier Vertex AI wording, so product behavior described in Vertex AI-era material still applies under the new names.
-
-Observation, project classification: The items cover pipeline orchestration and automation (three items), serving and rollout (two items), online feature serving (one item), choosing between low-code and custom training (one item), diagnosing an unexpected pipeline result from metadata and training metrics (one item), and skew monitoring (one item). No item tests generative AI, BigQuery ML SQL, accelerator selection, notebook security, responsible AI, or metric selection. In the exam guide, 11 of the 52 considerations (the bullet points under each objective) mention generative AI, Gemini, large language models, foundation models, or Model Garden, across sections 1, 2, 3, 4, and 6. [2]
+Observation, project classification: By primary topic, the items cover pipeline orchestration and automation (two items), serving architecture and rollout (two items), online feature serving (one item), choosing between low-code and custom training (one item), diagnosing an unexpected pipeline result from metadata and training metrics (one item), and skew monitoring (one item). No item tests generative AI, BigQuery ML SQL, accelerator selection, notebook security, responsible AI, or metric selection. In the exam guide, 11 of the 52 considerations (the bullet points under each objective) mention generative AI, Gemini, large language models, foundation models, or Model Garden, across sections 1, 2, 3, 4, and 6. [2]
 
 Observation: Stems contain realistic details that are not all decisive, such as dataset sizes, file sizes, or schedule frequency. The candidate has to decide which details are constraints.
 
 ## Analysis
 
-The samples show a consistent construction: a concrete current state, two or three competing constraints, and four full-sentence actions that often differ only in one component. Difficulty comes from reading every option completely and from telling which constraint removes each plausible option, not from obscure facts. The samples cover mainly MLOps and serving. The guide assigns substantial weight to generative AI, BigQuery ML, hardware, and monitoring, so original sets must follow the guide's weights rather than the samples' topic mix.
+The samples show a consistent construction: a concrete current state, two or three competing constraints, and four full-sentence actions that often share a long common skeleton. Difficulty comes from reading every option completely and from telling which constraint removes each plausible option, not from obscure facts. The samples cover mainly MLOps and serving. The guide assigns substantial weight to generative AI, BigQuery ML, hardware, and monitoring, so original sets must follow the guide's weights rather than the samples' topic mix.
 
 ## Recommendations
 
 - Build every stem from organization and goal, current state, problem or change, two or three explicit constraints, and the ask.
 - Use "What should you do?" as the default ask; also use "What should you do first?" and "How should you reconfigure the architecture?" where the scenario needs them.
 - Write options as complete imperative actions with parallel structure, and make at least half of the questions contain an option pair that shares a skeleton and differs in one decisive component.
-- Build each distractor from one named mechanism and make it fail exactly one stated requirement.
+- Build each distractor from a named mechanism, make it fail at least one stated requirement, and name each failure in its feedback.
 - Allow open-source tools as options when the scenario makes them realistic.
 - Take topics from the guide weights, including generative AI, not from the sample mix.
 - Never copy, paraphrase, or re-skin a sample scenario, and never publish inferred sample answer keys.
