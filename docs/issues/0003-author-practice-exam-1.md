@@ -67,7 +67,7 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 |---|---|---|---|---|---|---|---|
 | pmle-p1-scale-01 | 3.1.a | T2 | yes | Gemini with few-shot prompting for a small labeled text task | a | D2, D3, D3 | L3, L4 |
 | pmle-p1-scale-02 | 3.1.b | T2 | no | Custom training for a custom loss function | c | D3, D3, D1 | L3, L4 |
-| pmle-p1-scale-03 | 3.1.c | T8 | no | Online inference for a real-time decision | d | D4, D4, D2 | L3, L4 |
+| pmle-p1-scale-03 | 3.1.c | T8 | no | Online inference for a real-time decision | d | D4, D4, D1 | L3, L4 |
 | pmle-p1-scale-04 | 3.1.d | T10 | no | Boosted trees with `ML.EXPLAIN_PREDICT` for per-decision explanations | b | D3, D7, D2 | L2, L4 |
 | pmle-p1-scale-05 | 3.2.a | T5 | no | Fewer, larger files in Cloud Storage behind Cloud Storage FUSE | c | D3, D2, D2 | L3, L4 |
 | pmle-p1-scale-06 | 3.2.b | T4 | no | BigQuery Storage Read API instead of paginated `tabledata.list` reads | a | D2, D6, D3 | L3, L4 |
@@ -84,15 +84,15 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 |---|---|---|---|---|---|---|---|
 | pmle-p1-serve-01 | 4.1.a | T8 | no | Batch inference from BigQuery to BigQuery with a starting replica count sized for the deadline | d | D4, D7, D1 | L2, L4 |
 | pmle-p1-serve-02 | 4.1.b | T3 | no | Custom container that keeps the existing server's port, health route, and predict route | b | D1, D7, D2 | L2, L4 |
-| pmle-p1-serve-03 | 4.1.c | T8 | no | Model Registry versions with the default alias moved after validation | a | D2, D7, D7 | L2, L4 |
-| pmle-p1-serve-04 | 4.1.d | T4 | no | Canary rollback through the endpoint traffic split | c | D8, D2, D7 | L4, L6 |
+| pmle-p1-serve-03 | 4.1.c | T8 | no | Model Registry versions with the default alias moved after validation | a | D3, D7, D7 | L2, L4 |
+| pmle-p1-serve-04 | 4.1.d | T4 | no | Canary rollback through the endpoint traffic split | c | D2, D2, D7 | L2, L7 |
 | pmle-p1-serve-05 | 4.1.e | T8 | no | Custom inference routine for preprocessing and postprocessing | d | D1, D3, D2 | L2, L4 |
 | pmle-p1-serve-06 | 4.1.a | T8 | yes | Cloud Run service with a GPU that scales to zero for a fine-tuned open model | b | D2, D1, D2 | L1, L2, L4 |
 | pmle-p1-serve-07 | 4.2.a | T8 | no | Feature Store Bigtable online serving with continuous data sync | c | D1, D4, D3 | L2, L4 |
 | pmle-p1-serve-08 | 4.2.b | T10 | no | Private Service Connect endpoint shared with several VPC networks | a | D7, D5, D2 | L2, L4 |
 | pmle-p1-serve-09 | 4.2.c | T8 | yes | Multi-GPU machine with tensor parallelism for a model larger than one GPU | d | D7, D3, D2 | L1, L2, L4 |
 | pmle-p1-serve-10 | 4.2.d | T8 | no | Minimum and maximum replica counts for autoscaling (choose two) | two | D2, D4, D7 | L1, L4 |
-| pmle-p1-serve-11 | 4.2.e | T8 | yes | Prompt order that lets Gemini implicit context caching reuse a shared prefix | b | D4, D7, D3 | L3, L4 |
+| pmle-p1-serve-11 | 4.2.e | T8 | yes | Prompt order that lets Gemini implicit context caching reuse a shared prefix | b | D4, D3, D2 | L3, L4 |
 | pmle-p1-serve-12 | 4.2.c | T8 | no | AutoML Edge model exported for an offline Edge TPU device | a | D4, D7, D7 | L2, L4 |
 
 ### Plan: automate
@@ -100,15 +100,15 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 | Question ID | Consideration | Type | Generative AI | Decisive feature | Correct letter | Distractor mechanisms | Levers |
 |---|---|---|---|---|---|---|---|
 | pmle-p1-automate-01 | 5.1.a | T6 | no | Model evaluation component whose AUC gates deployment | c | D8, D3, D7 | L2, L4 |
-| pmle-p1-automate-02 | 5.1.b | T9 | no | Versioned pipeline templates in Artifact Registry | a | D2, D3, D1 | L2, L4 |
+| pmle-p1-automate-02 | 5.1.b | T9 | no | Versioned pipeline templates in Artifact Registry | a | D2, D3, D1 | L4, L7 |
 | pmle-p1-automate-03 | 5.1.b | T3 | no | Existing Ray code on Ray on Agent Platform | d | D2, D1, D3 | L3, L4 |
 | pmle-p1-automate-04 | 5.1.c | T5 | no | Transformations inside the model with dataset-wide normalization constants | b | D3, D4, D7 | L2, L4 |
 | pmle-p1-automate-05 | 5.1.a | T6 | yes | Deterministic reference-based metrics for a tuned Gemini model before promotion | a | D6, D7, D8 | L2, L4 |
-| pmle-p1-automate-06 | 5.1.c | T5 | no | Point-in-time training features with `ML.ENTITY_FEATURES_AT_TIME` | c | D3, D1, D7 | L2, L4 |
-| pmle-p1-automate-07 | 5.2.a | T9 | no | Retraining triggered by a monitoring alert behind an evaluation gate | d | D2, D8, D3 | L1, L2 |
+| pmle-p1-automate-06 | 5.1.c | T5 | no | Point-in-time training features with `ML.ENTITY_FEATURES_AT_TIME` | c | D6, D1, D7 | L2, L4 |
+| pmle-p1-automate-07 | 5.2.a | T9 | no | Retraining triggered by a drift alert through Pub/Sub instead of a fixed schedule | d | D2, D3, D8 | L1, L2 |
 | pmle-p1-automate-08 | 5.2.a | T9 | no | Retraining schedule aligned with delayed labels | b | D6, D2, D8 | L2, L6 |
-| pmle-p1-automate-09 | 5.2.b | T3 | no | Cloud Build trigger that builds, tests, and publishes versioned pipeline templates | c | D3, D1, D2 | L2, L4 |
-| pmle-p1-automate-10 | 5.2.b | T9 | no | Cloud Storage notifications and a Pub/Sub-triggered function that start a pipeline run (choose two) | two | D2, D1, D3 | L2, L4 |
+| pmle-p1-automate-09 | 5.2.b | T3 | no | Cloud Build trigger that builds, tests, and packages pipeline components on every commit | c | D2, D1, D7 | L2, L4 |
+| pmle-p1-automate-10 | 5.2.b | T9 | no | Cloud Storage notifications and a Pub/Sub-triggered function that start a pipeline run (choose two) | two | D4, D2, D3 | L2, L4 |
 | pmle-p1-automate-11 | 5.2.b | T9 | no | Cloud Build trigger that requires approval before deployment | a | D3, D8, D2 | L4, L5 |
 
 ### Plan: monitor
@@ -117,11 +117,11 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 |---|---|---|---|---|---|---|---|
 | pmle-p1-monitor-01 | 6.1.a | T10 | yes | Model Armor prompt injection and jailbreak detection with Inspect and block | b | D7, D3, D7 | L2, L4 |
 | pmle-p1-monitor-02 | 6.1.a | T10 | yes | Model Armor floor settings with Sensitive Data Protection filters for every Gemini call | d | D8, D3, D7 | L2, L4 |
-| pmle-p1-monitor-03 | 6.1.b | T6 | no | Model quality compared across groups before deployment | a | D6, D8, D2 | L3, L6 |
-| pmle-p1-monitor-04 | 6.1.c | T10 | no | `ML.GLOBAL_EXPLAIN` for model-level feature importance | c | D7, D2, D3 | L3, L4 |
-| pmle-p1-monitor-05 | 6.2.a | T12 | no | Drift detection when the training data is unavailable | d | D7, D6, D3 | L2, L4 |
+| pmle-p1-monitor-03 | 6.1.b | T6 | no | Equality of opportunity measured per age group before deployment | a | D6, D8, D7 | L2, L4 |
+| pmle-p1-monitor-04 | 6.1.c | T10 | no | `ML.GLOBAL_EXPLAIN` for global importance consistent with local attributions | c | D7, D2, D6 | L2, L4 |
+| pmle-p1-monitor-05 | 6.2.a | T12 | no | Drift detection when the training data is unavailable | d | D7, D6, D1 | L2, L4 |
 | pmle-p1-monitor-06 | 6.2.b | T4 | no | Concept drift confirmed against ground truth | a | D6, D8, D6 | L4, L6 |
-| pmle-p1-monitor-07 | 6.2.b | T4 | no | Training-serving skew from a feature computed differently | c | D6, D8, D2 | L4, L6 |
+| pmle-p1-monitor-07 | 6.2.b | T4 | no | Training-serving skew from a unit change in one firmware version | c | D6, D6, D7 | L2, L3 |
 | pmle-p1-monitor-08 | 6.2.c | T6 | yes | LLM-as-a-judge regression evaluation before a prompt change | b | D6, D2, D7 | L2, L4 |
 
 ### Progress
@@ -136,3 +136,6 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 - 2026-09-26: Authored the `serve` section. Replaced two planned topics that are no longer supported: the optimized TensorFlow runtime (serve-11, now Gemini context caching) has no stable images left, and prebuilt inference containers (serve-02, now custom container routes) are past their end of patch and support. The generative AI question moved from serve-12 to serve-11, and serve-06 now uses Cloud Run GPUs so that it no longer overlaps the Model Garden deployment in collaborate-06.
 - 2026-09-26: Authored the `automate` section. Replaced the Airflow question in automate-02 with versioned pipeline templates, because no Google-hosted page documents starting an Agent Platform pipeline from Airflow. automate-04 moves the transformations into the model instead of repeating the custom inference routine in serve-05, automate-06 uses point-in-time feature lookups instead of a third Feature Store question, and automate-05 uses deterministic reference-based metrics so that it does not overlap the LLM-as-a-judge question planned for monitor-08.
 - 2026-09-26: Authored the `monitor` section, which completes the 60 questions. monitor-02 tests Model Armor floor settings, so it does not repeat the template decision in monitor-01, and monitor-08 uses LLM-as-a-judge metrics because no reference answers exist, which separates it from the reference-based metrics in automate-05.
+- 2026-09-26: Addressed the independent review of the automate section after it merged. automate-07 now tests the retraining trigger, a drift alert against a nightly schedule, instead of repeating the evaluation gate of automate-01. automate-09 now tests a trigger on every commit against release tags instead of repeating the templates of automate-02. automate-10 gained a Cloud Run near-miss and a non-retail organization. automate-03 states the multi-machine need that rules out a single runtime, and automate-01, automate-04, and automate-08 were tightened. automate-05 relies on the GA evaluation module, which Google no longer actively develops, so re-check it before publication.
+- 2026-09-26: Addressed the independent review of the serve section after it merged. serve-05 and serve-07 now state the constraints that their distractors fail: no extra service in the request path, and 20-millisecond lookups. serve-12 drops a constraint that decided nothing. serve-02 states the response format. serve-04 gained a traffic-split near-miss that undeploys version 8. serve-11 replaced a strawman cache distractor with a summary and Provisioned Throughput. serve-06 and serve-11 moved to organizations that no longer repeat architect-07 and monitor-02.
+- 2026-09-26: Addressed the independent review of the monitor section after it merged. monitor-03 now separates equality of opportunity from demographic parity. monitor-04 contrasts `ML.GLOBAL_EXPLAIN` with `ML.FEATURE_IMPORTANCE`, and scale-04 no longer describes `ML.GLOBAL_EXPLAIN`. monitor-07 no longer states the diagnosis and adds a near-miss that converts every request. monitor-08 states that the check runs without manual grading. monitor-01, monitor-02, monitor-05, and monitor-06 were tightened.
