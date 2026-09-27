@@ -45,7 +45,7 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 | pmle-p1-architect-05 | 1.2.a | T2 | yes | Pay-as-you-go partner model as a service through Agent Platform endpoints | c | D1, D2, D5 | L1, L2, L4 |
 | pmle-p1-architect-06 | 1.2.b | T2 | no | Document AI Invoice Parser | a | D2, D3, D7 | L2, L3 |
 | pmle-p1-architect-07 | 1.2.c | T11 | yes | Grounding on a RAG Engine corpus refreshed from Cloud Storage | d | D7, D7, D7 | L2, L4 |
-| pmle-p1-architect-08 | 1.2.d | T1 | yes | Gemini batch inference at a 50% discount with higher rate limits | b | D6, D2, D4 | L1, L2 |
+| pmle-p1-architect-08 | 1.2.d | T1 | yes | Gemini batch inference at a 50% discount with higher rate limits | b | D6, D7, D4 | L1, L2 |
 
 ### Plan: collaborate
 
@@ -92,7 +92,7 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 | pmle-p1-serve-08 | 4.2.b | T10 | no | Private Service Connect endpoint shared with several VPC networks | a | D7, D5, D2 | L2, L4 |
 | pmle-p1-serve-09 | 4.2.c | T8 | yes | Multi-GPU machine with tensor parallelism for a model larger than one GPU | d | D7, D3, D2 | L1, L2, L4 |
 | pmle-p1-serve-10 | 4.2.d | T8 | no | Minimum and maximum replica counts for autoscaling (choose two) | two | D2, D4, D7 | L1, L4 |
-| pmle-p1-serve-11 | 4.2.e | T8 | yes | Prompt order that lets Gemini implicit context caching reuse a shared prefix | b | D4, D3, D2 | L3, L4 |
+| pmle-p1-serve-11 | 4.2.e | T8 | yes | Prompt order that lets Gemini implicit context caching reuse a shared prefix | b | D4, D3, D1 | L3, L4 |
 | pmle-p1-serve-12 | 4.2.c | T8 | no | AutoML Edge model exported for an offline Edge TPU device | a | D4, D7, D7 | L2, L4 |
 
 ### Plan: automate
@@ -141,3 +141,4 @@ Near-miss pairs (lever L2) and the longest-option limit are checked per section 
 - 2026-09-26: Addressed the independent review of the monitor section after it merged. monitor-03 now separates equality of opportunity from demographic parity. monitor-04 contrasts `ML.GLOBAL_EXPLAIN` with `ML.FEATURE_IMPORTANCE`, and scale-04 no longer describes `ML.GLOBAL_EXPLAIN`. monitor-07 no longer states the diagnosis and adds a near-miss that converts every request. monitor-08 states that the check runs without manual grading. monitor-01, monitor-02, monitor-05, and monitor-06 were tightened.
 - 2026-09-26: Registered the complete draft as candidate `professional-ml-engineer-2026-06-practice-1` version 1 for independent review. The catalog entry stays coming-soon until an acceptance record exists.
 - 2026-09-26: The independent acceptance review rejected candidate version 1 because the feedback for choice b of scale-02 was not supported by its cited evidence (`docs/reviews/professional-ml-engineer-2026-06-practice-1-rejected-2026-09-26.md`). Version 1 stays registered and unchanged. Candidate `professional-ml-engineer-2026-06-practice-1-v2` version 2 replaces the scale section with `sections/scaleV2.ts`, which revises only that feedback, and it needs a new independent review.
+- 2026-09-27: A second independent acceptance review rejected candidate version 2 because the Provisioned Throughput feedback in architect-08 and serve-11 claimed a cost comparison that no cited page makes (`docs/reviews/professional-ml-engineer-2026-06-practice-1-v2-rejected-2026-09-27.md`). Candidate `professional-ml-engineer-2026-06-practice-1-v3` version 3 adds `sections/architectV3.ts` and `sections/serveV3.ts`, which replace those distractors with a context-caching option below the documented minimum cache size and a self-deployed open model, and reuses the other sections. Versions 1 and 2 stay registered and unchanged.
