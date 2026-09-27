@@ -193,7 +193,7 @@ export const practiceExamOneScaleSection = {
         },
         {
           id: "c",
-          text: "Keep the boosted tree model, and use ML.GLOBAL_EXPLAIN to send every rejected applicant the features that have the highest overall influence on the model's predictions.",
+          text: "Keep the boosted tree model, and use ML.GLOBAL_EXPLAIN to generate the reasons that are sent to every rejected applicant about the decision on their application.",
           feedback: "Incorrect. ML.GLOBAL_EXPLAIN returns each feature's overall influence on the model, so every applicant would receive the same reasons rather than the characteristics that drove their own decision.",
           evidenceIds: ["bq-xai"],
         },
@@ -254,7 +254,7 @@ export const practiceExamOneScaleSection = {
       kind: "single",
       section: "scale",
       objective: "3.2 Training models: 3.2.b ingesting data into training pipelines",
-      prompt: "A recommendation model trains on Agent Platform custom training with four GPUs and reads a 1.5 TB BigQuery table at the start of every epoch through the paginated tabledata.list REST API. Each epoch spends most of its time waiting for rows, and GPU utilization stays below 20%. The table has about 900 million rows with 40 feature columns and is updated every day. The training machine has 208 GB of memory, the team cannot increase the training cost, and it does not want to create or maintain exported copies of the data. What should you do?",
+      prompt: "A recommendation model trains on Agent Platform custom training with four GPUs and reads a 1.5 TB BigQuery table at the start of every epoch through the paginated tabledata.list REST API. Each epoch spends most of its time waiting for rows, and GPU utilization stays below 20%. The table has about 900 million rows with 40 feature columns and is updated every day. The training machine has 208 GB of memory, the team cannot add GPUs or machines, and it does not want to create or maintain exported copies of the data. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -280,7 +280,7 @@ export const practiceExamOneScaleSection = {
         {
           id: "c",
           text: "Add four more GPUs to the training job so that each batch is processed faster, and keep reading the table through the paginated tabledata.list REST API.",
-          feedback: "Incorrect. More GPUs raise the training cost, which the team cannot increase, and the GPUs are already idle while they wait for the paginated reads that cause the bottleneck.",
+          feedback: "Incorrect. The team cannot add GPUs, and the existing GPUs are already idle while they wait for the paginated reads that cause the bottleneck.",
           evidenceIds: ["storage-read-api"],
         },
         {
@@ -518,7 +518,7 @@ export const practiceExamOneScaleSection = {
         },
         {
           id: "d",
-          text: "Use GPU machines for the training job, keep the custom operations in the main training loop unchanged, and write checkpoints to Cloud Storage as before.",
+          text: "Use GPU machines for the training job, and keep writing checkpoints to Cloud Storage every hour as the current setup does.",
           feedback: "Correct. The Cloud TPU guidance recommends GPUs for models with a significant number of custom PyTorch operations and warns against TPUs for custom operations inside the main training loop.",
           evidenceIds: ["tpu-intro"],
         },
@@ -530,7 +530,7 @@ export const practiceExamOneScaleSection = {
       kind: "single",
       section: "scale",
       objective: "3.3 Choosing appropriate hardware for training: 3.3.b distributed training",
-      prompt: "A team trains a 1.2-billion-parameter language model on Agent Platform with data parallelism across 16 GPU nodes of eight GPUs each, reading its training data from Cloud Storage. The PyTorch training code uses NCCL all-reduce and runs in a custom container. The model fits in the memory of a single GPU, but profiling shows that gradient communication between the nodes takes most of each training step, and adding nodes barely increases throughput. Each training run lasts about four days, and the training recipe fixes the global batch size. The team wants higher training throughput without changing the model architecture, moving the training to another platform, or paying for more GPUs. What should you do?",
+      prompt: "A team trains a 1.2-billion-parameter language model on Agent Platform with data parallelism across 16 GPU nodes of eight GPUs each, reading its training data from Cloud Storage. The PyTorch training code uses NCCL 2.7 or later for all-reduce and runs in a custom container. The model fits in the memory of a single GPU, but profiling shows that gradient communication between the nodes takes most of each training step, and adding nodes barely increases throughput. Each training run lasts about four days, and the training recipe fixes the global batch size. The team wants higher training throughput without changing the model architecture, moving the training to another platform, or paying for more GPUs. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {

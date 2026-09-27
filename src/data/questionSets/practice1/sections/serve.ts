@@ -24,13 +24,19 @@ export const practiceExamOneServeSection = {
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/get-batch-predictions",
           claim: "A batch inference job can read a BigQuery table as input and write its results to BigQuery or Cloud Storage; batch inference jobs don't autoscale, because the system partitions the data across the starting replica count when the job starts and ignores the maximum replica count.",
         },
+        {
+          id: "endpoint-autoscaling",
+          title: "Scale inference nodes by using autoscaling",
+          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/autoscaling",
+          claim: "When you deploy a model for online inference, you must set the minimum replica count to at least 1, so the deployment can't scale to zero inference nodes when it is unused.",
+        },
       ],
       choices: [
         {
           id: "a",
           text: "Deploy the model to an Agent Platform endpoint with 20 replicas, and run a Dataflow pipeline every Sunday that reads the table, calls the endpoint for each policy, and writes the scores to BigQuery.",
-          feedback: "Incorrect. An endpoint serves synchronous online requests and keeps its replicas running between the weekly runs, and the pipeline is extra code, while batch inference reads from and writes to BigQuery without a deployed model.",
-          evidenceIds: ["inference-overview", "batch-custom"],
+          feedback: "Incorrect. An endpoint serves synchronous online requests and keeps at least one replica running between the weekly runs, and the pipeline is extra code, while batch inference reads from and writes to BigQuery without a deployed model.",
+          evidenceIds: ["inference-overview", "batch-custom", "endpoint-autoscaling"],
         },
         {
           id: "b",
@@ -58,14 +64,14 @@ export const practiceExamOneServeSection = {
       kind: "single",
       section: "serve",
       objective: "4.1 Serving models: 4.1.b packaging frameworks with containers",
-      prompt: "A travel company serves a PyTorch ranking model from a Flask application on a Compute Engine VM. The application listens on port 5000, answers health checks at /healthz, and returns predictions at /score for JSON request bodies that contain an instances list. The model file is small enough to include in a container image. The team wants to move serving to an Agent Platform endpoint to use autoscaling and traffic splitting, and it wants to change the Flask code as little as possible. What should you do?",
+      prompt: "A travel company serves a PyTorch ranking model from a Flask application on a Compute Engine VM. The application listens on port 5000, answers health checks at /healthz, and at /score it accepts JSON request bodies with an instances list and returns a JSON object with a predictions list. The model file is small enough to include in a container image. The team wants to move serving to an Agent Platform endpoint to use autoscaling and traffic splitting, and it wants to change the Flask code as little as possible. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
           id: "custom-container",
           title: "Custom container requirements for inference",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/custom-container-requirements",
-          claim: "A custom container can run any HTTP server that listens on the port set in containerSpec.ports, which defaults to 8080, and that answers health checks and inference requests on the paths set in containerSpec.healthRoute and containerSpec.predictRoute, which otherwise default to paths under /v1/endpoints; after four consecutive unhealthy health checks, Agent Platform stops routing inference traffic to the container.",
+          claim: "A custom container can run any HTTP server that meets the request and response format requirements, such as returning a predictions list, and that listens on the port set in containerSpec.ports, which defaults to 8080, and that answers health checks and inference requests on the paths set in containerSpec.healthRoute and containerSpec.predictRoute, which otherwise default to paths under /v1/endpoints; after four consecutive unhealthy health checks, Agent Platform stops routing inference traffic to the container.",
         },
         {
           id: "deployment",
@@ -172,10 +178,10 @@ export const practiceExamOneServeSection = {
           claim: "You can deploy a new model to the same endpoint as an existing model, send it a small percentage of the traffic, and change the traffic split between the deployed models without updating the endpoint URL that applications use.",
         },
         {
-          id: "undeploy-api",
-          title: "Method: endpoints.undeployModel",
-          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/reference/rest/v1/projects.locations.endpoints/undeployModel",
-          claim: "A deployed model is successfully undeployed only if it has no traffic assigned to it when the method executes, or if the request's trafficSplit field unassigns its traffic.",
+          id: "undeploy",
+          title: "Undeploy a model and delete the endpoint",
+          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions/undeploy-model",
+          claim: "When you replace a model on an endpoint after shifting traffic to a new model, wait at least 10 to 15 minutes after updating the traffic split to 100% before you undeploy the previous model, so that in-flight inference requests complete.",
         },
         {
           id: "model-alias",
@@ -187,9 +193,9 @@ export const practiceExamOneServeSection = {
       choices: [
         {
           id: "a",
-          text: "Undeploy version 8 from the endpoint immediately, and then update the endpoint's traffic split so that version 7 receives 100% of the traffic.",
-          feedback: "Incorrect. A deployed model is undeployed only when no traffic is assigned to it or the same request removes its traffic, and undeploying version 8 removes the deployment that the team wants to investigate.",
-          evidenceIds: ["undeploy-api"],
+          text: "Update the endpoint's traffic split so that version 7 receives 100% of the traffic, and then undeploy version 8 after its in-flight requests finish.",
+          feedback: "Incorrect. Moving all traffic to version 7 stops the customer impact, but undeploying version 8 removes the deployment that the team must keep for the investigation.",
+          evidenceIds: ["deployment", "undeploy"],
         },
         {
           id: "b",
@@ -201,7 +207,7 @@ export const practiceExamOneServeSection = {
           id: "c",
           text: "Update the endpoint's traffic split so that version 7 receives 100% of the traffic and version 8 receives 0%, and leave version 8 deployed for the investigation.",
           feedback: "Correct. The traffic split sets how much of the endpoint's traffic each deployed model receives, so setting version 8 to 0% stops the customer impact on the same URL while version 8 stays deployed.",
-          evidenceIds: ["deployment", "undeploy-api"],
+          evidenceIds: ["deployment"],
         },
         {
           id: "d",
@@ -217,7 +223,7 @@ export const practiceExamOneServeSection = {
       kind: "single",
       section: "serve",
       objective: "4.1 Serving models: 4.1.e inference preprocessing and postprocessing",
-      prompt: "A lender serves a scikit-learn credit model on an Agent Platform endpoint. Before each prediction, raw application fields must be transformed with the fitted encoder that training used, which is saved as a separate artifact, and after each prediction the probability must be mapped to one of three decision bands by a business rule. Today, three client applications implement these steps themselves, and their results have started to drift. The team wants both steps in one place next to the model, without writing or maintaining a model server or a Dockerfile. What should you do?",
+      prompt: "A lender serves a scikit-learn credit model on an Agent Platform endpoint. Before each prediction, raw application fields must be transformed with the fitted encoder that training used, which is saved as a separate artifact, and after each prediction the probability must be mapped to one of three decision bands by a business rule. Today, three client applications implement these steps themselves, and their results have started to drift. The team wants both steps in one place next to the model, without adding another service to the request path and without writing or maintaining a model server or a Dockerfile. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -243,7 +249,7 @@ export const practiceExamOneServeSection = {
         {
           id: "c",
           text: "Deploy a Cloud Run service in front of the endpoint that applies the encoder to each request, calls the endpoint, and maps each returned probability to a decision band.",
-          feedback: "Incorrect. The Cloud Run service is another web server in the request path that the team would write and maintain, while a custom inference routine runs both steps in the model's container.",
+          feedback: "Incorrect. The Cloud Run service adds another service to the request path, which the team wants to avoid, while a custom inference routine runs both steps in the model's container.",
           evidenceIds: ["inference-routines"],
         },
         {
@@ -260,7 +266,7 @@ export const practiceExamOneServeSection = {
       kind: "single",
       section: "serve",
       objective: "4.1 Serving models: 4.1.a batch and online inference services",
-      prompt: "An HR department runs an internal assistant that answers policy questions with a Gemma model that the ML team fine-tuned and saved as its own weights. The model fits on one GPU with 24 GB of memory. Employees send requests in short bursts during business hours, and there is often no traffic for hours, including every night and weekend. The ML team wants to stop paying for GPUs whenever there is no traffic, accepts slower first responses after idle periods, and does not want to manage servers or clusters. What should you do?",
+      prompt: "A hotel chain runs an internal assistant that answers staff questions about operating procedures with a Gemma model that the ML team fine-tuned and saved as its own weights. The model fits on one GPU with 24 GB of memory. Employees send requests in short bursts during business hours, and there is often no traffic for hours, including every night and weekend. The ML team wants to stop paying for GPUs whenever there is no traffic, accepts slower first responses after idle periods, and does not want to manage servers or clusters. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -315,7 +321,7 @@ export const practiceExamOneServeSection = {
       kind: "single",
       section: "serve",
       objective: "4.2 Scaling online model serving: 4.2.a serving features with Feature Store",
-      prompt: "An online marketplace serves a fraud model that needs the latest features of each account at request time. A streaming pipeline appends new timestamped feature rows for 400 million accounts to a BigQuery table in the us-central1 region, the table holds several terabytes, and the model must see new rows within about a minute. The features are already registered in Agent Platform Feature Store as a feature group over that table. The team does not want to operate its own database. What should you do?",
+      prompt: "An online marketplace serves a fraud model that needs the latest features of each account at request time. A streaming pipeline appends new timestamped feature rows for 400 million accounts to a BigQuery table in the us-central1 region, the table holds several terabytes, the model must see new rows within about a minute, and each feature lookup must return within 20 milliseconds. The features are already registered in Agent Platform Feature Store as a feature group over that table. The team does not want to operate its own database. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -334,7 +340,7 @@ export const practiceExamOneServeSection = {
           id: "feature-store",
           title: "About Feature Store on Gemini Enterprise Agent Platform",
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/featurestore/latest/overview",
-          claim: "Feature Store serves the latest feature values online from feature views, which are materialized from BigQuery data sources to an online store instance.",
+          claim: "Feature Store serves the latest feature values for online predictions at low latencies from feature views, which are materialized from BigQuery data sources to an online store instance.",
         },
       ],
       choices: [
@@ -359,7 +365,7 @@ export const practiceExamOneServeSection = {
         {
           id: "d",
           text: "Export the latest features from BigQuery to files in Cloud Storage every minute, and have the serving code read the newest file whenever it needs an account's features.",
-          feedback: "Incorrect. Exported files are not an online store that returns one account's latest values for each request, while a Feature Store feature view serves the latest values online.",
+          feedback: "Incorrect. Reading the newest exported file for each lookup is not an online store built for 20-millisecond lookups, while a Feature Store feature view serves the latest values online at low latency.",
           evidenceIds: ["feature-store"],
         },
       ],
@@ -370,7 +376,7 @@ export const practiceExamOneServeSection = {
       kind: "single",
       section: "serve",
       objective: "4.2 Scaling online model serving: 4.2.b public and private endpoints",
-      prompt: "A bank serves a credit-scoring model on Agent Platform to applications that run in three VPC networks, each owned by a different business unit in its own project. The security team requires that inference traffic use no public IP addresses and never cross the public internet. The network team will not reserve and peer additional internal IP ranges for the service, and the bank wants to operate only one deployment of the model. What should you do?",
+      prompt: "A bank serves a credit-scoring model on Agent Platform to applications that run in three VPC networks, each owned by a different business unit in its own project. The security team requires that inference traffic use no public IP addresses and never cross the public internet. The network team will not set up VPC Network Peering or allocate peered IP ranges for the service, and the bank wants to operate only one deployment of the model. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -395,8 +401,8 @@ export const practiceExamOneServeSection = {
         },
         {
           id: "b",
-          text: "Deploy the model to a private services access endpoint by peering one business unit's VPC network with Agent Platform over a reserved internal IP range, and route the other two networks through it.",
-          feedback: "Incorrect. Private services access endpoints need a peering connection over a reserved range, which the network team refuses, and a project can use only one network for all of its private endpoints.",
+          text: "Deploy the model to a private services access endpoint by peering one business unit's VPC network with Agent Platform over an allocated internal IP range, and route the other two networks through it.",
+          feedback: "Incorrect. Private services access endpoints need a peering connection over an allocated range, which the network team refuses, and a project can use only one network for all of its private endpoints.",
           evidenceIds: ["psa-endpoints"],
         },
         {
@@ -419,7 +425,7 @@ export const practiceExamOneServeSection = {
       kind: "single",
       section: "serve",
       objective: "4.2 Scaling online model serving: 4.2.c serving hardware",
-      prompt: "A media company will serve a 70-billion-parameter open model that it fine-tuned on an Agent Platform endpoint. In 16-bit precision, the model weights and the serving framework's cache need about 170 GB of GPU memory, and evaluations showed that 8-bit and 4-bit quantized versions of the model give noticeably worse answers. Load tests show that one replica can handle the expected peak traffic. The team wants to keep full-precision quality and avoid paying for far more GPU memory than the model needs. What should you do?",
+      prompt: "A media company fine-tuned a 70-billion-parameter open model and will serve it on an Agent Platform endpoint. In 16-bit precision, the model weights and the serving framework's cache need about 170 GB of GPU memory, and evaluations showed that 8-bit and 4-bit quantized versions of the model give noticeably worse answers. Load tests show that one replica can handle the expected peak traffic. The team wants to keep full-precision quality and avoid paying for far more GPU memory than the model needs. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -536,7 +542,7 @@ export const practiceExamOneServeSection = {
       kind: "single",
       section: "serve",
       objective: "4.2 Scaling online model serving: 4.2.e tuning models for production",
-      prompt: "A law firm's research assistant calls a Gemini model on Agent Platform about 20,000 times each business day. Every request contains the same 60,000-token set of firm guidelines and a short user question, and the application puts the user question first and the guidelines after it. The guidelines change once a quarter, and each answer must consider the complete guidelines. Implicit caching is enabled by default, but the usage metadata of the responses shows almost no cached tokens. The firm wants to lower cost and latency without adding infrastructure to manage. What should you do?",
+      prompt: "An engineering consultancy's research assistant calls a Gemini model on Agent Platform about 20,000 times each business day. Every request contains the same 60,000-token set of firm guidelines and a short user question, and the application puts the user question first and the guidelines after it. The guidelines change once a quarter, and each answer must consider the complete guidelines. Implicit caching is enabled by default, but the usage metadata of the responses shows almost no cached tokens. The firm wants to lower cost and latency without adding infrastructure to manage. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -552,17 +558,17 @@ export const practiceExamOneServeSection = {
           claim: "Gemini batch inference provides asynchronous, high-throughput, and cost-effective inference for large-scale data processing.",
         },
         {
-          id: "rag-engine",
-          title: "RAG Engine on Gemini Enterprise Agent Platform overview",
-          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/rag-engine/rag-overview",
-          claim: "RAG Engine indexes a knowledge base in a corpus, and when a user asks a question, its retrieval component searches the corpus for information that is relevant to the query.",
+          id: "provisioned-throughput",
+          title: "Provisioned Throughput overview",
+          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/provisioned-throughput",
+          claim: "Provisioned Throughput is a fixed-cost, fixed-term subscription that reserves throughput for supported generative AI models.",
         },
       ],
       choices: [
         {
           id: "a",
-          text: "Send the questions to Gemini batch inference jobs, and return each answer to the user when the job that contains the question completes.",
-          feedback: "Incorrect. Batch inference is asynchronous processing for large-scale data, while the assistant's users wait for each answer.",
+          text: "Send the questions to Gemini batch inference jobs, and return each answer to the user when the batch job that contains the question has completed.",
+          feedback: "Incorrect. Batch inference is asynchronous processing for large-scale data, so answers would arrive later rather than sooner, while the firm wants lower latency.",
           evidenceIds: ["gemini-batch"],
         },
         {
@@ -573,15 +579,15 @@ export const practiceExamOneServeSection = {
         },
         {
           id: "c",
-          text: "Create a new explicit cache that contains the guidelines for each incoming request, and reference that cache only in the request that created it.",
-          feedback: "Incorrect. Each explicit cache is billed for the input tokens that create it and for storage, and a cache that only one request uses is never reused, so the guidelines are still paid for with every request.",
+          text: "Write a 5,000-token summary of the guidelines each quarter, and send the summary with each question instead of the complete 60,000-token guidelines.",
+          feedback: "Incorrect. A summary lowers the token count, but each answer must consider the complete guidelines, which a summary does not contain.",
           evidenceIds: ["context-cache"],
         },
         {
           id: "d",
-          text: "Load the guidelines into a RAG Engine corpus, and send only the passages that are retrieved for each question instead of the complete guidelines.",
-          feedback: "Incorrect. Retrieval sends only the passages that are relevant to each query, but each answer must consider the complete guidelines.",
-          evidenceIds: ["rag-engine"],
+          text: "Purchase Provisioned Throughput for the Gemini model, and keep sending the question and the complete guidelines in each request in the current order.",
+          feedback: "Incorrect. Provisioned Throughput is a fixed-cost subscription that reserves throughput, so the repeated guidelines are still processed in full with every request, and the cost does not fall.",
+          evidenceIds: ["provisioned-throughput", "context-cache"],
         },
       ],
       correctChoiceId: "b",
@@ -591,7 +597,7 @@ export const practiceExamOneServeSection = {
       kind: "single",
       section: "serve",
       objective: "4.2 Scaling online model serving: 4.2.c serving hardware",
-      prompt: "An agricultural equipment maker wants its harvesters to classify crop diseases from camera images while they work in fields that have no network coverage. Each harvester has an onboard Linux computer with a Coral Edge TPU accelerator. The computer's CPU is too slow for the latency target, so the model must run on the Edge TPU. The data science team has 60,000 labeled images, and it wants to avoid writing model training code and to keep a single model format for every harvester. What should you do?",
+      prompt: "An agricultural equipment maker wants its harvesters to classify crop diseases from camera images while they work in fields that have no network coverage. Each harvester covers about 500 hectares a day, captures an image every two seconds, and has an onboard Linux computer with a Coral Edge TPU accelerator. The computer's CPU is too slow for the latency target, so the model must run on the Edge TPU. The data science team has 60,000 labeled images and wants to avoid writing model training code. What should you do?",
       verifiedOn: "2026-09-26",
       evidence: [
         {
@@ -606,13 +612,19 @@ export const practiceExamOneServeSection = {
           url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/predictions",
           claim: "Online inferences are synchronous requests that are sent to a model deployed to an endpoint.",
         },
+        {
+          id: "edge-training",
+          title: "Train an AutoML Edge model using the Google Cloud console",
+          url: "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/training/automl-edge-console",
+          claim: "You create an AutoML Edge (exportable) model in the console from a prepared dataset or by starting a training pipeline job programmatically.",
+        },
       ],
       choices: [
         {
           id: "a",
           text: "Train an AutoML Edge image classification model on Agent Platform, export it in the Edge TPU TF Lite format, and run it on each harvester's Edge TPU.",
-          feedback: "Correct. AutoML trains the Edge model without training code, and the Edge TPU TF Lite export packages it to run on Edge TPU devices, so every harvester classifies images on board without a network.",
-          evidenceIds: ["edge-export"],
+          feedback: "Correct. An AutoML Edge model is created from a prepared dataset without training code, and the Edge TPU TF Lite export packages it to run on Edge TPU devices, so every harvester classifies images on board without a network.",
+          evidenceIds: ["edge-training", "edge-export"],
         },
         {
           id: "b",
